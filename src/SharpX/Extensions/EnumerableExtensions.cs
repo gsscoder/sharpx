@@ -9,6 +9,8 @@ namespace SharpX
 {
     public static class EnumerableExtensions
     {
+        static readonly Random _random = new CryptoRandom();
+
         /// <summary>Returns the cartesian product of two sequences by combining each element of the
         /// first set with each in the second and applying the user=define projection to the
         /// pair.</summary>
@@ -553,7 +555,7 @@ namespace SharpX
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            var index = new CryptoRandom().Next(source.Count() - 1);
+            var index = _random.Next(source.Count() - 1);
             return source.ElementAt(index);
         }
 
