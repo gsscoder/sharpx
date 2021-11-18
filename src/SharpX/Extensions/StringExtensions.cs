@@ -29,7 +29,7 @@ namespace SharpX
         static string[] _mangleChars =
             {"!", "\"", "£", "$", "%", "&", "/", "(", ")", "=", "?", "^", "[", "]", "*", "@", "°",
              "#", "§", ",", ";", ".", ":", "-", "_"};
-        static Regex _stripML = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
+        static Regex _stripTagsRegEx = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
 
         /// <summary>Determines if a string is composed only by letter characters.</summary>
         public static bool IsAlpha(this string value)
@@ -230,12 +230,12 @@ namespace SharpX
             return builder.ToString();
         }
 
-        /// <summary>Removes markup from a string.</summary>
-        public static string StripML(this string value)
+        /// <summary>Removes tags from a string.</summary>
+        public static string StripTags(this string value)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
-            return _stripML.Replace(value, string.Empty);
+            return _stripTagsRegEx.Replace(value, string.Empty);
         }
 
         /// <summary>Removes words of given length.</summary>
