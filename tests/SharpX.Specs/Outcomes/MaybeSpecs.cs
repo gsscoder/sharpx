@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using FsCheck;
@@ -294,6 +295,17 @@ public class MaybeSpecs
         outcome.Should().BeTrue();
     }
 
+    [Theory]
+    [InlineData(9)]
+    public void Just_with_identical_hash_codes(int samples)
+    {
+        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), samples);
+
+        var outcomes = from sut in suts select sut.GetHashCode();
+
+        outcomes.Should().OnlyContain(x => x == outcomes.First());
+    }
+
     [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
     public void Maybe_with_identical_values_compared_as_object_are_equals(int value)
     {
@@ -304,6 +316,50 @@ public class MaybeSpecs
 
         var outcome = sut1.Equals(sut2);
 
+        outcome.Should().BeTrue();
+    }
+
+    [Theory]
+    [InlineData(9)]
+    public void Just_wrapping_the_same_value_have_identical_hash_codes(int samples)
+    {
+        var suts = Enumerable.Repeat(Maybe.Just(1), samples);
+
+        var outcomes = from sut in suts select sut.GetHashCode();
+
+        outcomes.Should().OnlyContain(x => x == outcomes.First());
+    }
+
+    [Theory]
+    [InlineData(9)]
+    public void Nothing_of_the_same_type_have_identical_hash_codes(int samples)
+    {
+        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), samples);
+
+        var outcomes = from sut in suts select sut.GetHashCode();
+
+        outcomes.Should().OnlyContain(x => x == outcomes.First());
+    }
+
+    [Fact]
+    public void Just_wrapping_different_values_have_different_hash_codes()
+    {
+        var sut1 = Maybe.Just(_random.Next(0, 9));
+        var sut2 = Maybe.Just(StringUtil.Generate(10));
+
+        var outcome = sut1.GetHashCode() != sut2.GetHashCode();
+        
+        outcome.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Nothing_of_different_type_have_different_hash_codes()
+    {
+        var sut1 = Maybe.Nothing<int>();
+        var sut2 = Maybe.Nothing<string>();
+
+        var outcome = sut1.GetHashCode() != sut2.GetHashCode();
+        
         outcome.Should().BeTrue();
     }
 }

@@ -56,10 +56,16 @@ namespace SharpX
         public static bool operator !=(Maybe<T> left, Maybe<T> right) => !left.Equals(right);
 
         /// <summary>Serves as the default hash function.</summary>
-        public override int GetHashCode() =>
-            Tag == MaybeType.Nothing
-                ? ToString().GetHashCode()
-                : _value.GetHashCode();
+        public override int GetHashCode()
+        {
+            unchecked {
+                var hashCode = 2;
+                hashCode = hashCode * 3 * typeof(Maybe<T>).GetHashCode();
+                if (Tag == MaybeType.Just)
+                    hashCode = hashCode * 3 + _value.GetHashCode();
+                return hashCode;
+            }
+        }
 
         public override string ToString() =>
             Tag switch {

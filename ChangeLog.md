@@ -7,4 +7,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Changed name of `StringExtensions::StripML` method into `StripTags`
+- Changed name of `StringExtensions::StripML` method into `StripTags`.
+- Changed implemetation of `Maybe::GetHashCode`.
