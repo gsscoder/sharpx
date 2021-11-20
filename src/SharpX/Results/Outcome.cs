@@ -29,7 +29,7 @@ namespace SharpX
 
         public override bool Equals(object other)
         {
-            if (other == null) return false;
+            if (other is null) return false;
             if (other.GetType() != typeof(Error)) return false;
             var otherError = (Error)other;
             return otherError.Message.Equals(Message) &&
@@ -91,7 +91,7 @@ namespace SharpX
 
         public override bool Equals(object other)
         {
-            if (other == null) return false;
+            if (other is null) return false;
             var otherType = other.GetType();
             if (otherType != GetType()) return false;
             var otherTag = (OutcomeType)otherType.GetProperty(
