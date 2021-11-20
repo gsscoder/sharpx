@@ -26,7 +26,7 @@ SharpX is almost fully compatible with projects using previous libraries. CSharp
 If you prefer, you can install it via NuGet:
 
 ```sh
-$ dotnet add package SharpX --version 1.0.2
+$ dotnet add package SharpX --version 1.0.3
   Determining projects to restore...
   ...
 ```
@@ -34,8 +34,8 @@ $ dotnet add package SharpX --version 1.0.2
 ## Versions
 
 - In `develop` branch source code may differ also from latest preview.
-- The letest version on NuGet is [1.0.2](https://www.nuget.org/packages/SharpX/1.0.2).
-- The latest stable version on NuGet is [1.0.2](https://www.nuget.org/packages/SharpX/1.0.2).
+- The letest version on NuGet is [1.0.3](https://www.nuget.org/packages/SharpX/1.0.3).
+- The latest stable version on NuGet is [1.0.3](https://www.nuget.org/packages/SharpX/1.0.3).
 
 ## [Maybe]
 
