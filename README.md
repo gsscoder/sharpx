@@ -11,7 +11,7 @@ The library contains functional types and other utilities, following _don't rein
 
 SharpX is almost fully compatible with projects using previous libraries. CSharpx changed symbols are listed below.
 
-- `StringExtensions::StripMl` renamed as `StripTags`.
+- `StringExtensions::StripMl` renamed as `StripTag`.
 - `ResultType` renamed as `OutcomeType`.
 - `Result` renamed as `Outcome`.
 
