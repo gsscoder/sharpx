@@ -57,7 +57,6 @@ namespace SharpX
         #endregion
     }
 
-
     public static class Either
     {
         #region Value case constructors
