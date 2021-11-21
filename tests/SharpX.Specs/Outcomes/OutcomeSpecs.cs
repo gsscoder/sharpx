@@ -97,7 +97,7 @@ public class OutcomeSpecs
             var result1 = Outcome.Failure(
                 value, new Exception("here a trouble"));
             var result2 = Outcome.Failure(
-                $"{value}{StringUtil.Generate(3)}", new Exception("here a trouble"));
+                $"{value}{Strings.Generate(3)}", new Exception("here a trouble"));
         
             var outcome = result1.Equals(result2);
 
@@ -115,7 +115,7 @@ public class OutcomeSpecs
             var result1 = Outcome.Failure(
                 "something gone wrong", new Exception(value));
             var result2 = Outcome.Failure(
-                "something gone wrong", new Exception($"{value}{StringUtil.Generate(3)}"));
+                "something gone wrong", new Exception($"{value}{Strings.Generate(3)}"));
         
             var outcome = result1.Equals(result2);
 
@@ -133,7 +133,7 @@ public class OutcomeSpecs
             var result1 = Outcome.Failure(
                 value, new Exception(value));
             var result2 = Outcome.Failure(
-                $"{value}{StringUtil.Generate(3)}", new Exception($"{value}{StringUtil.Generate(3)}"));
+                $"{value}{Strings.Generate(3)}", new Exception($"{value}{Strings.Generate(3)}"));
         
             var outcome = result1.Equals(result2);
 

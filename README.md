@@ -7,14 +7,6 @@ SharpX is derived from [CSharpx](https://github.com/gsscoder/csharpx) 2.8.0-rc.2
 
 The library contains functional types and other utilities, following _don't reinvent the wheel_ philosophy. This project was inspired by [Real-World Functional Programming](https://www.amazon.com/Real-World-Functional-Programming-Tomas-Petricek/dp/1933988924/ref=sr_1_1?keywords=Real-World+Functional+Programming&qid=1580118924&s=books&sr=1-1) and includes code from [MoreLINQ](https://github.com/morelinq/MoreLINQ).
 
-## Compatibility
-
-SharpX is almost fully compatible with projects using previous libraries. CSharpx changed symbols are listed below.
-
-- `StringExtensions::StripMl` renamed as `StripTag`.
-- `ResultType` renamed as `OutcomeType`.
-- `Result` renamed as `Outcome`.
-
 ## Targets
 
 - .NET Standard 2.0
@@ -171,7 +163,7 @@ result.Map(
 
 ## StringExtensions
 
-- General purpose and randomness string manipulation extensions.
+- General purpose and randomness string manipulation extensions. Few more methods and non-extension version can be found in `Strings` class.
 
 ```csharp
 Console.WriteLine(
