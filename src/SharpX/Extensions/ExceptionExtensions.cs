@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace SharpX
+namespace SharpX.Extensions
 {
     public static class ExceptionExtensions
     {

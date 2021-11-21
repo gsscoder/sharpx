@@ -6,6 +6,7 @@ using FsCheck;
 using FsCheck.Xunit;
 using Microsoft.FSharp.Collections;
 using SharpX;
+using SharpX.Extensions;
 using Xunit;
 
 public class EnumerableExtensionsSpecs
