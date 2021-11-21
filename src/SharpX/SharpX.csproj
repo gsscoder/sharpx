@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/gsscoder/sharpx</PackageProjectUrl>
     <RepositoryUrl>https://github.com/gsscoder/sharpx</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>functional;utility;api;library</PackageTags>
+    <PackageTags>functional;errors;strings;utility;api;library</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
