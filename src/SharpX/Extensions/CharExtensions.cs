@@ -15,8 +15,8 @@ namespace SharpX.Extensions
 
             var builder = new StringBuilder((1 + separator.Length) * count);
             for (var i = 0; i < count; i++) {
-                builder.Append(value);
-                builder.Append(separator);
+                builder.Append(value)
+                       .Append(separator);
             }
             return builder.ToString(0, builder.Length - separator.Length);
         }
