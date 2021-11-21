@@ -4,6 +4,7 @@ using FsCheck;
 using FsCheck.Xunit;
 using Microsoft.FSharp.Core;
 using SharpX;
+using SharpX.Extensions;
 using Xunit;
 
 public class FSharpResultExtensionsSpecs

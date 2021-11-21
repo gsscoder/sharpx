@@ -1,5 +1,5 @@
 using FluentAssertions;
-using SharpX;
+using SharpX.Extensions;
 using Xunit;
 
 public class CharExtensionsSpecs

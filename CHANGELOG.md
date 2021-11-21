@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Changed namespace of classes with extension methods to `SharpX.Extensions`.
+
 ## [1.0.3] - 2021-11-20
 
 - Changed name of `StringExtensions::StripTags` method into `StripTag`.

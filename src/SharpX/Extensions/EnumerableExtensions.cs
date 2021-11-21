@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace SharpX
+namespace SharpX.Extensions
 {
     public static class EnumerableExtensions
     {

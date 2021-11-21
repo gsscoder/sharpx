@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using FsCheck;
 using FsCheck.Xunit;
 using SharpX;
+using SharpX.Extensions;
 using Xunit;
 
 public class MaybeSpecs

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using SharpX;
+using SharpX.Extensions;
 using Xunit;
 
 public class StringExtensionsSpecs
