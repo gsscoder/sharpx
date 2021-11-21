@@ -345,7 +345,7 @@ public class MaybeSpecs
     public void Just_wrapping_different_values_have_different_hash_codes()
     {
         var sut1 = Maybe.Just(_random.Next(0, 9));
-        var sut2 = Maybe.Just(StringUtil.Generate(10));
+        var sut2 = Maybe.Just(Strings.Generate(10));
 
         var outcome = sut1.GetHashCode() != sut2.GetHashCode();
         
