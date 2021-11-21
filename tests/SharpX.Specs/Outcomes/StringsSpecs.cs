@@ -6,45 +6,48 @@ using FsCheck.Xunit;
 using SharpX;
 using Xunit;
 
-public class StringsSpecs
+namespace Outcomes
 {
-    static List<string> _strings = new List<string>() { Strings.Generate(new CryptoRandom().Next(1, 60)) };
-
-    [Theory]
-    [InlineData('f', 0, "", "")]
-    [InlineData('f', 1, "", "f")]
-    [InlineData('f', 5, " ", "f f f f f")]
-    public void Should_replicate(char value, int count, string separator, string expected)
+    public class StringsSpecs
     {
-        var outcome = Strings.ReplicateChar(value, count, separator);
+        static List<string> _strings = new List<string>() { Strings.Generate(new CryptoRandom().Next(1, 60)) };
 
-        outcome.Should().Be(expected);
-    }
+        [Theory]
+        [InlineData('f', 0, "", "")]
+        [InlineData('f', 1, "", "f")]
+        [InlineData('f', 5, " ", "f f f f f")]
+        public void Should_replicate(char value, int count, string separator, string expected)
+        {
+            var outcome = Strings.ReplicateChar(value, count, separator);
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryNegativeIntegers) })]
-    public void Trying_to_generate_a_random_string_with_less_than_one_char_raises_ArgumentException(int value)
-    {
-        Action action = () => Strings.Generate(value);
+            outcome.Should().Be(expected);
+        }
 
-        action.Should().ThrowExactly<ArgumentException>();
-    }
+        [Property(Arbitrary = new[] { typeof(ArbitraryNegativeIntegers) })]
+        public void Trying_to_generate_a_random_string_with_less_than_one_char_raises_ArgumentException(int value)
+        {
+            Action action = () => Strings.Generate(value);
 
-    [Fact]
-    public void Should_generate_an_empty_string_when_length_is_zero()
-    {
-        var outcome = Strings.Generate(0);
+            action.Should().ThrowExactly<ArgumentException>();
+        }
 
-        outcome.Should().NotBeNull().And.BeEmpty();
-    }
+        [Fact]
+        public void Should_generate_an_empty_string_when_length_is_zero()
+        {
+            var outcome = Strings.Generate(0);
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
-    public void Should_generate_a_random_string_of_given_length(int value)
-    {
-        var outcome = Strings.Generate(value);
+            outcome.Should().NotBeNull().And.BeEmpty();
+        }
 
-        outcome.Should().NotBeNull().And.HaveLength(value);
-        _strings.Should().NotContain(outcome);
+        [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+        public void Should_generate_a_random_string_of_given_length(int value)
+        {
+            var outcome = Strings.Generate(value);
 
-        _strings.Add(outcome);
+            outcome.Should().NotBeNull().And.HaveLength(value);
+            _strings.Should().NotContain(outcome);
+
+            _strings.Add(outcome);
+        }
     }
 }
