@@ -2,6 +2,7 @@ using FluentAssertions;
 using FsCheck;
 using FsCheck.Xunit;
 using SharpX;
+using SharpX.Extensions;
 using System;
 using System.Collections.Generic;
 using Xunit;

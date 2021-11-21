@@ -3,6 +3,7 @@ using FluentAssertions;
 using FsCheck;
 using FsCheck.Xunit;
 using SharpX;
+using SharpX.Extensions;
 using Xunit;
 using Outcome = SharpX.Outcome;
 
