@@ -23,12 +23,6 @@ $ dotnet add package SharpX --version 1.0.3
   ...
 ```
 
-## Versions
-
-- In `develop` branch source code may differ also from latest preview.
-- The letest version on NuGet is [1.0.3](https://www.nuget.org/packages/SharpX/1.0.3).
-- The latest stable version on NuGet is [1.0.3](https://www.nuget.org/packages/SharpX/1.0.3).
-
 ## [Maybe]
 
 - Encapsulates an optional value that can contain a value or being empty.
