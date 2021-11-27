@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved `CharExtensions::Replicate` to `StringExtensions`.
 - Removed `CharExtensions` class.
 - All `StringExtensions` methods are implemented in `Strings` class.
+- Added `Contract` class.
 
 ## [1.0.3] - 2021-11-20
 
