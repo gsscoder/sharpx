@@ -7,6 +7,8 @@ namespace SharpX.Extensions
     {
         public static string Format(this Exception exception)
         {
+            Contract.DisallowNull(nameof(exception), exception);
+
             var builder = new StringBuilder(capacity: 256);
             builder.AppendLine(exception.Message);
             if (exception.StackTrace != null) {
