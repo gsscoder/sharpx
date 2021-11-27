@@ -2,7 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using Microsoft.FSharp.Core;
 
-namespace SharpX
+namespace SharpX.Extensions
 {
     public static class FSharpResultExtensions
     {
