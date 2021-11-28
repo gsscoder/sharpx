@@ -20,8 +20,8 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ReplicateChar(char value, int count, string separator = "")
         {
-            if (count < 0) throw new ArgumentException(nameof(count));
-            if (separator == null) throw new ArgumentNullException(nameof(separator));
+            Guard.DisallowNegative(nameof(count), count);
+            Guard.DisallowNull(nameof(separator), separator);
 
             if (separator.Length == 0) return new string(value, count);
 
@@ -37,7 +37,8 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Generate(int length)
         {
-            if (length < 0) throw new ArgumentException(nameof(length));
+            Guard.DisallowNegative(nameof(length), length);
+
             if (length == 0) return string.Empty;
 
             return new string((from c in Enumerable.Repeat(_chars, length)
@@ -48,7 +49,7 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsAlpha(string value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            Guard.DisallowNull(nameof(value), value);
 
             foreach (var @char in value.ToCharArray()) {
                 if (!char.IsLetter(@char) || char.IsWhiteSpace(@char)) {
@@ -62,7 +63,7 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsAlphanumeric(string value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            Guard.DisallowNull(nameof(value), value);
 
             foreach (var @char in value.ToCharArray()) {
                 if (!char.IsLetterOrDigit(@char) || char.IsWhiteSpace(@char)) {
@@ -76,7 +77,7 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsWhiteSpace(string value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            Guard.DisallowNull(nameof(value), value);
 
             foreach (var @char in value.ToCharArray()) {
                 if (char.IsWhiteSpace(@char)) {
@@ -90,8 +91,8 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToUpperFirstLetter(string value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            if (value.Trim().Length == 0) throw new ArgumentException(nameof(value));
+            Guard.DisallowNull(nameof(value), value);
+            Guard.DisallowEmptyWhiteSpace(nameof(value), value);
 
             return $"{char.ToUpper(value[0])}{value.Substring(1)}";
         }
@@ -100,8 +101,8 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToLowerFirstLetter(string value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            if (value.Trim().Length == 0) throw new ArgumentException(nameof(value));
+            Guard.DisallowNull(nameof(value), value);
+            Guard.DisallowEmptyWhiteSpace(nameof(value), value);
 
             return $"{char.ToLower(value[0])}{value.Substring(1)}";
         }
@@ -110,9 +111,9 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Replicate(string value, int count, string separator = "")
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            if (count < 0) throw new ArgumentException(nameof(count));
-            if (separator == null) throw new ArgumentNullException(nameof(separator));
+            Guard.DisallowNull(nameof(value), value);
+            Guard.DisallowNegative(nameof(count), count);
+            Guard.DisallowNull(nameof(separator), separator);
 
             var builder = new StringBuilder((value.Length + separator.Length) * count);
             for (var i = 0; i < count; i++) {
@@ -126,8 +127,8 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ApplyAt(string value, int index, Func<string, string> modifier)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            if (index < 0) throw new ArgumentException(nameof(index));
+            Guard.DisallowNull(nameof(value), value);
+            Guard.DisallowNegative(nameof(index), index);
 
             var words = value.Split().ToArray();
             words[index] = modifier(words[index]);
@@ -138,7 +139,7 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int ChoiceOfIndex(string value, Func<string, bool> validator = null)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            Guard.DisallowNull(nameof(value), value);
 
             Func<string, bool> _nullValidator = _ => true;
             var _validator = validator ?? _nullValidator;
@@ -156,10 +157,11 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Mangle(string value, int times = 1, int maxLength = 1)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            if (times < 0) throw new ArgumentException(nameof(times));
-            if (maxLength < 0) throw new ArgumentException(nameof(maxLength));
+            Guard.DisallowNull(nameof(value), value);
+            Guard.DisallowNegative(nameof(times), times);
+            Guard.DisallowNegative(nameof(maxLength), maxLength);
             if (times >= value.Length) throw new ArgumentException(nameof(times));
+
             if (times == 0 || maxLength == 0) return value;
 
             var indexes = new List<int>(times);
@@ -193,7 +195,8 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Intersperse(string value, params object[] values)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            Guard.DisallowNull(nameof(value), value);
+
             if (values.Length == 0) return value;
 
             var builder = new StringBuilder(value.Length + values.Length * 8);
@@ -216,7 +219,8 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Sanitize(string value, bool normalizeWhiteSpace = true)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            Guard.DisallowNull(nameof(value), value);
+
             var builder = new StringBuilder(value.Length);
             foreach (var @char in value) {
                 if (char.IsLetterOrDigit(@char)) {
@@ -237,7 +241,8 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string NormalizeWhiteSpace(string value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            Guard.DisallowNull(nameof(value), value);
+
             var trimmed = value.Trim();
             var builder = new StringBuilder(trimmed.Length);
             var lastIndex = trimmed.Length - 2;
@@ -259,7 +264,7 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string StripTag(string value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            Guard.DisallowNull(nameof(value), value);
 
             return _stripTagRegEx.Replace(value, string.Empty);
         }
@@ -268,7 +273,8 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string StripByLength(string value, int length)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            Guard.DisallowNull(nameof(value), value);
+
             if (length < 0) throw new ArgumentException(nameof(length));
             if (length == 0) return value;
 
@@ -283,7 +289,7 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<string> FlattenOnce(IEnumerable<string> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             return _(); IEnumerable<string> _()
             {
