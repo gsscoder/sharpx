@@ -160,53 +160,53 @@ namespace SharpX
 
     public static class OutcomeExtensions
     {
-        public static Unit Match(this Outcome result,
+        public static Unit Match(this Outcome outcome,
             Func<Unit> onSuccess, Func<Error, Unit> onFailure)
         {
-            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(outcome), outcome);
             Guard.DisallowNull(nameof(onSuccess), onSuccess);
             Guard.DisallowNull(nameof(onFailure), onFailure);
 
-            return result.MatchFailure(out Error error) switch {
+            return outcome.MatchFailure(out Error error) switch {
                 true => onFailure(error),
                 _    => onSuccess() 
             };
         }
 
-        public static Unit Match(this Outcome result,
+        public static Unit Match(this Outcome outcome,
             Func<Unit> onSuccess, Func<string, Unit> onFailure)
         {
-            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(outcome), outcome);
             Guard.DisallowNull(nameof(onSuccess), onSuccess);
             Guard.DisallowNull(nameof(onFailure), onFailure);
 
-            return result.MatchFailure(out Error error) switch {
+            return outcome.MatchFailure(out Error error) switch {
                 true => onFailure(error.Message),
                 _    => onSuccess() 
             };
         }
 
-        public static Unit Match(this Outcome result,
+        public static Unit Match(this Outcome outcome,
             Func<Unit> onSuccess, Func<Maybe<Exception>, Unit> onFailure)
         {
-            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(outcome), outcome);
             Guard.DisallowNull(nameof(onSuccess), onSuccess);
             Guard.DisallowNull(nameof(onFailure), onFailure);
 
-            return result.MatchFailure(out Error error) switch {
+            return outcome.MatchFailure(out Error error) switch {
                 true => onFailure(error.Exception),
                 _    => onSuccess() 
             };
         }
 
-        public static Unit Match(this Outcome result,
+        public static Unit Match(this Outcome outcome,
             Func<Unit> onSuccess, Func<Exception, Unit> onFailure)
         {
-            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(outcome), outcome);
             Guard.DisallowNull(nameof(onSuccess), onSuccess);
             Guard.DisallowNull(nameof(onFailure), onFailure);
 
-            return result.MatchFailure(out Error error) switch {
+            return outcome.MatchFailure(out Error error) switch {
                 true => onFailure(error.Exception.FromJust()),
                 _    => onSuccess() 
             };
