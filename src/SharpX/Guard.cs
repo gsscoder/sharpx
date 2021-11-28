@@ -27,7 +27,7 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DisallowEmptyWhiteSpace(string argumentName, string value)
         {
-            if (value.Trim() == string.Empty) throw new ArgumentException(
+            if (value.Trim().Length == 0) throw new ArgumentException(
                 $"{argumentName} cannot be empty or contains only white spaces.", argumentName);
         }
         
