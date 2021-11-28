@@ -7,8 +7,8 @@ namespace SharpX
 {
     public enum ResultType
     {
-        Ok,
-        Bad
+        Bad,
+        Ok
     }
 
     /// <summary>Represents the result of a computation.</summary>
