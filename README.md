@@ -23,6 +23,10 @@ $ dotnet add package SharpX --version 1.0.4
   ...
 ```
 
+## Overview
+
+All types are available in root namespace, while extension methods are in `SharpX.Extensions`.
+
 ## [Maybe]
 
 - Encapsulates an optional value that can contain a value or being empty.
