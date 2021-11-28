@@ -22,7 +22,7 @@ namespace SharpX
 
         internal Error(string message, Exception exception)
         {
-            if (message == null) throw new ArgumentNullException(nameof(message));
+            Guard.DisallowNull(nameof(message), message);
 
             Message = message;
             _exception = exception;
@@ -31,7 +31,9 @@ namespace SharpX
         public override bool Equals(object other)
         {
             if (other is null) return false;
+
             if (other.GetType() != typeof(Error)) return false;
+
             var otherError = (Error)other;
             return otherError.Message.Equals(Message) &&
                    _comparer.Value.Equals(otherError._exception, _exception);
@@ -94,10 +96,13 @@ namespace SharpX
         {
             if (other is null) return false;
             var otherType = other.GetType();
+
             if (otherType != GetType()) return false;
+
             var otherTag = (OutcomeType)otherType.GetProperty(
                 "Tag", BindingFlags.Public | BindingFlags.Instance).GetValue(other);
             if (otherTag != Tag) return false;
+
             if (otherTag == OutcomeType.Success && Tag == OutcomeType.Success) return true;
             var otherField = otherType.GetField("_error", BindingFlags.NonPublic | BindingFlags.Instance);
             return otherField.GetValue(other).Equals(_error);
@@ -122,11 +127,22 @@ namespace SharpX
             };
 
         #region Value case constructors
-        public static Outcome Failure(string error) => new Outcome(
-            new Error(error, null));
+        public static Outcome Failure(string error)
+        {
+            Guard.DisallowNull(nameof(error), error);
+            Guard.DisallowEmptyWhiteSpace(nameof(error), error);
 
-        public static Outcome Failure(string error, Exception exception) => new Outcome(
-            new Error(error, exception));
+            return new Outcome(new Error(error, null));
+        }
+
+        public static Outcome Failure(string error, Exception exception)
+        {
+            Guard.DisallowNull(nameof(error), error);
+            Guard.DisallowEmptyWhiteSpace(nameof(error), error);
+            Guard.DisallowNull(nameof(exception), exception);
+
+            return new Outcome(new Error(error, exception));
+        }
 
         public static Outcome Success => new Outcome();
         #endregion
@@ -147,8 +163,9 @@ namespace SharpX
         public static Unit Match(this Outcome result,
             Func<Unit> onSuccess, Func<Error, Unit> onFailure)
         {
-            if (onSuccess == null) throw new ArgumentNullException(nameof(onSuccess));
-            if (onFailure == null) throw new ArgumentNullException(nameof(onFailure));
+            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(onSuccess), onSuccess);
+            Guard.DisallowNull(nameof(onFailure), onFailure);
 
             return result.MatchFailure(out Error error) switch {
                 true => onFailure(error),
@@ -159,8 +176,9 @@ namespace SharpX
         public static Unit Match(this Outcome result,
             Func<Unit> onSuccess, Func<string, Unit> onFailure)
         {
-            if (onSuccess == null) throw new ArgumentNullException(nameof(onSuccess));
-            if (onFailure == null) throw new ArgumentNullException(nameof(onFailure));
+            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(onSuccess), onSuccess);
+            Guard.DisallowNull(nameof(onFailure), onFailure);
 
             return result.MatchFailure(out Error error) switch {
                 true => onFailure(error.Message),
@@ -171,8 +189,9 @@ namespace SharpX
         public static Unit Match(this Outcome result,
             Func<Unit> onSuccess, Func<Maybe<Exception>, Unit> onFailure)
         {
-            if (onSuccess == null) throw new ArgumentNullException(nameof(onSuccess));
-            if (onFailure == null) throw new ArgumentNullException(nameof(onFailure));
+            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(onSuccess), onSuccess);
+            Guard.DisallowNull(nameof(onFailure), onFailure);
 
             return result.MatchFailure(out Error error) switch {
                 true => onFailure(error.Exception),
@@ -183,8 +202,9 @@ namespace SharpX
         public static Unit Match(this Outcome result,
             Func<Unit> onSuccess, Func<Exception, Unit> onFailure)
         {
-            if (onSuccess == null) throw new ArgumentNullException(nameof(onSuccess));
-            if (onFailure == null) throw new ArgumentNullException(nameof(onFailure));
+            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(onSuccess), onSuccess);
+            Guard.DisallowNull(nameof(onFailure), onFailure);
 
             return result.MatchFailure(out Error error) switch {
                 true => onFailure(error.Exception.FromJust()),
