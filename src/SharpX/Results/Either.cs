@@ -78,7 +78,8 @@ namespace SharpX
         public static Either<TLeft, TResult> Bind<TLeft, TRight, TResult>(
             Either<TLeft, TRight> either, Func<TRight, Either<TLeft, TResult>> func)
         {
-            if (func == null) throw new ArgumentNullException(nameof(func));
+            Guard.DisallowNull(nameof(either), either);
+            Guard.DisallowNull(nameof(func), func);
 
             if (either.MatchRight(out TRight right)) {
                 return func(right);
@@ -92,7 +93,8 @@ namespace SharpX
         public static Either<TLeft, TResult> Map<TLeft, TRight, TResult>(Either<TLeft, TRight> either,
             Func<TRight, TResult> func)
         {
-            if (func == null) throw new ArgumentNullException(nameof(func));
+            Guard.DisallowNull(nameof(either), either);
+            Guard.DisallowNull(nameof(func), func);
 
             if (either.MatchRight(out TRight right)) {
                 return Either.Right<TLeft, TResult>(func(right));
@@ -107,8 +109,9 @@ namespace SharpX
         public static Either<TLeft1, TRight1> Bimap<TLeft, TRight, TLeft1, TRight1>(Either<TLeft, TRight> either,
             Func<TLeft, TLeft1> mapLeft, Func<TRight, TRight1> mapRight)
         {
-            if (mapLeft == null) throw new ArgumentNullException(nameof(mapLeft));
-            if (mapRight == null) throw new ArgumentNullException(nameof(mapRight));
+            Guard.DisallowNull(nameof(either), either);
+            Guard.DisallowNull(nameof(mapLeft), mapLeft);
+            Guard.DisallowNull(nameof(mapRight), mapRight);
 
             if (either.MatchRight(out TRight right)) {
                 return Either.Right<TLeft1, TRight1>(mapRight(right));
@@ -123,7 +126,7 @@ namespace SharpX
         /// <summary>Wraps a function, encapsulates any exception thrown within to a <c>Either</c>.</summary>
         public static Either<Exception, TRight> Try<TRight>(Func<TRight> func)
         {
-            if (func == null) throw new ArgumentNullException(nameof(func));
+            Guard.DisallowNull(nameof(func), func);
 
             try {
                 return new Either<Exception, TRight>(func());
@@ -141,6 +144,9 @@ namespace SharpX
         /// <c>Left</c>.</summary>
         public static Either<TLeft, TRight> FromMaybe<TLeft, TRight>(Maybe<TRight> maybe, TLeft left)
         {
+            Guard.DisallowNull(nameof(maybe), maybe);
+            Guard.DisallowNull(nameof(left), left);
+
             if (maybe.Tag == MaybeType.Just) {
                 return Either.Right<TLeft, TRight>(maybe.FromJust());
             }
@@ -167,8 +173,9 @@ namespace SharpX
         public static Unit Match<TLeft, TRight>(this Either<TLeft, TRight> either,
             Func<TLeft, Unit> onLeft, Func<TRight, Unit> onRight)
         {
-            if (onLeft == null) throw new ArgumentNullException(nameof(onLeft));
-            if (onRight == null) throw new ArgumentNullException(nameof(onRight));
+            Guard.DisallowNull(nameof(either), either);
+            Guard.DisallowNull(nameof(onLeft), onLeft);
+            Guard.DisallowNull(nameof(onRight), onRight);
 
             return either.MatchRight(out TRight right) switch {
                 true => onRight(right),
@@ -215,6 +222,8 @@ namespace SharpX
         public static TLeft FromLeftOrFail<TLeft, TRight>(this Either<TLeft, TRight> either,
             Exception exceptionToThrow = null)
         {
+            Guard.DisallowNull(nameof(either), either);
+
             if (either.MatchLeft(out TLeft value)) {
                 return value;
             }
@@ -231,6 +240,8 @@ namespace SharpX
         public static TRight FromRightOrFail<TLeft, TRight>(this Either<TLeft, TRight> either,
             Exception exceptionToThrow = null)
         {
+            Guard.DisallowNull(nameof(either), either);
+
             if (either.MatchRight(out TRight value)) {
                 return value;
             }
@@ -242,7 +253,7 @@ namespace SharpX
         /// <c>Left</c> elements are extracted in order.</summary>
         public static IEnumerable<TLeft> Lefts<TLeft, TRight>(this IEnumerable<Either<TLeft, TRight>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             return _(); IEnumerable<TLeft> _()
             {
@@ -256,7 +267,7 @@ namespace SharpX
         /// <c>Rights</c> elements are extracted in order.</summary>
         public static IEnumerable<TRight> Rights<TLeft, TRight>(this IEnumerable<Either<TLeft, TRight>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             return _(); IEnumerable<TRight> _()
             {
@@ -272,7 +283,7 @@ namespace SharpX
         public static (IEnumerable<TLeft>, IEnumerable<TRight>) Partition<TLeft, TRight>(
             this IEnumerable<Either<TLeft, TRight>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             var lefts = new List<TLeft>();
             var rights = new List<TRight>();
