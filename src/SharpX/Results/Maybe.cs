@@ -37,12 +37,17 @@ namespace SharpX
         public override bool Equals(object other)
         {
             if (other is null) return false;
+
             var otherType = other.GetType();
             if (otherType != GetType()) return false;
+
             var otherTag = (MaybeType)otherType.GetProperty(
                 "Tag", BindingFlags.Public | BindingFlags.Instance).GetValue(other);
             if (otherTag != Tag) return false;
-            if (otherTag == MaybeType.Nothing && Tag == MaybeType.Nothing) return true;
+
+            if (otherTag == MaybeType.Nothing && Tag == MaybeType.Nothing)
+                return true;
+
             var otherField = otherType.GetField("_value", BindingFlags.NonPublic | BindingFlags.Instance);
             return otherField.GetValue(other).Equals(_value);
         }
@@ -109,7 +114,8 @@ namespace SharpX
         /// an argument to the second.</summary>
         public static Maybe<U> Bind<T, U>(Maybe<T> maybe, Func<T, Maybe<U>> onJust)
         {
-            if (onJust == null) throw new ArgumentNullException(nameof(onJust));
+            Guard.DisallowNull(nameof(maybe), maybe);
+            Guard.DisallowNull(nameof(onJust), onJust);
 
             return maybe.MatchJust(out T value) ? onJust(value) : Nothing<U>();
         }
@@ -119,7 +125,8 @@ namespace SharpX
         /// <summary>Transforms a <c>Maybe</c> value by using a specified mapping function.</summary>
         public static Maybe<U> Map<T, U>(Maybe<T> maybe, Func<T, U> onJust)
         {
-            if (onJust == null) throw new ArgumentNullException(nameof(onJust));
+            Guard.DisallowNull(nameof(maybe), maybe);
+            Guard.DisallowNull(nameof(onJust), onJust);
 
             return maybe.MatchJust(out T value) ? Just(onJust(value)) : Nothing<U>();
         }
@@ -129,6 +136,9 @@ namespace SharpX
         /// with a tupled value. </summary>
         public static Maybe<(T, U)> Merge<T, U>(Maybe<T> first, Maybe<U> second)
         {
+            Guard.DisallowNull(nameof(first), first);
+            Guard.DisallowNull(nameof(second), second);
+
             U value2 = default;
             return (first.MatchJust(out T value1) &&
                     second.MatchJust(out value2)) switch {
@@ -140,7 +150,7 @@ namespace SharpX
         /// <summary>Executes the given function on a <c>Just</c> success or returns a <c>Nothing</c>.</summary>
         public static Maybe<T> Try<T>(Func<T> func)
         {
-            if (func == null) throw new ArgumentException(nameof(func));
+            Guard.DisallowNull(nameof(func), func);
 
             try {
                 return Just(func());
@@ -152,12 +162,16 @@ namespace SharpX
 
         /// <summary>Maps <c>Either</c> right value to <c>Just</c>, otherwise returns
         /// <c>Nothing</c>.</summary>
-        public static Maybe<TRight> FromEither<TLeft, TRight>(Either<TLeft, TRight> either) =>
-            (either.Tag == EitherType.Right) switch
+        public static Maybe<TRight> FromEither<TLeft, TRight>(Either<TLeft, TRight> either)
+        {
+            Guard.DisallowNull(nameof(either), either);
+
+            return (either.Tag == EitherType.Right) switch
             {
                 true => Just(either.FromRight()),
                 _ => Nothing<TRight>()
             };
+        }
     }
 
     /// <summary>Provides convenience extension methods for <c>Maybe</c>.</summary>
@@ -168,8 +182,9 @@ namespace SharpX
         public static Unit Match<T>(this Maybe<T> maybe,
             Func<T, Unit> onJust, Func<Unit> onNothing)
         {
-            if (onJust == null) throw new ArgumentNullException(nameof(onJust));
-            if (onNothing == null) throw new ArgumentNullException(nameof(onNothing));
+            Guard.DisallowNull(nameof(maybe), maybe);
+            Guard.DisallowNull(nameof(onJust), onJust);
+            Guard.DisallowNull(nameof(onNothing), onNothing);
 
             return maybe.MatchJust(out T value) switch {
                 true => onJust(value),
@@ -182,8 +197,9 @@ namespace SharpX
         public static Unit Match<T, U>(this Maybe<(T, U)> maybe,
             Func<T, U, Unit> onJust, Func<Unit> onNothing)
         {
-            if (onJust == null) throw new ArgumentNullException(nameof(onJust));
-            if (onNothing == null) throw new ArgumentNullException(nameof(onNothing));
+            Guard.DisallowNull(nameof(maybe), maybe);
+            Guard.DisallowNull(nameof(onJust), onJust);
+            Guard.DisallowNull(nameof(onNothing), onNothing);
 
             return maybe.MatchJust(out T value1, out U value2) switch {
                 true => onJust(value1, value2),
@@ -196,6 +212,8 @@ namespace SharpX
         public static bool MatchJust<T, U>(this Maybe<(T, U)> maybeTuple,
             out T value1, out U value2)
         {
+            Guard.DisallowNull(nameof(maybeTuple), maybeTuple);
+
             if (maybeTuple.MatchJust(out (T, U) value)) {
                 value1 = value.Item1;
                 value2 = value.Item2;
@@ -230,7 +248,8 @@ namespace SharpX
         /// executes a mapping function over it, in case of <c>Nothing</c> returns <c>@default</c>.</summary>
         public static U Map<T, U>(this Maybe<T> maybe, Func<T, U> onJust, U @default = default)
         {
-            if (onJust == null) throw new ArgumentNullException(nameof(onJust));
+            Guard.DisallowNull(nameof(maybe), maybe);
+            Guard.DisallowNull(nameof(onJust), onJust);
 
             return maybe.MatchJust(out T value) ? onJust(value) : @default;
         }
@@ -239,7 +258,8 @@ namespace SharpX
         /// over it, in case of <c>Nothing</c> returns a value built by <c>@default</c> function.</summary>
         public static U Map<T, U>(this Maybe<T> maybe, Func<T, U> onJust, Func<U> @default)
         {
-            if (onJust == null) throw new ArgumentNullException(nameof(onJust));
+            Guard.DisallowNull(nameof(maybe), maybe);
+            Guard.DisallowNull(nameof(onJust), onJust);
 
             return maybe.MatchJust(out T value) ? onJust(value) : @default();
         }
@@ -262,6 +282,9 @@ namespace SharpX
         public static Maybe<TSource> Where<TSource>(this Maybe<TSource> maybe,
             Func<TSource, bool> predicate) 
         {
+            Guard.DisallowNull(nameof(maybe), maybe);
+            Guard.DisallowNull(nameof(predicate), predicate);
+
             if (maybe.MatchJust(out TSource value)) {
                 if (predicate(value)) return maybe;
             }
@@ -273,7 +296,8 @@ namespace SharpX
         /// <summary>If contains a value executes a <c>System.Func<c> delegate over it.</summary>
         public static Unit Do<T>(this Maybe<T> maybe, Func<T, Unit> func)
         {
-            if (func == null) throw new ArgumentNullException(nameof(func));
+            Guard.DisallowNull(nameof(maybe), maybe);
+            Guard.DisallowNull(nameof(func), func);
 
             return maybe.MatchJust(out T value) switch {
                 true => func(value),
@@ -284,7 +308,8 @@ namespace SharpX
         /// <summary>If contans a value executes a <c>System.Func<c> delegate over it.</summary>
         public static Unit Do<T, U>(this Maybe<(T, U)> maybe, Func<T, U, Unit> func)
         {
-            if (func == null) throw new ArgumentNullException(nameof(func));
+            Guard.DisallowNull(nameof(maybe), maybe);
+            Guard.DisallowNull(nameof(func), func);
 
             return maybe.MatchJust(out T value1, out U value2) switch {
                 true => func(value1, value2),
@@ -294,33 +319,59 @@ namespace SharpX
         #endregion
 
         /// <summary>Returns <c>true</c> if it is in form of <c>Nothing</c>.</summary>
-        public static bool IsNothing<T>(this Maybe<T> maybe) => maybe.Tag == MaybeType.Nothing;
+        public static bool IsNothing<T>(this Maybe<T> maybe)
+        {
+            Guard.DisallowNull(nameof(maybe), maybe);
+
+            return maybe.Tag == MaybeType.Nothing;
+        }
 
         /// <summary>Returns <c>true</c> if it is in form of <c>Just</c>.</summary>
-        public static bool IsJust<T>(this Maybe<T> maybe) => maybe.Tag == MaybeType.Just;
+        public static bool IsJust<T>(this Maybe<T> maybe)
+        {
+            Guard.DisallowNull(nameof(maybe), maybe);
+
+            return maybe.Tag == MaybeType.Just;
+        }
 
         /// <summary>Extracts the element out of <c>Just</c> and returns a default value (or <c>@default</c>
         /// when given) if it is in form of <c>Nothing</c>.</summary>
-        public static T FromJust<T>(this Maybe<T> maybe, T @default = default) => maybe.MatchJust(out T value) ? value : @default;
+        public static T FromJust<T>(this Maybe<T> maybe, T @default = default)
+        {
+            Guard.DisallowNull(nameof(maybe), maybe);
+
+            return maybe.MatchJust(out T value) ? value : @default;
+        }
 
         /// <summary>Lazy version of <c>FromJust</c>. Extracts the element out of <c>Just</c> and returns
         /// a value built by <c>@default</c> function if it is in form of <c>Nothing</c>.</summary>
-        public static T FromJust<T>(this Maybe<T> maybe, Func<T> @default) => maybe.MatchJust(out T value) ? value : @default();
+        public static T FromJust<T>(this Maybe<T> maybe, Func<T> @default)
+        {
+            Guard.DisallowNull(nameof(maybe), maybe);
+
+            return maybe.MatchJust(out T value) ? value : @default();
+        }
 
         /// <summary>Extracts the element out of <c>Just</c> or throws an exception if it is form of
         /// <c>Nothing</c>.</summary>
-        public static T FromJustOrFail<T>(this Maybe<T> maybe, Exception exceptionToThrow = null) =>
-            maybe.MatchJust(out T value) switch
+        public static T FromJustOrFail<T>(this Maybe<T> maybe, Exception exceptionToThrow = null)
+        {
+            Guard.DisallowNull(nameof(maybe), maybe);
+
+            return maybe.MatchJust(out T value) switch
             {
                 true => value,
                 _ => throw exceptionToThrow ?? new Exception("The value is empty.")
             };
+        }
 
         #region Sequences
         /// <summary>Returns an empty sequence when given <c>Nothing</c> or a singleton sequence in
         /// case of <c>Just</c>.</summary>
         public static IEnumerable<T> ToEnumerable<T>(this Maybe<T> maybe)
         {
+            Guard.DisallowNull(nameof(maybe), maybe);
+
             return _(); IEnumerable<T> _()
             {
                 if (maybe.MatchJust(out T value)) yield return value;
@@ -330,7 +381,7 @@ namespace SharpX
         /// <summary>Takes a sequence of <c>Maybe</c> and counts all the <c>Nothing</c> values.</summary>
         public static int Nothings<T>(this IEnumerable<Maybe<T>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             var count = 0;
             foreach (var maybe in source) {
@@ -343,7 +394,7 @@ namespace SharpX
         /// values.</summary>
         public static IEnumerable<T> Justs<T>(this IEnumerable<Maybe<T>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             return _(); IEnumerable<T> _()
             {
@@ -359,7 +410,8 @@ namespace SharpX
         /// in the result sequence.</summary>
         public static IEnumerable<U> Map<T, U>(this IEnumerable<T> source, Func<T, Maybe<U>> onElement)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(onElement), onElement);
 
             return _(); IEnumerable<U> _()
             {
