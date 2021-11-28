@@ -7,13 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.4] - 2021-11-28
+
 - Moved classes with extension methods to `SharpX.Extensions` namespace.
 - Moved `StringUtil::Generate` to new `Strings` class.
 - Moved `CharExtensions::Replicate` as `Strings::ReplicateChar`
 - Moved `CharExtensions::Replicate` to `StringExtensions`.
 - Removed `CharExtensions` class.
 - All `StringExtensions` methods are implemented in `Strings` class.
-- Added `Contract` class.
+- Added `Guard` class.
+- Consumed `Guard` class extensively in the project.
 
 ## [1.0.3] - 2021-11-20
 
