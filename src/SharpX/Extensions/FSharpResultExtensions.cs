@@ -11,8 +11,8 @@ namespace SharpX.Extensions
             Action<T> onOk,
             Action<TError> onError)
         {
-            if (onOk == null) throw new ArgumentNullException(nameof(onOk));
-            if (onError == null) throw new ArgumentNullException(nameof(onError));
+            Guard.DisallowNull(nameof(onOk), onOk);
+            Guard.DisallowNull(nameof(onError), onError);
 
             if (result.IsOk) {
                 onOk(result.ResultValue);
@@ -26,8 +26,8 @@ namespace SharpX.Extensions
             Func<T, TResult> onOk,
             Func<TError, TResult> onError)
         {
-            if (onOk == null) throw new ArgumentNullException(nameof(onOk));
-            if (onError == null) throw new ArgumentNullException(nameof(onError));
+            Guard.DisallowNull(nameof(onOk), onOk);
+            Guard.DisallowNull(nameof(onError), onError);
 
             return Either(onOk, onError, result);
         }
@@ -38,7 +38,7 @@ namespace SharpX.Extensions
             this FSharpResult<T, TError> result,
             Func<T, TResult> func)
         {
-            if (func == null) throw new ArgumentNullException(nameof(func));
+            Guard.DisallowNull(nameof(func), func);
 
             return Lift(func, result);
         }
@@ -49,7 +49,7 @@ namespace SharpX.Extensions
                 this FSharpResult<TValue, TError> result,
                 Func<TValue, FSharpResult<T, TError>> func)
         {
-            if (func == null) throw new ArgumentNullException(nameof(func));
+            Guard.DisallowNull(nameof(func), func);
 
             return Bind(func, result);
         }
@@ -58,6 +58,8 @@ namespace SharpX.Extensions
         /// the function throws an exception with the string representation of the error.</summary>
         public static T ReturnOrFail<T, TError>(this FSharpResult<T, TError> result)
         {
+            Guard.DisallowNull(nameof(result), result);
+
             Func<TError, T> raiseExn = err => throw new Exception(err.ToString());
         
             return Either(value => value, raiseExn, result);
@@ -85,8 +87,8 @@ namespace SharpX.Extensions
             Func<TError, TResult> errorFunc,
             FSharpResult<T, TError> result)
         {
-            if (okFunc == null) throw new ArgumentNullException(nameof(okFunc));
-            if (errorFunc == null) throw new ArgumentNullException(nameof(errorFunc));
+            Guard.DisallowNull(nameof(okFunc), okFunc);
+            Guard.DisallowNull(nameof(errorFunc), errorFunc);
 
             if (result.IsOk) {
                 return okFunc(result.ResultValue);
@@ -101,7 +103,8 @@ namespace SharpX.Extensions
             Func<TValue, FSharpResult<T, TError>> func,
             FSharpResult<TValue, TError> result)
         {
-                if (func == null) throw new ArgumentNullException(nameof(func));
+                Guard.DisallowNull(nameof(func), func);
+                Guard.DisallowNull(nameof(result), result);
 
                 Func<TValue, FSharpResult<T, TError>> okFunc =
                     value => func(value);
@@ -118,6 +121,9 @@ namespace SharpX.Extensions
             FSharpResult<TValue, TError> result
         )
         {
+            Guard.DisallowNull(nameof(wrappedFunc), wrappedFunc);
+            Guard.DisallowNull(nameof(result), result);
+
             if (wrappedFunc.IsOk && result.IsOk) {
                 return FSharpResult<T, TError>.NewOk(
                     wrappedFunc.ResultValue(result.ResultValue));
