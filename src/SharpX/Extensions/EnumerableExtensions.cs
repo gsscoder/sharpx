@@ -14,11 +14,12 @@ namespace SharpX.Extensions
         /// <summary>Returns the cartesian product of two sequences by combining each element of the
         /// first set with each in the second and applying the user=define projection to the
         /// pair.</summary>
-        public static IEnumerable<TResult> Cartesian<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
+        public static IEnumerable<TResult> Cartesian<TFirst, TSecond, TResult>(
+            this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.DisallowNull(nameof(first), first);
+            Guard.DisallowNull(nameof(second), second);
+            Guard.DisallowNull(nameof(resultSelector), resultSelector);
 
             return from element1 in first
                    from element2 in second // TODO buffer to avoid multiple enumerations
@@ -28,7 +29,8 @@ namespace SharpX.Extensions
         /// <summary>Prepends a single value to a sequence.</summary>
         public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(value), value);
 
             return Enumerable.Concat(Enumerable.Repeat(value, 1), source);
         }
@@ -38,7 +40,8 @@ namespace SharpX.Extensions
         /// elements.</summary>
         public static IEnumerable<T> Concat<T>(this T head, IEnumerable<T> tail)
         {
-            if (tail == null) throw new ArgumentNullException(nameof(tail));
+            Guard.DisallowNull(nameof(head), head);
+            Guard.DisallowNull(nameof(tail), tail);
 
             return tail.Prepend(head);
         }
@@ -47,7 +50,8 @@ namespace SharpX.Extensions
         /// </summary>
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> head, T tail)
         {
-            if (head == null) throw new ArgumentNullException(nameof(head));
+            Guard.DisallowNull(nameof(head), head);
+            Guard.DisallowNull(nameof(tail), tail);
 
             return Enumerable.Concat(head, Enumerable.Repeat(tail, 1));
         }
@@ -58,15 +62,10 @@ namespace SharpX.Extensions
         /// index.</summary>
         public static IEnumerable<T> Exclude<T>(this IEnumerable<T> source, int startIndex, int count)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
-            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNegative(nameof(startIndex), startIndex);
+            Guard.DisallowNegative(nameof(count), count);
 
-            return ExcludeImpl(source, startIndex, count);
-        }
-
-        static IEnumerable<T> ExcludeImpl<T>(IEnumerable<T> source, int startIndex, int count)
-        {
             var index = -1;
             var endIndex = startIndex + count;
             using var iter = source.GetEnumerator();
@@ -121,7 +120,13 @@ namespace SharpX.Extensions
             Func<T, T, T, TResult> folder3,
             Func<T, T, T, T, TResult> folder4)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNegative(nameof(count), count);
+            Guard.DisallowNull(nameof(folder1), folder1);
+            Guard.DisallowNull(nameof(folder2), folder2);
+            Guard.DisallowNull(nameof(folder3), folder3);
+            Guard.DisallowNull(nameof(folder4), folder4);
+
             if (count == 1 && folder1 == null
                 || count == 2 && folder2 == null
                 || count == 3 && folder3 == null
@@ -163,14 +168,9 @@ namespace SharpX.Extensions
         /// only returned as the predecessor of the second element.</summary>
         public static IEnumerable<TResult> Pairwise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(resultSelector), resultSelector);
 
-            return PairwiseImpl(source, resultSelector);
-        }
-
-        static IEnumerable<TResult> PairwiseImpl<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
-        {
             using var e = source.GetEnumerator();
             if (!e.MoveNext()) {
                 yield break;
@@ -192,16 +192,16 @@ namespace SharpX.Extensions
         /// <summary>Creates a delimited string from a sequence of values and
         /// a given delimiter.</summary>
         public static string ToDelimitedString<TSource>(
-            this IEnumerable<TSource> source, string delimiter)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e));
-        }
+            this IEnumerable<TSource> source, string delimiter) =>
+            ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e));
 
         static string ToDelimitedStringImpl<T>(IEnumerable<T> source, string delimiter,
             Func<StringBuilder, T, StringBuilder> append)
         {
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(delimiter), delimiter);
+            Guard.DisallowNull(nameof(append), append);
+
             delimiter = delimiter ?? CultureInfo.CurrentCulture.TextInfo.ListSeparator;
             var builder = new StringBuilder();
             var iterations = 0;
@@ -220,8 +220,8 @@ namespace SharpX.Extensions
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(keySelector), keySelector);
 
             return source.DistinctBy(keySelector, null);
         }
@@ -231,8 +231,8 @@ namespace SharpX.Extensions
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(keySelector), keySelector);
 
             return _(); IEnumerable<TSource> _()
             {
@@ -249,7 +249,7 @@ namespace SharpX.Extensions
         /// <summary>Repeats the sequence the specified number of times.</summary>
         public static IEnumerable<T> Repeat<T>(this IEnumerable<T> source, int count)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count),
                 "Repeat count must be greater than or equal to zero.");
 
@@ -259,7 +259,7 @@ namespace SharpX.Extensions
         /// <summary>Repeats the sequence forever.</summary>
         public static IEnumerable<T> Repeat<T>(this IEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             return RepeatImpl(source, null);
         }
@@ -279,7 +279,7 @@ namespace SharpX.Extensions
         /// <summary>Safe function that returns Just(first element) or <c>Nothing</c>.</summary>
         public static Maybe<T> TryHead<T>(this IEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             using var e = source.GetEnumerator(); return e.MoveNext()
                 ? Maybe.Just(e.Current)
@@ -289,7 +289,7 @@ namespace SharpX.Extensions
         /// <summary>Safe function that returns Just(last element) or <c>Nothing</c>.</summary>
         public static Maybe<T> TryLast<T>(this IEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             using var e = source.GetEnumerator();
             if (!e.MoveNext()) return Maybe.Nothing<T>();
@@ -301,7 +301,7 @@ namespace SharpX.Extensions
         /// <summary>Turns an empty sequence to <c>Nothing</c>, otherwise Just(sequence).</summary>
         public static Maybe<IEnumerable<T>> ToMaybe<T>(this IEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             using var e = source.GetEnumerator();
             return e.MoveNext()
@@ -314,8 +314,8 @@ namespace SharpX.Extensions
         public static IEnumerable<TResult> Choose<T, TResult>(this IEnumerable<T> source,
             Func<T, Maybe<TResult>> chooser)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (chooser == null) throw new ArgumentNullException(nameof(chooser));
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(chooser), chooser);
 
             return _(); IEnumerable<TResult> _()
             {
@@ -330,8 +330,9 @@ namespace SharpX.Extensions
 
         /// <summary>Returns the first element of a sequence as <c>Just</c>, or <c>Nothing</c> if the sequence
         /// contains no elements.</summary>
-        public static Maybe<TSource> FirstOrNothing<TSource>(this IEnumerable<TSource> source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+        public static Maybe<TSource> FirstOrNothing<TSource>(this IEnumerable<TSource> source)
+        {
+            Guard.DisallowNull(nameof(source), source);
 
             if (source is IList<TSource> list) {
                 if (list.Count > 0) return Maybe.Just(list[0]);
@@ -346,9 +347,10 @@ namespace SharpX.Extensions
         /// <summary>Returns the first element of the sequence as <c>Just</c> that satisfies a condition or
         /// <c>Nothing</c> if no such element is found.</summary>
         public static Maybe<TSource> FirstOrNothing<TSource>(this IEnumerable<TSource> source,
-            Func<TSource, bool> predicate) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            Func<TSource, bool> predicate)
+        {
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(predicate), predicate);
 
             foreach (TSource element in source) {
                 if (predicate(element)) return Maybe.Just(element);
@@ -360,7 +362,7 @@ namespace SharpX.Extensions
         /// contains no elements. </summary>
         public static Maybe<TSource> LastOrNothing<TSource>(this IEnumerable<TSource> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             if (source is IList<TSource> list) {
                 int count = list.Count;
@@ -381,9 +383,11 @@ namespace SharpX.Extensions
 
         /// <summary>Returns the last element of a sequence as <c>Just</c> that satisfies a condition or <c>Nothing</c> if
         /// no such element is found.</summary>
-        public static Maybe<TSource> LastOrNothing<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+        public static Maybe<TSource> LastOrNothing<TSource>(
+            this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(predicate), predicate);
 
             var result = Maybe.Nothing<TSource>();
             foreach (var element in source) {
@@ -396,8 +400,9 @@ namespace SharpX.Extensions
 
         /// <summary> Returns the only element of a sequence as <c>Just</c>, or <c>Nothing</c> if the sequence is
         /// empty.</summary>
-        public static Maybe<TSource> SingleOrNothing<TSource>(this IEnumerable<TSource> source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+        public static Maybe<TSource> SingleOrNothing<TSource>(this IEnumerable<TSource> source)
+        {
+            Guard.DisallowNull(nameof(source), source);
 
             if (source is IList<TSource> list) {
                 switch (list.Count) {
@@ -417,9 +422,11 @@ namespace SharpX.Extensions
         /// <summary>Returns the only element of a sequence that satisfies a specified condition as
         /// <c>Just</c> or a <c>Nothing</c> if no such element exists; this method throws an exception if more than
         /// one element satisfies the condition.</summary>
-        public static Maybe<TSource> SingleOrNothing<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+        public static Maybe<TSource> SingleOrNothing<TSource>(
+            this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(predicate), predicate);
 
             var result = Maybe.Nothing<TSource>();
             var count = 0L;
@@ -439,8 +446,10 @@ namespace SharpX.Extensions
 
         /// <summary> Returns the element at a specified index in a sequence as <c>Just</c> or <c>Nothing</c>
         /// if the index is out of range.</summary>
-        public static Maybe<TSource> ElementAtOrNothing<TSource>(this IEnumerable<TSource> source, int index) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+        public static Maybe<TSource> ElementAtOrNothing<TSource>(this IEnumerable<TSource> source, int index)
+        {
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNegative(nameof(index), index);
 
             if (index >= 0) {
                 if (source is IList<TSource> list) {
@@ -461,8 +470,8 @@ namespace SharpX.Extensions
         /// <summary>Immediately executes the given action on each element in the source sequence.</summary>
         public static Unit ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (action == null) throw new ArgumentNullException(nameof(action));
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(action), action);
 
             foreach (var element in source) {
                 action(element);
@@ -473,7 +482,7 @@ namespace SharpX.Extensions
         /// <summary>Return everything except first element and throws exception if empty.</summary>
         public static IEnumerable<T> Tail<T>(this IEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             return _(); IEnumerable<T> _()
             {
@@ -491,7 +500,7 @@ namespace SharpX.Extensions
         /// <summary>Return everything except first element without throwing exception if empty.</summary>
         public static IEnumerable<T> TailOrEmpty<T>(this IEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             return _(); IEnumerable<T> _()
             {
@@ -509,7 +518,7 @@ namespace SharpX.Extensions
         /// resulting sequence.</summary>
         public static IEnumerable<T[]> ChunkBySize<T>(this IEnumerable<T> source, int chunkSize)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
             if (chunkSize <= 0) throw new ArgumentException("The input must be positive.");
 
             return _(); IEnumerable<T[]> _()
@@ -539,7 +548,7 @@ namespace SharpX.Extensions
         /// index.</summary>
         public static (T[], T[]) SplitAt<T>(this IEnumerable<T> source, int index)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
             if (index < 0) throw new ArgumentException("The input must be non-negative.");
             if (source.Count() < index) throw new ArgumentException("The input sequence has an insufficient number of elements.");
 
@@ -553,7 +562,7 @@ namespace SharpX.Extensions
         /// <summary>Selects a random element.</summary>
         public static T Choice<T>(this IEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             var index = _random.Next(source.Count() - 1);
             return source.ElementAt(index);
@@ -563,8 +572,8 @@ namespace SharpX.Extensions
         /// elements.</summary>
         public static IEnumerable<T> Intersperse<T>(this IEnumerable<T> source, T element)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (element == null) throw new ArgumentNullException(nameof(element));
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(element), element);
 
             return _(); IEnumerable<T> _()
             {
@@ -596,16 +605,16 @@ namespace SharpX.Extensions
         public static IEnumerable<T> Materialize<T>(this IEnumerable<T> source) =>
             source switch
             {
-                null => throw new ArgumentNullException(nameof(source)),
+                null                        => throw new ArgumentNullException(nameof(source)),
                 MaterializedEnumerable<T> _ => source,
-                _ => new MaterializedEnumerable<T>(source),
+                _                           => new MaterializedEnumerable<T>(source),
             };
         #endregion
 
         /// <summary>Flattens a sequence by one level.</summary>
         public static IEnumerable<T> FlattenOnce<T>(this IEnumerable<IEnumerable<T>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.DisallowNull(nameof(source), source);
 
             return _(); IEnumerable<T> _()
             {
@@ -646,6 +655,6 @@ namespace SharpX.Extensions
                 throw errorSelector(-1, count);
             }
         }
-        #endregion        
+        #endregion
     }
 }
