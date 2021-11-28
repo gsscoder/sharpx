@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.5] - 2021-11-28
+
+- Inverted oreder of members in `ResultType`.
+
 ## [1.0.4] - 2021-11-28
 
 - Moved classes with extension methods to `SharpX.Extensions` namespace.
