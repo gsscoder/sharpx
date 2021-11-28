@@ -28,7 +28,7 @@ namespace SharpX
         /// <summary>Returns <c>Unit</c> after executing a delegate.</summary>
         public static Unit Do(Action action)
         {
-            if (action == null) throw new ArgumentNullException(nameof(action));
+            Guard.DisallowNull(nameof(action), action);
 
             action();
             return Default;
