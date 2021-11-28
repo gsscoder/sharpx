@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace SharpX
 {
-    public static class Contract
+    public static class Guard
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DisallowNull(string argumentName, object value) =>
