@@ -21,7 +21,7 @@ namespace SharpX
         /// <summary>Creates a Failure result with the given messages.</summary>
         public static Result<TSuccess, TMessage> FailWith(IEnumerable<TMessage> messages)
         {
-            if (messages == null) throw new ArgumentException(nameof(messages));
+            Guard.DisallowNull(nameof(messages), messages);
 
             return new Bad<TSuccess, TMessage>(messages);
         }
@@ -29,7 +29,7 @@ namespace SharpX
         /// <summary>Creates a Failure result with the given message.</summary>
         public static Result<TSuccess, TMessage> FailWith(TMessage message)
         {
-            if (message == null) throw new ArgumentException(nameof(message));
+            Guard.DisallowNull(nameof(message), message);
 
             return new Bad<TSuccess, TMessage>(new[] { message });
         }
@@ -37,13 +37,16 @@ namespace SharpX
         /// <summary>Creates a Success result with the given value.</summary>
         public static Result<TSuccess, TMessage> Succeed(TSuccess value)
         {
+            Guard.DisallowNull(nameof(value), value);
+
             return new Ok<TSuccess, TMessage>(value, Enumerable.Empty<TMessage>());
         }
 
         /// <summary>Creates a Success result with the given value and the given message.</summary>
         public static Result<TSuccess, TMessage> Succeed(TSuccess value, TMessage message)
         {
-            if (message == null) throw new ArgumentException(nameof(message));
+            Guard.DisallowNull(nameof(value), value);
+            Guard.DisallowNull(nameof(message), message);
 
             return new Ok<TSuccess, TMessage>(value, new[] { message });
         }
@@ -51,7 +54,8 @@ namespace SharpX
         /// <summary>Creates a Success result with the given value and the given messages.</summary>
         public static Result<TSuccess, TMessage> Succeed(TSuccess value, IEnumerable<TMessage> messages)
         {
-            if (messages == null) throw new ArgumentException(nameof(messages));
+            Guard.DisallowNull(nameof(value), value);
+            Guard.DisallowNull(nameof(messages), messages);
 
             return new Ok<TSuccess, TMessage>(value, messages);
         }
@@ -59,7 +63,7 @@ namespace SharpX
         /// <summary>Executes the given function on a given success or captures the failure.</summary>
         public static Result<TSuccess, Exception> Try(Func<TSuccess> func)
         {
-            if (func == null) throw new ArgumentException(nameof(func));
+            Guard.DisallowNull(nameof(func), func);
 
             try {
                 return new Ok<TSuccess, Exception>(
@@ -98,7 +102,8 @@ namespace SharpX
         public Ok(TSuccess success, IEnumerable<TMessage> messages)
             : base(ResultType.Ok)
         {
-            if (messages == null) throw new ArgumentNullException(nameof(messages));
+            Guard.DisallowNull(nameof(success), success);
+            Guard.DisallowNull(nameof(messages), messages);
 
            _success = success;
            _messages = messages;
@@ -117,7 +122,7 @@ namespace SharpX
         public Bad(IEnumerable<TMessage> messages)
             : base(ResultType.Bad)
         {
-            if (messages == null) throw new ArgumentException(nameof(messages));
+            Guard.DisallowNull(nameof(messages), messages);
 
             _messages = messages;
         }
@@ -142,7 +147,8 @@ namespace SharpX
         public static Result<TSuccess, TMessage> Warn<TSuccess, TMessage>(
             TMessage message, TSuccess value)
         {
-            if (message == null) throw new ArgumentException(nameof(message));
+            Guard.DisallowNull(nameof(message), message);
+            Guard.DisallowNull(nameof(value), value);
 
             return new Ok<TSuccess, TMessage>(value, new[] { message });
         }
@@ -151,7 +157,7 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Result<TSuccess, TMessage> Fail<TSuccess, TMessage>(TMessage message)
         {
-            if (message == null) throw new ArgumentException(nameof(message));
+            Guard.DisallowNull(nameof(message), message);
 
             return new Bad<TSuccess, TMessage>(new[] { message });
         }
@@ -160,7 +166,7 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Failed<TSuccess, TMessage>(Result<TSuccess, TMessage> result)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
+            Guard.DisallowNull(nameof(result), result);
 
             return result.Tag == ResultType.Bad;
         }
@@ -173,9 +179,9 @@ namespace SharpX
             Func<TSuccess, IEnumerable<TMessage>, TResult> successFunc,
             Func<IEnumerable<TMessage>, TResult> failureFunc)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            if (successFunc == null) throw new ArgumentException(nameof(successFunc));
-            if (failureFunc == null) throw new ArgumentException(nameof(failureFunc));
+            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(successFunc), successFunc);
+            Guard.DisallowNull(nameof(failureFunc), failureFunc);
 
             if (result is Ok<TSuccess, TMessage> ok) {
                 return successFunc(ok.Success, ok.Messages);
@@ -189,7 +195,7 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TSuccess ReturnOrFail<TSuccess, TMessage>(Result<TSuccess, TMessage> result)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
+            Guard.DisallowNull(nameof(result), result);
 
             return Either(result, (succ, _) => succ, msgs =>
                 throw new Exception(
@@ -204,8 +210,8 @@ namespace SharpX
             Result<TSuccess, TMessage> result,
             IEnumerable<TMessage> messages)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            if (messages == null) throw new ArgumentException(nameof(messages));
+            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(messages), messages);
 
             return Either<TSuccess, TMessage, Result<TSuccess, TMessage>>(result,
                 (succ, msgs) => new Ok<TSuccess, TMessage>(succ, messages.Concat(msgs)),
@@ -219,8 +225,8 @@ namespace SharpX
             Result<TValue, TMessage> result,
             Func<TValue, Result<TSuccess, TMessage>> func)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            if (func == null) throw new ArgumentException(nameof(func));
+            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(func), func);
 
             return Either<TValue, TMessage, Result<TSuccess, TMessage>>(result,
                 (succ, msgs) => MergeMessages(func(succ), msgs),
@@ -239,7 +245,8 @@ namespace SharpX
             Result<TValue, TMessage> result,
             Result<Func<TValue, TSuccess>, TMessage> wrappedFunction)
         {
-            if (wrappedFunction == null) throw new ArgumentException(nameof(wrappedFunction));
+            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(wrappedFunction), wrappedFunction);
 
             if (wrappedFunction.Tag == ResultType.Ok && result.Tag == ResultType.Ok) {
                 var ok1 = (Ok<Func<TValue, TSuccess>, TMessage>)wrappedFunction;
@@ -282,7 +289,7 @@ namespace SharpX
         public static Result<IEnumerable<TSuccess>, TMessage> Collect<TSuccess, TMessage>(
             IEnumerable<Result<TSuccess, TMessage>> results)
         {
-            if (results == null) throw new ArgumentNullException(nameof(results));
+            Guard.DisallowNull(nameof(results), results);
 
             return Lift(Enumerable.Reverse,
                 results.Aggregate<Result<TSuccess, TMessage>, Result<IEnumerable<TSuccess>, TMessage>, Result<IEnumerable<TSuccess>, TMessage>>(
@@ -321,7 +328,7 @@ namespace SharpX
         /// <summary>Builds a Maybe type instance from a Result one.</summary>
         public static Maybe<TSuccess> ToMaybe<TSuccess, TMessage>(this Result<TSuccess, TMessage> result)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
+            Guard.DisallowNull(nameof(result), result);
 
             return result.Tag == ResultType.Ok
                    ? Maybe.Just(((Ok<TSuccess, TMessage>)result).Success)
@@ -334,9 +341,9 @@ namespace SharpX
             Action<TSuccess, IEnumerable<TMessage>> ifSuccess,
             Action<IEnumerable<TMessage>> ifFailure)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            if (ifSuccess == null) throw new ArgumentException(nameof(ifSuccess));
-            if (ifFailure == null) throw new ArgumentException(nameof(ifFailure));
+            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(ifSuccess), ifSuccess);
+            Guard.DisallowNull(nameof(ifFailure), ifFailure);
 
             if (result is Ok<TSuccess, TMessage> ok) {
                 ifSuccess(ok.Success, ok.Messages);
@@ -370,7 +377,7 @@ namespace SharpX
         public static Result<IEnumerable<TSuccess>, TMessage> Flatten<TSuccess, TMessage>(
             this Result<IEnumerable<Result<TSuccess, TMessage>>, TMessage> result)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
+            Guard.DisallowNull(nameof(result), result);
 
             if (result.Tag == ResultType.Ok) {
                 var ok = (Ok<IEnumerable<Result<TSuccess, TMessage>>, TMessage>)result;
@@ -402,9 +409,9 @@ namespace SharpX
             Func<TSuccess, Result<TValue, TMessage>> func,
             Func<TSuccess, TValue, TResult> mapperFunc)
         {
-            if (result == null) throw new ArgumentNullException(nameof(func));
-            if (func == null) throw new ArgumentException(nameof(func));
-            if (mapperFunc == null) throw new ArgumentException(nameof(mapperFunc));
+            Guard.DisallowNull(nameof(result), result);
+            Guard.DisallowNull(nameof(func), func);
+            Guard.DisallowNull(nameof(mapperFunc), mapperFunc);
 
             Func<TSuccess, Func<TValue, TResult>> curriedMapper = suc => val => mapperFunc(suc, val);
             Func<
@@ -425,7 +432,7 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<TMessage> FailedWith<TSuccess, TMessage>(this Result<TSuccess, TMessage> result)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
+            Guard.DisallowNull(nameof(result), result);
 
             if (result.Tag == ResultType.Ok) {
                 var ok = (Ok<TSuccess, TMessage>)result;
@@ -442,7 +449,7 @@ namespace SharpX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TSuccess SucceededWith<TSuccess, TMessage>(this Result<TSuccess, TMessage> result)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
+            Guard.DisallowNull(nameof(result), result);
 
             if (result.Tag == ResultType.Ok) {
                 var ok = (Ok<TSuccess, TMessage>)result;
@@ -458,7 +465,7 @@ namespace SharpX
         /// <summary>Returns messages in case of success, otherwise an empty sequence.</summary>
         public static IEnumerable<TMessage> SuccessMessages<TSuccess, TMessage>(this Result<TSuccess, TMessage> result)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
+            Guard.DisallowNull(nameof(result), result);
 
             return result.Tag == ResultType.Ok
                    ? ((Ok<TSuccess, TMessage>)result).Messages
