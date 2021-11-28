@@ -42,7 +42,8 @@ namespace Outcomes
         {
             values.ForEach(value =>
             {
-                if (value == null) return;  // Skip null values
+                if (value == null) return; // Skip null values
+                if (value.Trim().Length == 0) return; // Skip white spaces values
 
                 var outcome = Outcome.Failure(value);
 
@@ -95,6 +96,7 @@ namespace Outcomes
             values.ForEach(value =>
             {
                 if (value == null) return;  // Skip null values
+                if (value.Trim().Length == 0) return; // Skip white spaces values
 
                 var result1 = Outcome.Failure(
                     value, new Exception("here a trouble"));
@@ -130,7 +132,8 @@ namespace Outcomes
         {
             values.ForEach(value =>
             {
-                if (value == null) return;  // Skip null values
+                if (value == null) return; // Skip null values
+                if (value.Trim().Length == 0) return; // Skip white spaces values
 
                 var result1 = Outcome.Failure(
                     value, new Exception(value));
@@ -158,7 +161,8 @@ namespace Outcomes
         {
             values.ForEach(value =>
             {
-                if (value == null) return;  // Skip null values
+                if (value == null) return; // Skip null values
+                if (value.Trim().Length == 0) return; // Skip white spaces values
 
                 var result = Outcome.Failure(value, new Exception("here a trouble"));
 
@@ -174,7 +178,8 @@ namespace Outcomes
         {
             values.ForEach(value =>
             {
-                if (value == null) return;  // Skip null values
+                if (value == null) return; // Skip null values
+                if (value.Trim().Length == 0) return; // Skip white spaces values
 
                 var result = Outcome.Failure(value);
 
