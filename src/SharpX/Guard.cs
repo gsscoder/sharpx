@@ -12,7 +12,6 @@ namespace SharpX
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DisallowDefault<T>(string argumentName, T value)
-            where T : struct
         {
             if (value.Equals(default(T))) throw new ArgumentNullException(argumentName, $"{argumentName} cannot be default.");
         }
