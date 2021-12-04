@@ -31,12 +31,11 @@ namespace SharpX
         public override bool Equals(object other)
         {
             if (other is null) return false;
+            if (other is not Error error) return false;
 
-            if (other.GetType() != typeof(Error)) return false;
+            var casted = (Error)other;
 
-            var otherError = (Error)other;
-            return otherError.Message.Equals(Message) &&
-                   _comparer.Value.Equals(otherError._exception, _exception);
+            return Equals(casted);
         }
 
         public bool Equals(Error other) =>
