@@ -17,7 +17,7 @@ namespace SharpX
     /// <summary>The <c>Maybe</c> type models an optional value. A value of type <c>Maybe</c> either
     /// contains a value (represented as <c>Just</c> a), or it is empty (represented as
     /// <c>Nothing</c>).</summary>
-    public  struct Maybe<T> : IEquatable<Maybe<T>>
+    public struct Maybe<T> : IEquatable<Maybe<T>>
     {
 #if DEBUG
         internal
@@ -177,7 +177,23 @@ namespace SharpX
     /// <summary>Provides convenience extension methods for <c>Maybe</c>.</summary>
     public static class MaybeExtensions
     {
-        #region Alternative match extensions
+        #region Match extensions
+        /// <summary>Returns <c>true</c> if it is in form of <c>Nothing</c>.</summary>
+        public static bool IsNothing<T>(this Maybe<T> maybe)
+        {
+            Guard.DisallowNull(nameof(maybe), maybe);
+
+            return maybe.Tag == MaybeType.Nothing;
+        }
+
+        /// <summary>Returns <c>true</c> if it is in form of <c>Just</c>.</summary>
+        public static bool IsJust<T>(this Maybe<T> maybe)
+        {
+            Guard.DisallowNull(nameof(maybe), maybe);
+
+            return maybe.Tag == MaybeType.Just;
+        }
+
         /// <summary>Provides pattern matching using <c>System.Func</c> delegates.</summary>
         public static Unit Match<T>(this Maybe<T> maybe,
             Func<T, Unit> onJust, Func<Unit> onNothing)
@@ -317,22 +333,6 @@ namespace SharpX
             };
         }
         #endregion
-
-        /// <summary>Returns <c>true</c> if it is in form of <c>Nothing</c>.</summary>
-        public static bool IsNothing<T>(this Maybe<T> maybe)
-        {
-            Guard.DisallowNull(nameof(maybe), maybe);
-
-            return maybe.Tag == MaybeType.Nothing;
-        }
-
-        /// <summary>Returns <c>true</c> if it is in form of <c>Just</c>.</summary>
-        public static bool IsJust<T>(this Maybe<T> maybe)
-        {
-            Guard.DisallowNull(nameof(maybe), maybe);
-
-            return maybe.Tag == MaybeType.Just;
-        }
 
         /// <summary>Extracts the element out of <c>Just</c> and returns a default value (or <c>@default</c>
         /// when given) if it is in form of <c>Nothing</c>.</summary>
