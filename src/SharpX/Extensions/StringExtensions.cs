@@ -26,12 +26,12 @@ namespace SharpX.Extensions
         public static bool IsWhiteSpace(this string value) => Strings.IsWhiteSpace(value);
 
         /// <summary>Returns a copy of this string with first letter converted to uppercase.</summary>
-        public static string ToUpperFirstLetter(this string value) =>
-            Strings.ToUpperFirstLetter(value);
+        public static string ToUpperFirst(this string value) =>
+            Strings.ToUpperFirst(value);
 
         /// <summary>Returns a copy of this string with first letter converted to lowercase.</summary>
-        public static string ToLowerFirstLetter(this string value) =>
-            Strings.ToLowerFirstLetter(value);
+        public static string ToLowerFirst(this string value) =>
+            Strings.ToLowerFirst(value);
 
         /// <summary>Replicates a string for a given number of times using a seperator.</summary>
         public static string Replicate(this string value, int count, string separator = "") =>
