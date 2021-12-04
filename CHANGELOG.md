@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `Strings::IsWhiteSpace` as `IsWhitespace`.
 - Added `MaybeExtensions::ToJust` method.
 - Updated `Maybe::Equals(object)` implementation.
+- Updated `Guard::DisallowDefault`.
 
 ## [1.0.5] - 2021-11-28
 
