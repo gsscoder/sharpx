@@ -33,6 +33,19 @@ namespace Outcomes
             outcome.Tag.Should().Be(MaybeType.Nothing);
         }
 
+        // [Theory]
+        // [InlineData(default(object))]
+        // [InlineData(default(byte))]
+        // [InlineData(default(int))]
+        // [InlineData(default(double))]
+        // [InlineData(default(string))]
+        // public void Should_throw_exception_when_building_a_Just_from_default(object value)
+        // {
+        //     Action action = () => Maybe.Just(value);
+            
+        //     action.Should().Throw<ArgumentException>();
+        // }
+
         [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
         public void Shoud_return_proper_maybe_with_a_value_type(int value)
         {
