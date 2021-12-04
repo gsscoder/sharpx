@@ -31,7 +31,8 @@ namespace SharpX
             Guard.DisallowNull(nameof(action), action);
 
             action();
-            return Default;
+
+            return @default;
         }
     }
 }
