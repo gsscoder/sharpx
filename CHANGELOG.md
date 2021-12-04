@@ -8,8 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Moved `ToMaybe` `FirstOrNothing`, `LastOrNothing`, `SingleOrNothing`, `ElementAtOrNothing` to `MaybeExtensions` in root namespace.
-- Updated `ToUpperFirstLetter` and `ToLowerFirstLetter` and renamed as `ToUpperFirst` and `ToLowerFirst`.
-- Renamed `IsWhiteSpace` as `IsWhitespace`.
+- Updated `ToUpperFirstLetter` and `ToLowerFirstLetter` and renamed as `ToUpperFirst` and `ToLowerFirst` (`Strings` class).
+- Renamed `Strings::IsWhiteSpace` as `IsWhitespace`.
+- Added `MaybeExtensions::ToJust` method.
 
 ## [1.0.5] - 2021-11-28
 
