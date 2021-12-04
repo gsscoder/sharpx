@@ -37,19 +37,11 @@ namespace SharpX
         public override bool Equals(object other)
         {
             if (other is null) return false;
+            if (other is not Maybe<T> maybe) return false;
 
-            var otherType = other.GetType();
-            if (otherType != GetType()) return false;
+            var casted = (Maybe<T>)other;
 
-            var otherTag = (MaybeType)otherType.GetProperty(
-                "Tag", BindingFlags.Public | BindingFlags.Instance).GetValue(other);
-            if (otherTag != Tag) return false;
-
-            if (otherTag == MaybeType.Nothing && Tag == MaybeType.Nothing)
-                return true;
-
-            var otherField = otherType.GetField("_value", BindingFlags.NonPublic | BindingFlags.Instance);
-            return otherField.GetValue(other).Equals(_value);
+            return Equals(casted);
         }
 
         /// <summary>Determines whether this instance and another specified <c>Maybe</c> object have the same value.</summary>
