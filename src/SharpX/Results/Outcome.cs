@@ -94,17 +94,11 @@ namespace SharpX
         public override bool Equals(object other)
         {
             if (other is null) return false;
-            var otherType = other.GetType();
+            if (other is not Outcome outcome) return false;
 
-            if (otherType != GetType()) return false;
+            var casted = (Outcome)other;
 
-            var otherTag = (OutcomeType)otherType.GetProperty(
-                "Tag", BindingFlags.Public | BindingFlags.Instance).GetValue(other);
-            if (otherTag != Tag) return false;
-
-            if (otherTag == OutcomeType.Success && Tag == OutcomeType.Success) return true;
-            var otherField = otherType.GetField("_error", BindingFlags.NonPublic | BindingFlags.Instance);
-            return otherField.GetValue(other).Equals(_error);
+            return Equals(casted);
         }
 
         public bool Equals(Outcome other) =>
