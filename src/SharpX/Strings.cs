@@ -89,20 +89,24 @@ namespace SharpX
 
         /// <summary>Returns a copy of this string with first letter converted to uppercase.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string ToUpperFirstLetter(string value)
+        public static string ToUpperFirst(string value)
         {
             Guard.DisallowNull(nameof(value), value);
-            Guard.DisallowEmptyWhiteSpace(nameof(value), value);
+            
+            if (IsWhiteSpace(value)) return value;
+            if (value.Length == 1) return value.ToUpper();
 
             return $"{char.ToUpper(value[0])}{value.Substring(1)}";
         }
 
         /// <summary>Returns a copy of this string with first letter converted to lowercase.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string ToLowerFirstLetter(string value)
+        public static string ToLowerFirst(string value)
         {
             Guard.DisallowNull(nameof(value), value);
-            Guard.DisallowEmptyWhiteSpace(nameof(value), value);
+
+            if (IsWhiteSpace(value)) return value;
+            if (value.Length == 1) return value.ToLower();
 
             return $"{char.ToLower(value[0])}{value.Substring(1)}";
         }
