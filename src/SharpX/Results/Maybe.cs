@@ -95,7 +95,12 @@ namespace SharpX
         public static Maybe<T> Nothing<T>() => new Maybe<T>();
 
         /// <summary>Builds the case when <c>Maybe</c> contains a value.</summary>
-        public static Maybe<T> Just<T>(T value) => new Maybe<T>(value);
+        public static Maybe<T> Just<T>(T value)
+        {
+            Guard.DisallowNull(nameof(value), value);
+            
+            return new Maybe<T>(value);
+        }
         #endregion
 
         #region Monad
