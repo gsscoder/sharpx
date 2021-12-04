@@ -25,7 +25,7 @@ $ dotnet add package SharpX --version 1.1.0
 
 ## Overview
 
-All types are available in root namespace, while extension methods are in `SharpX.Extensions`.
+All types are available in root namespace, while extension methods (except ones very specific) are in `SharpX.Extensions`.
 
 ## [Maybe]
 
@@ -43,9 +43,9 @@ value.Match(
 - Supports LINQ syntax:
 
 ```csharp
-var result1 = Maybe.Just(30);
-var result2 = Maybe.Just(10);
-var result3 = Maybe.Just(2);
+var result1 = (30).ToJust();
+var result2 = (10).ToJust();
+var result3 = (2).ToJust();
 
 var sum = from r1 in result1
           from r2 in result2
@@ -55,6 +55,13 @@ var sum = from r1 in result1
           select temp * r3;
 
 var value = sum.FromJust(); // outcome: 40
+```
+
+- Features sequence extensions:
+
+```csharp
+var maybeFirst = new int[] {0, 1, 2}.FirstOrNothing(x => x == 1)
+// outcome: Just(1)
 ```
 
 ## Either
@@ -138,7 +145,7 @@ A thread safe random number generator based on [this code](https://docs.microsof
 ```csharp
 Random random = new CryptoRandom();
 
-var int = randome.Next(9); // outcome: 3
+var @int = randome.Next(9); // outcome: 3
 ```
 
 ## FSharpResultExtensions
@@ -177,12 +184,11 @@ Console.WriteLine(
 
 - Most useful extension methods from [MoreLINQ](https://github.com/morelinq/MoreLINQ).
 - Some of these reimplemnted (e.g. `Choose` using `Maybe`):
-- **LINQ** `...OrDefault` implemented with `Maybe` type as return value.
 
 ```csharp
 var numbers = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 var evens = numbers.Choose(x => x % 2 == 0
-                                ? Maybe.Just(x)
+                                ? x.ToJust()
                                 : Maybe.Nothing<int>());
 // outcome: {0, 2, 4, 6, 8}
 ```
@@ -196,8 +202,6 @@ var element = sequence.Choice();
 // will choose a random element
 var sequence = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ChunkBySize(3);
 // outcome: { [0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10] }
-var maybeFirst = new int[] {0, 1, 2}.FirstOrNothing(x => x == 1)
-// outcome: Just(1)
 ```
 
 ## Icon
