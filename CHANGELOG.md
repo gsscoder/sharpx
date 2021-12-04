@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- `ToMaybe` `FirstOrNothing`, `LastOrNothing`, `SingleOrNothing`, `ElementAtOrNothing` moved to `MaybeExtensions` in root namespace.
+
 ## [1.0.5] - 2021-11-28
 
 - Inverted oreder of members in `ResultType`.
