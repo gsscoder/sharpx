@@ -334,6 +334,9 @@ namespace SharpX
         }
         #endregion
 
+        /// <summary>Returns a <c>Just</c> of the given value.</summary>
+        public static Maybe<T> ToJust<T>(this T value) => Maybe.Just(value);
+
         /// <summary>Extracts the element out of <c>Just</c> and returns a default value (or <c>@default</c>
         /// when given) if it is in form of <c>Nothing</c>.</summary>
         public static T FromJust<T>(this Maybe<T> maybe, T @default = default)
