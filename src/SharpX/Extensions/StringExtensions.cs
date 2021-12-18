@@ -23,7 +23,7 @@ namespace SharpX.Extensions
         public static bool IsAlphanumeric(this string value) => Strings.IsAlphanumeric(value);
 
         /// <summary>Determines if a string is contains any kind of white spaces.</summary>
-        public static bool IsWhitepace(this string value) => Strings.IsWhitespace(value);
+        public static bool IsWhitepace(this string value) => Strings.ContainsWhitespace(value);
 
         /// <summary>Returns a copy of this string with first letter converted to uppercase.</summary>
         public static string ToUpperFirst(this string value) =>
