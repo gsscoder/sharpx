@@ -75,7 +75,7 @@ namespace SharpX
 
         /// <summary>Determines if a string is contains any kind of white spaces.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsWhitespace(string value)
+        public static bool ContainsWhitespace(string value)
         {
             Guard.DisallowNull(nameof(value), value);
 
@@ -93,7 +93,7 @@ namespace SharpX
         {
             Guard.DisallowNull(nameof(value), value);
             
-            if (IsWhitespace(value)) return value;
+            if (ContainsWhitespace(value)) return value;
             if (value.Length == 1) return value.ToUpper();
 
             return $"{char.ToUpper(value[0])}{value.Substring(1)}";
@@ -105,7 +105,7 @@ namespace SharpX
         {
             Guard.DisallowNull(nameof(value), value);
 
-            if (IsWhitespace(value)) return value;
+            if (ContainsWhitespace(value)) return value;
             if (value.Length == 1) return value.ToLower();
 
             return $"{char.ToLower(value[0])}{value.Substring(1)}";
