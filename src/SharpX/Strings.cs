@@ -33,6 +33,11 @@ namespace SharpX
             return builder.ToString(0, builder.Length - separator.Length);
         }
 
+        /// <summary>Determines if a character is special op not.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsSpecialChar(char value) =>
+            !char.IsLetterOrDigit(value) && !char.IsWhiteSpace(value);
+
         /// <summary>Generates a random string of given length.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Generate(int length)
@@ -81,6 +86,22 @@ namespace SharpX
 
             foreach (var @char in value.ToCharArray()) {
                 if (char.IsWhiteSpace(@char)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>Determines if a string contains any special character.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool ContainsSpecialChar(string value)
+        {
+            Guard.DisallowNull(nameof(value), value);
+
+            if (value.Trim().Length == 0) return false;
+
+            foreach (var @char in value.ToCharArray()) {
+                if (IsSpecialChar(@char)) {
                     return true;
                 }
             }

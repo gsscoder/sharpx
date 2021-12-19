@@ -49,5 +49,35 @@ namespace Outcomes
 
             _strings.Add(outcome);
         }
+
+        [Theory]
+        [InlineData("foobar/baz")]
+        [InlineData("foo#?bar/baz")]
+        [InlineData("fo!ob_ar|baz")]
+        [InlineData("foob?ar^baz")]
+        [InlineData("foo@bar_baz")]
+        [InlineData("foobar[b]]az")]
+        [InlineData("f00barbaz_")]
+        public void Should_detect_strings_with_special_characters(string value)
+        {
+            var outcome = Strings.ContainsSpecialChar(value);
+
+            outcome.Should().BeTrue();
+        }
+
+        [Theory]
+        [InlineData("foobarbaz")]
+        [InlineData("foo bar baz")]
+        [InlineData("fòòbàrbàz")]
+        [InlineData(" \n\r\t" )]
+        [InlineData("f00b4rb4z")]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void Should_detect_strings_without_special_characters(string value)
+        {
+            var outcome = Strings.ContainsSpecialChar(value);
+
+            outcome.Should().BeFalse();
+        }        
     }
 }
