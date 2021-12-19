@@ -16,6 +16,9 @@ namespace SharpX.Extensions
         public static string Replicate(this char value, int count, string separator = "") =>
             Strings.ReplicateChar(value, count, separator);
 
+        /// <summary>Determines if a character is special op not.</summary>
+        public static bool IsSpecialChar(this char value) => Strings.IsSpecialChar(value);
+
         /// <summary>Determines if a string is composed only by letter characters.</summary>
         public static bool IsAlpha(this string value) => Strings.IsAlpha(value);
 

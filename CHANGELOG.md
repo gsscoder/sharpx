@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Added `IsSpecialChar` method to `Strings` and `StringsExtensions` classes.
+- Added `ContainsSpecialChar` method to `Strings` and `StringsExtensions` classes.
+
 ## [1.1.1] - 2021-12-18
 
 - Renamed `IsWhitespace` to a more semantically correct `ContainsWhitespace`.
