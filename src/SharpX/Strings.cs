@@ -94,14 +94,14 @@ namespace SharpX
 
         /// <summary>Determines if a string contains any special character.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool ContainsSpecialChar(string value)
+        public static bool ContainsSpecialChar(string value, params char[] excluded)
         {
             Guard.DisallowNull(nameof(value), value);
 
             if (value.Trim().Length == 0) return false;
 
             foreach (var @char in value.ToCharArray()) {
-                if (IsSpecialChar(@char)) {
+                if (IsSpecialChar(@char) && !excluded.Contains(@char)) {
                     return true;
                 }
             }
