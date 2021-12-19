@@ -51,6 +51,20 @@ namespace Outcomes
         }
 
         [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("  ")]
+        [InlineData(" \n ")]
+        [InlineData(" \r ")]
+        [InlineData(" \t ")]
+        public void Should_not_detect_empty_string_or_whitespace_as_special_character(string value)
+        {
+            var outcome = Strings.ContainsSpecialChar(value);
+
+            outcome.Should().BeFalse();
+        }
+
+        [Theory]
         [InlineData("foobar/baz")]
         [InlineData("foo#?bar/baz")]
         [InlineData("fo!ob_ar|baz")]
@@ -69,15 +83,25 @@ namespace Outcomes
         [InlineData("foobarbaz")]
         [InlineData("foo bar baz")]
         [InlineData("fòòbàrbàz")]
-        [InlineData(" \n\r\t" )]
         [InlineData("f00b4rb4z")]
-        [InlineData("")]
-        [InlineData(" ")]
         public void Should_detect_strings_without_special_characters(string value)
         {
             var outcome = Strings.ContainsSpecialChar(value);
 
             outcome.Should().BeFalse();
-        }        
+        }
+
+        [Theory]
+        [InlineData("foo_bar_baz")]
+        [InlineData("foo bar baz")]
+        [InlineData("fòòbàrbàz")]
+        [InlineData(" \n\r\t" )]
+        [InlineData("f00-b4r-b4z")]
+        public void Should_detect_strings_without_special_characters_except_excluded(string value)
+        {
+            var outcome = Strings.ContainsSpecialChar(value, '_', '-');
+
+            outcome.Should().BeFalse();
+        }
     }
 }
