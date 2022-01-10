@@ -476,6 +476,9 @@ namespace SharpX.Extensions
             }
         }
 
+        /// <summary>Converts a value to an enumerable.</summary>
+        public static IEnumerable<T> ToEnumerable<T>(this T value) => Primitives.ToEnumerable(value);        
+
         #region Internal
         static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source,
             int count, Func<int, int, Exception> errorSelector)
