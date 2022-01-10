@@ -11,10 +11,7 @@ namespace SharpX
         {
             Guard.DisallowNull(nameof(value), value);
 
-            return _(); IEnumerable<T> _()
-            {
-                yield return value;
-            }
+            return new T[] { value };
         }
 
         /// <summary>Formats an exception to human readable text.</summary>
