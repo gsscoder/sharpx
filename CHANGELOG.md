@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added `Primitives::ToEnumerable` method (and relative extension method).
 - Added non-extension version of `ExceptionExtensions::Format` to `Primitives` class.
+- Moved `ToEnumerable` method to `EnumerableExtensions`.
 
 ## [1.1.2] - 2021-12-19
 
