@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SharpX.Extensions
 {
@@ -328,6 +329,18 @@ namespace SharpX.Extensions
             }
             return Unit.Default;
         }
+
+        /// <summary>Immediately executes the given action on each element in the source sequence.</summary>
+        public static Task<Unit> ForEachAsync<T>(this IEnumerable<T> source, Func<T, Task> func)
+        {
+            Guard.DisallowNull(nameof(source), source);
+            Guard.DisallowNull(nameof(func), func);
+
+            foreach (var element in source) {
+                func(element).Wait();
+            }
+            return Task.FromResult(Unit.Default);
+        }        
 
         /// <summary>Return everything except first element and throws exception if empty.</summary>
         public static IEnumerable<T> Tail<T>(this IEnumerable<T> source)

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added non-extension version of `ExceptionExtensions::Format` to `Primitives` class.
 - Moved `ToEnumerable` method to `EnumerableExtensions`.
 - Added `Unit::DoAsync` method.
+- Added `EnumerableExtensions::ForEachAsync` method.
 
 ## [1.1.2] - 2021-12-19
 
