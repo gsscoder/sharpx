@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace SharpX
 {
@@ -33,6 +34,16 @@ namespace SharpX
             action();
 
             return @default;
+        }
+
+        /// <summary>Returns <c>Unit</c> after executing an async delegate.</summary
+        public static Task<Unit> DoAsync(Func<Task> func)
+        {
+            Guard.DisallowNull(nameof(func), func);
+
+            func().Wait();
+
+            return Task.FromResult(@default);
         }
     }
 }
