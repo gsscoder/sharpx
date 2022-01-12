@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using FluentAssertions;
 using SharpX;
 using Xunit;
@@ -38,5 +39,19 @@ namespace Outcomes
             evidence.Should().Be(1);
             outcome.Should().Be(Unit.Default);
         }
+
+        [Fact]
+        public async Task Do_executes_an_async_delegate_and_returns_Unit_value()
+        {
+            var evidence = 0;
+
+            var outcome = await Unit.DoAsync(() => {
+                evidence++;
+                return Task.CompletedTask;
+            });
+
+            evidence.Should().Be(1);
+            outcome.Should().Be(Unit.Default);
+        }        
     }
 }
