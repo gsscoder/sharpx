@@ -78,6 +78,16 @@ namespace SharpX
             return true;
         }
 
+        /// <summary>Determines if a string is empty or composed only by white spaces.</summary>
+        public static bool IsEmptyWhitespace(string value)
+        {
+            Guard.DisallowNull(nameof(value), value);
+
+            if (value.Length == 0) return true;
+
+            return value.All(char.IsWhiteSpace);
+        }
+
         /// <summary>Determines if a string is contains any kind of white spaces.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool ContainsWhitespace(string value)
