@@ -123,7 +123,7 @@ namespace SharpX
         public static Outcome Failure(string error)
         {
             Guard.DisallowNull(nameof(error), error);
-            Guard.DisallowEmptyWhiteSpace(nameof(error), error);
+            Guard.DisallowEmptyWhitespace(nameof(error), error);
 
             return new Outcome(new Error(error, null));
         }
@@ -131,7 +131,7 @@ namespace SharpX
         public static Outcome Failure(string error, Exception exception)
         {
             Guard.DisallowNull(nameof(error), error);
-            Guard.DisallowEmptyWhiteSpace(nameof(error), error);
+            Guard.DisallowEmptyWhitespace(nameof(error), error);
             Guard.DisallowNull(nameof(exception), exception);
 
             return new Outcome(new Error(error, exception));

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Added `Strings::IsEmptyWhitespace` method (and relative extension method).
+- Update `WhiteSpace` to `Whitespace` in Guard class.
 
 ## [1.1.5] - 2022-16-01
 
