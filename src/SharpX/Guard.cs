@@ -17,21 +17,21 @@ namespace SharpX
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void DisallowWhiteSpace(string argumentName, string value)
+        public static void DisallowWhitespace(string argumentName, string value)
         {
             if (value.Any(c => char.IsWhiteSpace(c))) throw new ArgumentException(
                 $"{argumentName} cannot be made of or contains only white spaces.", argumentName);
         }    
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void DisallowEmptyWhiteSpace(string argumentName, string value)
+        public static void DisallowEmptyWhitespace(string argumentName, string value)
         {
             if (value.Trim().Length == 0) throw new ArgumentException(
                 $"{argumentName} cannot be empty or contains only white spaces.", argumentName);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void DisallowAnyEmptyWhiteSpace(string argumentName, string[] value)
+        public static void DisallowAnyEmptyWhitespace(string argumentName, string[] value)
         {
             if (value.Any(s => s.Trim().Length == 0)) throw new ArgumentException(
                 $"{argumentName} items cannot be empty or contains only white spaces.", argumentName);
