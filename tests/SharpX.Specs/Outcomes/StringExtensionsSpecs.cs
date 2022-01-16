@@ -44,7 +44,7 @@ namespace Outcomes
         [InlineData("foo\tbar", true)]
         public void Should_detect_whitespace_characters(string value, bool expected)
         {
-            var outcome = value.IsWhitepace();
+            var outcome = value.ContainsWhitespace();
             
             outcome.Should().Be(expected);
         }
