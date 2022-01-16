@@ -103,5 +103,19 @@ namespace Outcomes
 
             outcome.Should().BeFalse();
         }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("\t")]
+        [InlineData("\r")]
+        [InlineData("\n")]
+        [InlineData("\t \r \n")]
+        public void Should_detect_empty_or_whitespace_string(string value)
+        {
+            var outcome = Strings.IsEmptyWhitespace(value);
+
+            outcome.Should().BeTrue();
+        }
     }
 }
