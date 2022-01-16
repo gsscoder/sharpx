@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed name of `StringExtensions::IsWhitespace` to `ContainsWhitespace`.
+
 ## [1.1.4] - 2021-12-19
 
 - Added `Primitives::ToEnumerable` method (and relative extension method).
