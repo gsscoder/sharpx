@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using FsCheck;
 using FsCheck.Xunit;
@@ -48,6 +49,39 @@ namespace Outcomes
             _strings.Should().NotContain(outcome);
 
             _strings.Add(outcome);
+        }
+
+        [Fact]
+        public void Trying_to_set_allow_quotes_with_disallowed_special_chars_raises_ArgumentException()
+        {
+            Action action = () => Strings.Generate(1, new GenerateOptions()
+            {
+                AllowSpecialChars = false,
+                AllowQuoteChars = true
+            });
+
+            action.Should().ThrowExactly<ArgumentException>()
+                .WithMessage("Cannot allow quote chars when special chars are disallowed. (Parameter 'options')");
+        }
+
+        [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+        public void Should_generate_a_random_string_of_given_length_with_special_chars(int value)
+        {
+            var outcome = Strings.Generate(value + 10,
+                new GenerateOptions { AllowSpecialChars = true, AllowQuoteChars = true });
+
+            outcome.Should().NotBeNull().And.HaveLength(value + 10);
+            outcome.Any(Strings.IsSpecialChar).Should().BeTrue();
+        }
+
+        [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+        public void Should_generate_a_random_string_of_given_length_with_special_chars_no_quotes(int value)
+        {
+            var outcome = Strings.Generate(value + 10,
+                new GenerateOptions { AllowSpecialChars = true, AllowQuoteChars = false });
+
+            outcome.Should().NotBeNull().And.HaveLength(value + 10);
+            outcome.Any(c => c == '"' || c == '\'' || c == '`' || c == '¨').Should().BeFalse();
         }
 
         [Theory]
