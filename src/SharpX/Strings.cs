@@ -9,10 +9,9 @@ namespace SharpX
 {
     public static class Strings
     {
-        const string _chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        static char[] _mangleChars =
-            {'!', '"', '£', '$', '%', '&', '/', '(', ')', '=', '?', '^', '[', ']', '*', '@', '°',
-             '#', '§', ',', ';', '.', ':', '-', '_'};
+        const string _alpahNumChars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const string _specialChars = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~¡¢£¤¥¦§¨©«¬®¯°±²³¶·¹»¼½¾¿÷";
+
         static readonly Random _random = new CryptoRandom();
         static Regex _stripTagRegEx = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
 
@@ -46,7 +45,7 @@ namespace SharpX
 
             if (length == 0) return string.Empty;
 
-            return new string((from c in Enumerable.Repeat(_chars, length)
+            return new string((from c in Enumerable.Repeat(_alpahNumChars, length)
                                select c[_random.Next(c.Length)]).ToArray());
         }
 
@@ -218,7 +217,7 @@ namespace SharpX
                 mangled.Append(value[i]);
                 if (mutations.Contains(i)) {
                     mangled.Append(ReplicateChar(
-                        _mangleChars[_random.Next(_mangleChars.Length - 1)],
+                        _specialChars[_random.Next(_specialChars.Length - 1)],
                         maxLength, string.Empty));
                     
                 }
