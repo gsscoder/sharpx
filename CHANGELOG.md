@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `Strings::IsEmptyWhitespace` method (and relative extension method).
 - Updated `WhiteSpace` to `Whitespace` in `Guard` class.
 - Updated `Strings::Mangle` to use all special characters.
+- Allowed `Strings::Generate` to customization options.
 
 ## [1.1.5] - 2022-16-01
 
