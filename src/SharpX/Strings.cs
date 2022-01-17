@@ -7,10 +7,18 @@ using System.Text.RegularExpressions;
 
 namespace SharpX
 {
+    public sealed class GenerateOptions
+    {
+        public bool AllowSpecialChars { get; set; }
+
+        public bool AllowQuoteChars { get; set; }
+    }
+
     public static class Strings
     {
         const string _alpahNumChars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const string _specialChars = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~¡¢£¤¥¦§¨©«¬®¯°±²³¶·¹»¼½¾¿÷";
+        const string _specialCharsNoQuotes = "!#$%&()*+,-./:;<=>?@[\\]^_{|}~¡¢£¤¥¦§©«¬®¯°±²³¶·¹»¼½¾¿÷";
 
         static readonly Random _random = new CryptoRandom();
         static Regex _stripTagRegEx = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
@@ -39,13 +47,20 @@ namespace SharpX
 
         /// <summary>Generates a random string of given length.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Generate(int length)
+        public static string Generate(int length, GenerateOptions options = null)
         {
             Guard.DisallowNegative(nameof(length), length);
+            if (options != null && !options.AllowSpecialChars && options.AllowQuoteChars)
+                throw new ArgumentException("Cannot allow quote chars when special chars are disallowed.", nameof(options));
 
             if (length == 0) return string.Empty;
 
-            return new string((from c in Enumerable.Repeat(_alpahNumChars, length)
+            var prefs = options ?? new GenerateOptions();
+            var chars = prefs.AllowSpecialChars
+                ? (prefs.AllowQuoteChars ? _specialChars : _specialCharsNoQuotes)
+                : _alpahNumChars;
+
+            return new string((from c in Enumerable.Repeat(chars, length)
                                select c[_random.Next(c.Length)]).ToArray());
         }
 
