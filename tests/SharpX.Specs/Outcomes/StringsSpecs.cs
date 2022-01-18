@@ -84,6 +84,17 @@ namespace Outcomes
             outcome.Any(c => c == '"' || c == '\'' || c == '`' || c == '¨').Should().BeFalse();
         }
 
+        [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+        public void Should_generate_a_random_string_of_given_length_with_prefix(int value)
+        {
+            const string prefix = "prfx_";
+
+            var outcome = Strings.Generate(value, null, prefix);
+
+            outcome.Should().NotBeNull().And.HaveLength(value + prefix.Length);
+            outcome.Should().StartWith(prefix);
+        }
+
         [Theory]
         [InlineData("")]
         [InlineData(" ")]
