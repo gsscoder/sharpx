@@ -47,9 +47,11 @@ namespace SharpX
 
         /// <summary>Generates a random string of given length.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Generate(int length, GenerateOptions options = null)
+        public static string Generate(int length, GenerateOptions options = null, string prefix = "")
         {
             Guard.DisallowNegative(nameof(length), length);
+            Guard.DisallowNull(nameof(prefix), prefix);
+            Guard.DisallowEmptyWhitespace(nameof(prefix), prefix);
             if (options != null && !options.AllowSpecialChars && options.AllowQuoteChars)
                 throw new ArgumentException("Cannot allow quote chars when special chars are disallowed.", nameof(options));
 
@@ -60,8 +62,9 @@ namespace SharpX
                 ? (prefs.AllowQuoteChars ? _specialChars : _specialCharsNoQuotes)
                 : _alpahNumChars;
 
-            return new string((from c in Enumerable.Repeat(chars, length)
-                               select c[_random.Next(c.Length)]).ToArray());
+            return string.Concat(prefix, 
+                new string((from c in Enumerable.Repeat(chars, length)
+                               select c[_random.Next(c.Length)]).ToArray()));
         }
 
         /// <summary>Determines if a string is composed only by letter characters.</summary>
