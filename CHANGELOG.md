@@ -7,16 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.6] - 2022-01-22
+
 - Added `Strings::IsEmptyWhitespace` method (and relative extension method).
 - Updated `WhiteSpace` to `Whitespace` in `Guard` class.
 - Updated `Strings::Mangle` to use all special characters.
 - Allowed `Strings::Generate` customization options and prefix input.
 
-## [1.1.5] - 2022-16-01
+## [1.1.5] - 2022-01-16
 
 - Fixed name of `StringExtensions::IsWhitespace` to `ContainsWhitespace`.
 
-## [1.1.4] - 2021-12-01
+## [1.1.4] - 2021-01-12
 
 - Added `Primitives::ToEnumerable` method (and relative extension method).
 - Added non-extension version of `ExceptionExtensions::Format` to `Primitives` class.
