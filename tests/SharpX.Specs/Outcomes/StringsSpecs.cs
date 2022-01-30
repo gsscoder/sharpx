@@ -11,7 +11,7 @@ namespace Outcomes
 {
     public class StringsSpecs
     {
-        static readonly List<string> _strings = new List<string>() { Strings.Generate(new CryptoRandom().Next(1, 60)) };
+        static readonly Random _random = new CryptoRandom();
 
         [Theory]
         [InlineData('f', 0, "", "")]
@@ -43,12 +43,14 @@ namespace Outcomes
         [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
         public void Should_generate_a_random_string_of_given_length(int value)
         {
+            var strings = new List<string>() { Strings.Generate(_random.Next(1, 60)) };
+
             var outcome = Strings.Generate(value);
 
             outcome.Should().NotBeNull().And.HaveLength(value);
-            _strings.Should().NotContain(outcome);
+            strings.Should().NotContain(outcome);
 
-            _strings.Add(outcome);
+            strings.Add(outcome);
         }
 
         [Fact]
@@ -188,11 +190,10 @@ namespace Outcomes
         [InlineData("baaaz")]
         public void Should_get_a_substring_without_exception_even_when_length_exceeds_input_string_length(string value)
         {
-            var random = new CryptoRandom();
-            var input = Strings.Mangle(Strings.Replicate(value, random.Next(1, 3), separator: "@"),
-                times: 3, maxLength: 3);
+            var input = Strings.Mangle(Strings.Replicate(value, _random.Next(1, 3), separator: "@"),
+                times: 2, maxLength: 3);
             
-            var outcome = Strings.SafeSubstring(input, 0, input.Length * random.Next(2, 3));
+            var outcome = Strings.SafeSubstring(input, 0, input.Length * _random.Next(2, 3));
 
             outcome.Should().Be(input);
         }
