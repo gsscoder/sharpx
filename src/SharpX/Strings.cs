@@ -51,7 +51,7 @@ namespace SharpX
         {
             Guard.DisallowNegative(nameof(length), length);
             Guard.DisallowNull(nameof(prefix), prefix);
-            Guard.DisallowEmptyWhitespace(nameof(prefix), prefix);
+            Guard.DisallowWhitespace(nameof(prefix), prefix);
             if (options != null && !options.AllowSpecialChars && options.AllowQuoteChars)
                 throw new ArgumentException("Cannot allow quote chars when special chars are disallowed.", nameof(options));
 
