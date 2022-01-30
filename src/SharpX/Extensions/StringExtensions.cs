@@ -77,6 +77,11 @@ namespace SharpX.Extensions
         public static string StripByLength(this string value, int length) =>
             Strings.StripByLength(value, length);
 
+        /// <summary>Retrieves a substring from this instance. The substring starts at a specified
+        /// character position and has a specified length. No exception is raised if limit is exceeded.</summary>
+        public static string SafeSubstring(this string value, int startIndex, int length) =>
+            Strings.SafeSubstring(value, startIndex, length);
+
         /// <summary>Reduces a sequence of strings to a sequence of parts, splitted by space,
         /// of each original string.</summary>
         public static IEnumerable<string> FlattenOnce(this IEnumerable<string> source) =>

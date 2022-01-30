@@ -336,6 +336,26 @@ namespace SharpX
             return stripByLen.Replace(value, string.Empty);
         }
 
+        /// <summary>Retrieves a substring from this instance. The substring starts at a specified
+        /// character position and has a specified length. No exception is raised if limit is exceeded.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string SafeSubstring(string value, int startIndex, int length)
+        {
+            Guard.DisallowNull(nameof(value), value);
+            Guard.DisallowNegative(nameof(startIndex), startIndex);
+            Guard.DisallowNegative(nameof(length), length);
+            
+            if (length == 0) return string.Empty;
+            if (startIndex > value.Length) return string.Empty;
+
+            var result = new StringBuilder(capacity: value.Length);
+            for (int i = startIndex, l = 0; i < value.Length; i++, l++) {
+                if (l == length) break;
+                result.Append(value[i]);
+            }
+            return result.ToString();
+        }
+
         /// <summary>Reduces a sequence of strings to a sequence of parts, splitted by space,
         /// of each original string.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

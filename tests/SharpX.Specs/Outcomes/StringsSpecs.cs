@@ -11,7 +11,7 @@ namespace Outcomes
 {
     public class StringsSpecs
     {
-        static List<string> _strings = new List<string>() { Strings.Generate(new CryptoRandom().Next(1, 60)) };
+        static readonly List<string> _strings = new List<string>() { Strings.Generate(new CryptoRandom().Next(1, 60)) };
 
         [Theory]
         [InlineData('f', 0, "", "")]
@@ -161,6 +161,40 @@ namespace Outcomes
             var outcome = Strings.IsEmptyWhitespace(value);
 
             outcome.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Should_get_an_empty_string_when_start_index_and_length_are_zero()
+        {
+            var outcome = Strings.SafeSubstring(string.Empty, 0, 0);
+
+            outcome.Should().Be(string.Empty);
+        }
+
+        [Theory]
+        [InlineData("foo")]
+        [InlineData("foo bar")]
+        [InlineData("foo bar baz")]
+        public void Should_get_same_string_when_start_index_and_length_match_string_length(string value)
+        {
+            var outcome = Strings.SafeSubstring(value, 0, value.Length);
+
+            outcome.Should().Be(value);
+        }
+
+        [Theory]
+        [InlineData("foo")]
+        [InlineData("baar")]
+        [InlineData("baaaz")]
+        public void Should_get_a_substring_without_exception_even_when_length_exceeds_input_string_length(string value)
+        {
+            var random = new CryptoRandom();
+            var input = Strings.Mangle(Strings.Replicate(value, random.Next(1, 3), separator: "@"),
+                times: 3, maxLength: 3);
+            
+            var outcome = Strings.SafeSubstring(input, 0, input.Length * random.Next(2, 3));
+
+            outcome.Should().Be(input);
         }
     }
 }
