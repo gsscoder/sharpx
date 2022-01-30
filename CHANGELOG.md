@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Added `Strings::SafeSubstring`  method (and relative extension method).
+
 ## [1.1.6] - 2022-01-22
 
 - Added `Strings::IsEmptyWhitespace` method (and relative extension method).
