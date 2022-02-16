@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using SharpX.Extensions;
 
 namespace SharpX
 {
@@ -17,9 +18,8 @@ namespace SharpX
     public static class Strings
     {
         const string _alpahNumChars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const string _specialChars = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~¡¢£¤¥¦§¨©«¬®¯°±²³¶·¹»¼½¾¿÷";
-        const string _specialCharsNoQuotes = "!#$%&()*+,-./:;<=>?@[\\]^_{|}~¡¢£¤¥¦§©«¬®¯°±²³¶·¹»¼½¾¿÷";
-
+        const string _specialChars = "!#$%&()*+,-./:;<=>?@[\\]^_{|}~¡¢£¤¥¦§¨©«¬®¯°±²³¶·¹»¼½¾¿÷";
+        const string _quotesChars = "\"'`";
         static readonly Random _random = new CryptoRandom();
         static Regex _stripTagRegEx = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
 
@@ -58,9 +58,10 @@ namespace SharpX
             if (length == 0) return string.Empty;
 
             var prefs = options ?? new GenerateOptions();
-            var chars = prefs.AllowSpecialChars
-                ? (prefs.AllowQuoteChars ? _specialChars : _specialCharsNoQuotes)
-                : _alpahNumChars;
+            var chars = _alpahNumChars;
+            if (prefs.AllowSpecialChars) chars += _specialChars;
+            if (prefs.AllowQuoteChars) chars += _quotesChars;
+            chars = new string(chars.Shuffle().ToArray());
 
             return string.Concat(prefix, 
                 new string((from c in Enumerable.Repeat(chars, length)
