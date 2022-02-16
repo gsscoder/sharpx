@@ -313,5 +313,21 @@ namespace Outcomes
                 .WithMessage("The input sequence has an insufficient number of elements.");
         }
         #endregion
+
+        // TODO: add a Guid arbitrary generator
+        [Fact]
+        public void Should_change_order_but_preserve_original_elements()
+        {
+            for (var i = 0; i < 100; i++)
+            {
+                var value = Guid.NewGuid().ToString();
+
+                var outcome = new string(value.Shuffle().ToArray());
+
+                outcome.Should().NotBe(value);
+                outcome.Should().HaveLength(value.Length);
+                outcome.ToArray().Should().Contain(value.ToArray());
+            }
+        }
     }
 }
