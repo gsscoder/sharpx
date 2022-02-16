@@ -489,8 +489,28 @@ namespace SharpX.Extensions
             }
         }
 
+        // Based on https://stackoverflow.com/questions/273313/randomize-a-listt (accepted answer)
+        /// <summary>Rendomizes a sequence.</summary>
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
+        {
+            var list = source.ToList();
+            var n = list.Count;
+            while (n > 1)
+            {
+                var box = new byte[1];
+                do _random.NextBytes(box);
+                while (!(box[0] < n * (Byte.MaxValue / n)));
+                int k = (box[0] % n);
+                n--;
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+            return list;
+        }
+
         /// <summary>Converts a value to an enumerable.</summary>
-        public static IEnumerable<T> ToEnumerable<T>(this T value) => Primitives.ToEnumerable(value);        
+        public static IEnumerable<T> ToEnumerable<T>(this T value) => Primitives.ToEnumerable(value);
 
         #region Internal
         static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source,
