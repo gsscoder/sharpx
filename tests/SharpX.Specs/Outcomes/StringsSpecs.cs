@@ -83,7 +83,7 @@ namespace Outcomes
                 new GenerateOptions { AllowSpecialChars = true, AllowQuoteChars = false });
 
             outcome.Should().NotBeNull().And.HaveLength(value + 10);
-            outcome.Any(c => c == '"' || c == '\'' || c == '`' || c == '¨').Should().BeFalse();
+            outcome.Any(c => c == '"' || c == '\'' || c == '`').Should().BeFalse();
         }
 
         [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
