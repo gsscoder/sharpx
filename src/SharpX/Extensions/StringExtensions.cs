@@ -12,6 +12,10 @@ namespace SharpX.Extensions
              "#", "§", ",", ";", ".", ":", "-", "_"};
         static Regex _stripTagRegEx = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
 
+        /// <summary>Determines whether the beginning of this string instance matches the specified string in a case insensitive way.</summary>
+        public static bool StartsWithIgnoreCase(this string source, string value) =>
+            source.StartsWith(value, StringComparison.OrdinalIgnoreCase);
+
         /// <summary>Determines whether two String objects have the same value in a case insensitive way.</summary>
         public static bool EqualsIgnoreCase(this string source, string value) =>
             source.Equals(value, StringComparison.OrdinalIgnoreCase);
