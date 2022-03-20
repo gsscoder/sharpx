@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.1.9] - 2022-03-20
+## [1.1.11] - 2022-03-20
+
+- Implemented `StringExtensions::StartsWithIgnoreCase`.
+
+## [1.1.10] - 2022-03-20
 
 - Implemented `StringExtensions::EqualsIgnoreCase`.
 - Implemented `StringExtensions::ContainsIgnoreCase`.
