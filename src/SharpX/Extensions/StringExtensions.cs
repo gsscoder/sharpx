@@ -12,6 +12,14 @@ namespace SharpX.Extensions
              "#", "§", ",", ";", ".", ":", "-", "_"};
         static Regex _stripTagRegEx = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
 
+        /// <summary>Determines whether two String objects have the same value in a case insensitive way.</summary>
+        public static bool EqualsIgnoreCase(this string source, string value) =>
+            source.Equals(value, StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>Determines whether a specified substring occurs within this string in a case insensitive way.</summary>
+        public static bool ContainsIgnoreCase(this string source, string value) =>
+            source.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
+
         /// <summary>Replicates a character for a given number of times using a seperator.</summary>
         public static string Replicate(this char value, int count, string separator = "") =>
             Strings.ReplicateChar(value, count, separator);
