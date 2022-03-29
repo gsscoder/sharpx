@@ -1,4 +1,5 @@
-using System;
+#pragma warning disable 8602
+
 using System.Runtime.CompilerServices;
 using Microsoft.FSharp.Core;
 
