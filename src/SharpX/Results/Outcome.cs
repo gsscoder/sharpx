@@ -1,6 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
+
+#pragma warning disable 8604, 8625
+
 using System.Text;
 using SharpX.Extensions;
 
@@ -28,7 +28,7 @@ namespace SharpX
             _exception = exception;
         }
 
-        public override bool Equals(object other)
+        public override bool Equals(object? other)
         {
             if (other is null) return false;
             if (other is not Error error) return false;
@@ -60,7 +60,7 @@ namespace SharpX
 
         sealed class ExceptionEqualityComparer : IEqualityComparer<Exception>
         {
-            public bool Equals(Exception first, Exception second)
+            public bool Equals(Exception? first, Exception? second)
             {
                 if (first == null && second == null) return true;
                 if (first == null || second == null) return false;
@@ -91,7 +91,7 @@ namespace SharpX
 
         public OutcomeType Tag { get; private set; }
 
-        public override bool Equals(object other)
+        public override bool Equals(object? other)
         {
             if (other is null) return false;
             if (other is not Outcome outcome) return false;
