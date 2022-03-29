@@ -1,11 +1,11 @@
 group main
     source https://www.nuget.org/api/v2
-    framework: netstandard20, netcoreapp31, net50
+    framework: net60
     nuget FSharp.Core 4.7.0
 
 group specs
     source https://www.nuget.org/api/v2
-    framework: net50
+    framework: net60
     nuget Microsoft.NET.Test.Sdk 16.9.4
     nuget coverlet.collector 1.0.1
     nuget xunit 2.4.1
