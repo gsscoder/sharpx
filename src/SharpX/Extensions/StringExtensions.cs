@@ -4,7 +4,6 @@ namespace SharpX.Extensions
 {
     public static class StringExtensions
     {
-        static readonly Random _random = new CryptoRandom();
         static string[] _mangleChars =
             {"!", "\"", "£", "$", "%", "&", "/", "(", ")", "=", "?", "^", "[", "]", "*", "@", "°",
              "#", "§", ",", ";", ".", ":", "-", "_"};

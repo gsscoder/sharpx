@@ -1,12 +1,13 @@
 // Based on https://docs.microsoft.com/en-us/archive/msdn-magazine/2007/september/net-matters-tales-from-the-cryptorandom.
+#pragma warning disable 8602, 8618
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 
 namespace SharpX
 {
     /// <summary>A thread safe random number generator based on the RNGCryptoServiceProvider.</summary>
+    [Obsolete("CryptoRandom is obsolete. To generate a random number, use one of the RandomNumberGenerator static methods instead.")]
     public class CryptoRandom : Random
     {
         readonly RNGCryptoServiceProvider _rng = new RNGCryptoServiceProvider();
