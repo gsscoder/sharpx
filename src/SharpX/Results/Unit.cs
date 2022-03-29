@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-
 namespace SharpX
 {
     /// <summary>The <c>Unit</c> type is a type that indicates the absence of a specific value; the
@@ -15,10 +12,10 @@ namespace SharpX
 
         /// <summary>Determines whether this instance and a specified object, which must also be a
         /// <c>Unit</c> object, have the same value.</summary>
-        public override bool Equals(object obj) => obj == null || obj is Unit;
+        public override bool Equals(object? obj) => obj == null || obj is Unit;
 
         /// <summary>Compares always to equality.</summary>
-        public int CompareTo(object obj) => 0;
+        public int CompareTo(object? obj) => 0;
 
         /// <summary>Converts this instance to a string representation.</summary>
         public override string ToString() => "()";
