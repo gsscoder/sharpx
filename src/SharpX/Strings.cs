@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -47,7 +44,7 @@ namespace SharpX
 
         /// <summary>Generates a random string of given length.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Generate(int length, GenerateOptions options = null, string prefix = "")
+        public static string Generate(int length, GenerateOptions? options = null, string prefix = "")
         {
             Guard.DisallowNegative(nameof(length), length);
             Guard.DisallowNull(nameof(prefix), prefix);
@@ -190,7 +187,7 @@ namespace SharpX
 
         /// <summary>Selects a random index of a word that optionally satisfies a function.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int ChoiceOfIndex(string value, Func<string, bool> validator = null)
+        public static int ChoiceOfIndex(string value, Func<string, bool>? validator = null)
         {
             Guard.DisallowNull(nameof(value), value);
 
