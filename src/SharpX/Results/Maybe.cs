@@ -109,38 +109,38 @@ namespace SharpX
 
         /// <summary>Sequentially compose two actions, passing any value produced by the first as
         /// an argument to the second.</summary>
-        public static Maybe<U> Bind<T, U>(Maybe<T> maybe, Func<T, Maybe<U>> onJust)
+        public static Maybe<T2> Bind<T1, T2>(Maybe<T1> maybe, Func<T1, Maybe<T2>> onJust)
         {
             Guard.DisallowNull(nameof(maybe), maybe);
             Guard.DisallowNull(nameof(onJust), onJust);
 
-            return maybe.MatchJust(out T value) ? onJust(value) : Nothing<U>();
+            return maybe.MatchJust(out T1 value) ? onJust(value) : Nothing<T2>();
         }
         #endregion
 
         #region Functor
         /// <summary>Transforms a <c>Maybe</c> value by using a specified mapping function.</summary>
-        public static Maybe<U> Map<T, U>(Maybe<T> maybe, Func<T, U> onJust)
+        public static Maybe<T2> Map<T1, T2>(Maybe<T1> maybe, Func<T1, T2> onJust)
         {
             Guard.DisallowNull(nameof(maybe), maybe);
             Guard.DisallowNull(nameof(onJust), onJust);
 
-            return maybe.MatchJust(out T value) ? Just(onJust(value)) : Nothing<U>();
+            return maybe.MatchJust(out T1 value) ? Just(onJust(value)) : Nothing<T2>();
         }
         #endregion
 
         /// <summary>If both <c>Maybe</c> values contain a value, it merges them into a <c>Maybe</c>
         /// with a tupled value. </summary>
-        public static Maybe<(T, U)> Merge<T, U>(Maybe<T> first, Maybe<U> second)
+        public static Maybe<(T1, T2)> Merge<T1, T2>(Maybe<T1> first, Maybe<T2> second)
         {
             Guard.DisallowNull(nameof(first), first);
             Guard.DisallowNull(nameof(second), second);
 
-            U? value2 = default;
-            return (first.MatchJust(out T value1) &&
+            T2? value2 = default;
+            return (first.MatchJust(out T1 value1) &&
                     second.MatchJust(out value2)) switch {
                 true => Just((value1, value2)),
-                _ => Nothing<(T, U)>()
+                _ => Nothing<(T1, T2)>()
             };
         }
 
@@ -207,14 +207,14 @@ namespace SharpX
 
         /// <summary>Provides pattern matching using <c>System.Func</c> delegates over a <c>Maybe</c>
         /// with tupled wrapped value.</summary>
-        public static Unit Match<T, U>(this Maybe<(T, U)> maybe,
-            Func<T, U, Unit> onJust, Func<Unit> onNothing)
+        public static Unit Match<T1, T2>(this Maybe<(T1, T2)> maybe,
+            Func<T1, T2, Unit> onJust, Func<Unit> onNothing)
         {
             Guard.DisallowNull(nameof(maybe), maybe);
             Guard.DisallowNull(nameof(onJust), onJust);
             Guard.DisallowNull(nameof(onNothing), onNothing);
 
-            return maybe.MatchJust(out T value1, out U value2) switch {
+            return maybe.MatchJust(out T1 value1, out T2 value2) switch {
                 true => onJust(value1, value2),
                 _    => onNothing()
             };
@@ -222,12 +222,12 @@ namespace SharpX
 
         /// <summary>Matches a value returning <c>true</c> and the tupled value itself via two output
         /// parameters.</summary>
-        public static bool MatchJust<T, U>(this Maybe<(T, U)> maybeTuple,
-            out T value1, out U value2)
+        public static bool MatchJust<T1, T2>(this Maybe<(T1, T2)> maybeTuple,
+            out T1 value1, out T2 value2)
         {
             Guard.DisallowNull(nameof(maybeTuple), maybeTuple);
 
-            if (maybeTuple.MatchJust(out (T, U) value)) {
+            if (maybeTuple.MatchJust(out (T1, T2) value)) {
                 value1 = value.Item1;
                 value2 = value.Item2;
                 return true;
@@ -245,36 +245,36 @@ namespace SharpX
         public static Maybe<T> ToMaybe<T>(this T value) => Maybe.Return(value);
 
         /// <summary>Invokes a function on this maybe value that itself yields a maybe.</summary>
-        public static Maybe<U> Bind<T, U>(this Maybe<T> maybe, Func<T, Maybe<U>> onJust) =>
+        public static Maybe<T2> Bind<T1, T2>(this Maybe<T1> maybe, Func<T1, Maybe<T2>> onJust) =>
             Maybe.Bind(maybe, onJust);
 
         /// <summary>Transforms a maybe value by using a specified mapping function.</summary>
-        public static Maybe<U> Map<T, U>(this Maybe<T> maybe, Func<T, U> onJust) =>
+        public static Maybe<T2> Map<T1, T2>(this Maybe<T1> maybe, Func<T1, T2> onJust) =>
             Maybe.Map(maybe, onJust);
 
         /// <summary>Unwraps a value applying a function o returns another value on fail.</summary>
-        public static U Return<T, U>(this Maybe<T> maybe, Func<T, U> onJust, U @default) =>
-            maybe.MatchJust(out T value) ? onJust(value) : @default;
+        public static T2 Return<T1, T2>(this Maybe<T1> maybe, Func<T1, T2> onJust, T2 @default) =>
+            maybe.MatchJust(out T1 value) ? onJust(value) : @default;
         #endregion
 
         /// <summary>This is a version of map which can throw out the value. If contains a <c>Just</c>
         /// executes a mapping function over it, in case of <c>Nothing</c> returns <c>@default</c>.</summary>
-        public static U? Map<T, U>(this Maybe<T> maybe, Func<T, U> onJust, U? @default = default)
+        public static T2? Map<T1, T2>(this Maybe<T1> maybe, Func<T1, T2> onJust, T2? @default = default)
         {
             Guard.DisallowNull(nameof(maybe), maybe);
             Guard.DisallowNull(nameof(onJust), onJust);
 
-            return maybe.MatchJust(out T value) ? onJust(value) : @default;
+            return maybe.MatchJust(out T1 value) ? onJust(value) : @default;
         }
 
         /// <summary>Lazy version of <c>Map</c>. If contains a <c>Just</c> executes a mapping function
         /// over it, in case of <c>Nothing</c> returns a value built by <c>@default</c> function.</summary>
-        public static U Map<T, U>(this Maybe<T> maybe, Func<T, U> onJust, Func<U> @default)
+        public static T2 Map<T1, T2>(this Maybe<T1> maybe, Func<T1, T2> onJust, Func<T2> @default)
         {
             Guard.DisallowNull(nameof(maybe), maybe);
             Guard.DisallowNull(nameof(onJust), onJust);
 
-            return maybe.MatchJust(out T value) ? onJust(value) : @default();
+            return maybe.MatchJust(out T1 value) ? onJust(value) : @default();
         }
 
         #region LINQ operators
@@ -319,12 +319,12 @@ namespace SharpX
         }
 
         /// <summary>If contans a value executes a <c>System.Func<c> delegate over it.</summary>
-        public static Unit Do<T, U>(this Maybe<(T, U)> maybe, Func<T, U, Unit> func)
+        public static Unit Do<T1, T2>(this Maybe<(T1, T2)> maybe, Func<T1, T2, Unit> func)
         {
             Guard.DisallowNull(nameof(maybe), maybe);
             Guard.DisallowNull(nameof(func), func);
 
-            return maybe.MatchJust(out T value1, out U value2) switch {
+            return maybe.MatchJust(out T1 value1, out T2 value2) switch {
                 true => func(value1, value2),
                 _ => Unit.Default
             };
@@ -416,18 +416,18 @@ namespace SharpX
         }
 
         /// <summary>This is a version of map which can throw out elements. In particular, the functional
-        /// argument returns something of type <c>Maybe&lt;U&gt;</c>. If this is Nothing, no element is
-        /// added on to the result sequence. If it is <c>Just&lt;U&gt;</c>, then <c>U</c> is included
+        /// argument returns something of type <c>Maybe&lt;T2&gt;</c>. If this is Nothing, no element is
+        /// added on to the result sequence. If it is <c>Just&lt;T2&gt;</c>, then <c>T2</c> is included
         /// in the result sequence.</summary>
-        public static IEnumerable<U> Map<T, U>(this IEnumerable<T> source, Func<T, Maybe<U>> onElement)
+        public static IEnumerable<T2> Map<T1, T2>(this IEnumerable<T1> source, Func<T1, Maybe<T2>> onElement)
         {
             Guard.DisallowNull(nameof(source), source);
             Guard.DisallowNull(nameof(onElement), onElement);
 
-            return _(); IEnumerable<U> _()
+            return _(); IEnumerable<T2> _()
             {
                 foreach (var element in source) {
-                    if (onElement(element).MatchJust(out U value)) yield return value;
+                    if (onElement(element).MatchJust(out T2 value)) yield return value;
                 }
             }
         }
