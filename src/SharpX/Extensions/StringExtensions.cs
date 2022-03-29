@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SharpX.Extensions
@@ -60,7 +58,7 @@ namespace SharpX.Extensions
             Strings.ApplyAt(value, index, modifier);
 
         /// <summary>Selects a random index of a word that optionally satisfies a function.</summary>
-        public static int ChoiceOfIndex(this string value, Func<string, bool> validator = null) =>
+        public static int ChoiceOfIndex(this string value, Func<string, bool>? validator = null) =>
             Strings.ChoiceOfIndex(value, validator);
 
         /// <summary>Mangles a string with a given number of non alphanumeric character in
