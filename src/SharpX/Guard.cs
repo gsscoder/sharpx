@@ -7,11 +7,12 @@ namespace SharpX
     public static class Guard
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void DisallowNull(string argumentName, object value) =>
+        public static void DisallowNull(string argumentName, object? value) =>
             _ = value ?? throw new ArgumentNullException(argumentName, $"{argumentName} cannot be null.");
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DisallowDefault<T>(string argumentName, T value)
+            where T : struct
         {
             if (value.Equals(default(T))) throw new ArgumentNullException(argumentName, $"{argumentName} cannot be default.");
         }
