@@ -1,5 +1,5 @@
-using System;
-using System.Collections.Generic;
+
+#pragma warning disable 8600, 8601, 8603, 8604, 8616, 8618
 
 namespace SharpX
 {
@@ -41,7 +41,7 @@ namespace SharpX
         #region Basic match methods
         /// <summary>Matches a <c>Left</c> value returning <c>true</c> and value itself via an output
         /// parameter.</summary>
-        public bool MatchLeft(out TLeft value)
+        public bool MatchLeft(out TLeft? value)
         {
             value = Tag == EitherType.Left ? _leftValue : default;
             return Tag == EitherType.Left;
@@ -49,7 +49,7 @@ namespace SharpX
 
         /// <summary>Matches a <c>Right</c> value returning <c>true</c> and value itself via an output
         /// parameter.</summary>
-        public bool MatchRight(out TRight value)
+        public bool MatchRight(out TRight? value)
         {
             value = Tag == EitherType.Right ? _rightValue : default;
             return Tag == EitherType.Right;
@@ -153,7 +153,7 @@ namespace SharpX
             return Either.Left<TLeft, TRight>(left);
         }
 
-        static TLeft GetLeft<TLeft, TRight>(this Either<TLeft, TRight> either) => either.FromLeft();
+        static TLeft? GetLeft<TLeft, TRight>(this Either<TLeft, TRight> either) => either.FromLeft();
     }
 
     public static class EitherExtensions
@@ -215,12 +215,12 @@ namespace SharpX
         /// <summary>Extracts the element out of <c>Left</c> and returns a default value (or <c>noneValue</c>
         /// when given) if it is in form of <c>Right</c>.</summary>
         public static TLeft FromLeft<TLeft, TRight>(this Either<TLeft, TRight> either,
-            TLeft noneValue = default) => either.MatchLeft(out TLeft value) ? value : noneValue;
+            TLeft? noneValue = default) => either.MatchLeft(out TLeft value) ? value : noneValue;
 
         /// <summary>Extracts the element out of <c>Left</c> and throws an exception if it is form of
         /// <c>Right</c>.</summary>
         public static TLeft FromLeftOrFail<TLeft, TRight>(this Either<TLeft, TRight> either,
-            Exception exceptionToThrow = null)
+            Exception? exceptionToThrow = null)
         {
             Guard.DisallowNull(nameof(either), either);
 
@@ -232,13 +232,13 @@ namespace SharpX
 
         /// <summary>Extracts the element out of <c>Left</c> and returns a default (or <c>noneValue</c>
         /// when given) value if it is in form of<c>Right</c>.</summary>
-        public static TRight FromRight<TLeft, TRight>(this Either<TLeft, TRight> either,
-            TRight noneValue = default) => either.MatchRight(out TRight value) ? value : noneValue;
+        public static TRight? FromRight<TLeft, TRight>(this Either<TLeft, TRight> either,
+            TRight? noneValue = default) => either.MatchRight(out TRight value) ? value : noneValue;
 
         /// <summary>Extracts the element out of <c>Left</c> and throws an exception if it is form of
         /// <c>Right</c>.</summary>
-        public static TRight FromRightOrFail<TLeft, TRight>(this Either<TLeft, TRight> either,
-            Exception exceptionToThrow = null)
+        public static TRight? FromRightOrFail<TLeft, TRight>(this Either<TLeft, TRight> either,
+            Exception? exceptionToThrow = null)
         {
             Guard.DisallowNull(nameof(either), either);
 
