@@ -55,7 +55,7 @@ public static class Guard
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void RestrictArraySize<T>(string argumentName, int length, T[] value)
+    public static void DisallowArraySize<T>(string argumentName, int length, T[] value)
     {
         if (value.Length < length) throw new ArgumentException(
             $"{argumentName} cannot contain less than {length} elements.", argumentName);
