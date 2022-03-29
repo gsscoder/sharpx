@@ -1,10 +1,10 @@
-RESTRICTION: || (== net5.0) (== netcoreapp3.1) (== netstandard2.0)
+RESTRICTION: == net6.0
 NUGET
   remote: https://www.nuget.org/api/v2
     FSharp.Core (4.7)
 
 GROUP specs
-RESTRICTION: == net5.0
+RESTRICTION: == net6.0
 NUGET
   remote: https://www.nuget.org/api/v2
     Bogus (33.1.1)
@@ -40,25 +40,20 @@ NUGET
     Newtonsoft.Json (13.0.1)
     NuGet.Frameworks (6.0)
     System.Collections.Immutable (6.0)
-      System.Memory (>= 4.5.4)
       System.Runtime.CompilerServices.Unsafe (>= 6.0)
     System.Configuration.ConfigurationManager (6.0)
       System.Security.Cryptography.ProtectedData (>= 6.0)
       System.Security.Permissions (>= 6.0)
     System.Drawing.Common (6.0)
       Microsoft.Win32.SystemEvents (>= 6.0)
-    System.Memory (4.5.4)
     System.Reflection.Metadata (6.0)
       System.Collections.Immutable (>= 6.0)
     System.Runtime.CompilerServices.Unsafe (6.0)
     System.Security.AccessControl (6.0)
-      System.Security.Principal.Windows (>= 5.0)
     System.Security.Cryptography.ProtectedData (6.0)
-      System.Memory (>= 4.5.4)
     System.Security.Permissions (6.0)
       System.Security.AccessControl (>= 6.0)
       System.Windows.Extensions (>= 6.0)
-    System.Security.Principal.Windows (5.0)
     System.ValueTuple (4.5)
     System.Windows.Extensions (6.0)
       System.Drawing.Common (>= 6.0)
