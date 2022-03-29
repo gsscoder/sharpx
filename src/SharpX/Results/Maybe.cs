@@ -1,5 +1,6 @@
-using System;
-using System.Collections.Generic;
+
+#pragma warning disable 8601, 8602, 8603, 8619
+
 using System.Text;
 
 namespace SharpX
@@ -21,7 +22,7 @@ namespace SharpX
 #if DEBUG
         internal
 #endif
-        readonly T _value;
+        readonly T? _value;
 
         internal Maybe(T value)
         {
@@ -33,7 +34,7 @@ namespace SharpX
         public MaybeType Tag { get; private set; }
 
         /// <summary>Determines whether this instance and another specified <c>Maybe</c> object have the same value.</summary>
-        public override bool Equals(object other)
+        public override bool Equals(object? other)
         {
             if (other is null) return false;
             if (other is not Maybe<T> maybe) return false;
@@ -135,7 +136,7 @@ namespace SharpX
             Guard.DisallowNull(nameof(first), first);
             Guard.DisallowNull(nameof(second), second);
 
-            U value2 = default;
+            U? value2 = default;
             return (first.MatchJust(out T value1) &&
                     second.MatchJust(out value2)) switch {
                 true => Just((value1, value2)),
@@ -258,7 +259,7 @@ namespace SharpX
 
         /// <summary>This is a version of map which can throw out the value. If contains a <c>Just</c>
         /// executes a mapping function over it, in case of <c>Nothing</c> returns <c>@default</c>.</summary>
-        public static U Map<T, U>(this Maybe<T> maybe, Func<T, U> onJust, U @default = default)
+        public static U? Map<T, U>(this Maybe<T> maybe, Func<T, U> onJust, U? @default = default)
         {
             Guard.DisallowNull(nameof(maybe), maybe);
             Guard.DisallowNull(nameof(onJust), onJust);
@@ -335,7 +336,7 @@ namespace SharpX
 
         /// <summary>Extracts the element out of <c>Just</c> and returns a default value (or <c>@default</c>
         /// when given) if it is in form of <c>Nothing</c>.</summary>
-        public static T FromJust<T>(this Maybe<T> maybe, T @default = default)
+        public static T? FromJust<T>(this Maybe<T> maybe, T? @default = default)
         {
             Guard.DisallowNull(nameof(maybe), maybe);
 
@@ -344,7 +345,7 @@ namespace SharpX
 
         /// <summary>Lazy version of <c>FromJust</c>. Extracts the element out of <c>Just</c> and returns
         /// a value built by <c>@default</c> function if it is in form of <c>Nothing</c>.</summary>
-        public static T FromJust<T>(this Maybe<T> maybe, Func<T> @default)
+        public static T? FromJust<T>(this Maybe<T> maybe, Func<T> @default)
         {
             Guard.DisallowNull(nameof(maybe), maybe);
 
@@ -353,7 +354,7 @@ namespace SharpX
 
         /// <summary>Extracts the element out of <c>Just</c> or throws an exception if it is form of
         /// <c>Nothing</c>.</summary>
-        public static T FromJustOrFail<T>(this Maybe<T> maybe, Exception exceptionToThrow = null)
+        public static T FromJustOrFail<T>(this Maybe<T> maybe, Exception? exceptionToThrow = null)
         {
             Guard.DisallowNull(nameof(maybe), maybe);
 
