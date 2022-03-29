@@ -2,14 +2,13 @@
 
 using System.Collections;
 using System.Globalization;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace SharpX.Extensions
 {
     public static class EnumerableExtensions
     {
-        static readonly Random _random = new CryptoRandom();
-
         /// <summary>Returns the cartesian product of two sequences by combining each element of the
         /// first set with each in the second and applying the user=define projection to the
         /// pair.</summary>
@@ -425,7 +424,7 @@ namespace SharpX.Extensions
         {
             Guard.DisallowNull(nameof(source), source);
 
-            var index = _random.Next(source.Count() - 1);
+            var index = RandomNumberGenerator.GetInt32(source.Count() - 1);
             return source.ElementAt(index);
         }
 
@@ -495,8 +494,8 @@ namespace SharpX.Extensions
             var n = list.Count;
             while (n > 1)
             {
-                var box = new byte[1];
-                do _random.NextBytes(box);
+                byte[] box;
+                do box = RandomNumberGenerator.GetBytes(1);
                 while (!(box[0] < n * (Byte.MaxValue / n)));
                 int k = (box[0] % n);
                 n--;

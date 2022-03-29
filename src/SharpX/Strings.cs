@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using SharpX.Extensions;
@@ -17,7 +18,6 @@ namespace SharpX
         const string _alpahNumChars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const string _specialChars = "!#$%&()*+,-./:;<=>?@[\\]^_{|}~¡¢£¤¥¦§¨©«¬®¯°±²³¶·¹»¼½¾¿÷";
         const string _quotesChars = "\"'`";
-        static readonly Random _random = new CryptoRandom();
         static Regex _stripTagRegEx = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
 
         /// <summary>Replicates a character for a given number of times using a seperator.</summary>
@@ -62,7 +62,7 @@ namespace SharpX
 
             return string.Concat(prefix, 
                 new string((from c in Enumerable.Repeat(chars, length)
-                               select c[_random.Next(c.Length)]).ToArray()));
+                               select c[RandomNumberGenerator.GetInt32(c.Length)]).ToArray()));
         }
 
         /// <summary>Determines if a string is composed only by letter characters.</summary>
@@ -195,7 +195,7 @@ namespace SharpX
             var _validator = validator ?? _nullValidator;
 
             var words = value.Split();
-            var index = _random.Next(words.Length - 1);
+            var index = RandomNumberGenerator.GetInt32(words.Length - 1);
             if (_validator(words[index])) {
                 return index;
             }
@@ -217,7 +217,7 @@ namespace SharpX
             var indexes = new List<int>(times);
             int uniqueNext()
                 {
-                    var index = _random.Next(value.Length - 1);
+                    var index = RandomNumberGenerator.GetInt32(value.Length - 1);
                     if (indexes.Contains(index)) {
                         return uniqueNext();
                     }
@@ -233,7 +233,7 @@ namespace SharpX
                 mangled.Append(value[i]);
                 if (mutations.Contains(i)) {
                     mangled.Append(ReplicateChar(
-                        _specialChars[_random.Next(_specialChars.Length - 1)],
+                        _specialChars[RandomNumberGenerator.GetInt32(_specialChars.Length - 1)],
                         maxLength, string.Empty));
                     
                 }
