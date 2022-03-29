@@ -68,7 +68,7 @@ public static class Guard
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void AllowGuidOnly(string argumentName, string value)
+    public static void DisallowMalformedGuid(string argumentName, string value)
     {
         try { Guid.Parse(value); }
         catch { throw new ArgumentException($"{argumentName} must be a correctly formatted GUID.", argumentName); }
