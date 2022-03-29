@@ -9,16 +9,14 @@ The library contains functional types and other utilities, following _don't rein
 
 ## Targets
 
-- .NET Standard 2.0
-- .NET Core 3.1
-- .NET 5.0
+- .NET 6.0
 
 ## Install via NuGet
 
 If you prefer, you can install it via NuGet:
 
 ```sh
-$ dotnet add package SharpX --version 1.1.11
+$ dotnet add package SharpX --version 6.0.0-preview.1
   Determining projects to restore...
   ...
 ```
@@ -124,7 +122,7 @@ if (ValidateArtifact(artifact).MatchFailure(out Error error)) {
 
 ## Unit
 
-- `Unit` is similar to `void` but, since it's a *real* type. `void` is not, in fact you can't declare a variable of that type. `Unit` allows the use functions without a result in a computation (*functional style*). It's essentially **F#** `unit` and **Haskell** `Unit`.
+- `Unit` is similar to `void` but, since it's a **real** type. `void` is not, in fact you can't declare a variable of that type. `Unit` allows the use functions without a result in a computation (**functional style**). It's essentially **F#** `unit` and **Haskell** `Unit`.
 
 ```csharp
 // prints each word and returns 0 to the shell
@@ -136,16 +134,6 @@ static int Main(string[] args)
             select Unit.Do(() => Console.WriteLine(word))
             select 0).Distinct().Single();
 }
-```
-
-## CryptoRandom
-
-A thread safe random number generator based on [this code](https://docs.microsoft.com/en-us/archive/msdn-magazine/2007/september/net-matters-tales-from-the-cryptorandom) compatible with `System.Random` interface.
-
-```csharp
-Random random = new CryptoRandom();
-
-var @int = randome.Next(9); // outcome: 3
 ```
 
 ## FSharpResultExtensions
