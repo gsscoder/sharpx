@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.0.0-preview.1] - 2022-03-29
+
+- Set target to .NET 6.0 only.
+- `CryptoRandom` marked obsolete.
+- Renamed `Guard::RestrictArraySize` to `DisallowArraySize`.
+- Renamed `Guard::AllowGuidOnly` to `DisallowMalformedGuid`.
+
 ## [1.1.11] - 2022-03-20
 
 - Implemented `StringExtensions::StartsWithIgnoreCase`.
