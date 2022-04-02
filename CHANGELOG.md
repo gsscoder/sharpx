@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Set Maybe type as readonly struct.
+
 ## [6.0.0-preview.1] - 2022-03-29
 
 - Set target to .NET 6.0 only.
