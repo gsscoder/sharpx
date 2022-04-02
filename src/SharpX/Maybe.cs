@@ -17,21 +17,22 @@ public enum MaybeType
 /// <summary>The <c>Maybe</c> type models an optional value. A value of type <c>Maybe</c> either
 /// contains a value (represented as <c>Just</c> a), or it is empty (represented as
 /// <c>Nothing</c>).</summary>
-public struct Maybe<T> : IEquatable<Maybe<T>>
+public readonly struct Maybe<T> : IEquatable<Maybe<T>>
 {
 #if DEBUG
     internal
 #endif
     readonly T? _value;
+    readonly MaybeType _tag;
 
     internal Maybe(T value)
     {
         _value = value;
-        Tag = MaybeType.Just;
+        _tag = MaybeType.Just;
     }
 
     /// <summary>Type discriminator.</summary>
-    public MaybeType Tag { get; private set; }
+    public readonly MaybeType Tag { get => _tag; }
 
     /// <summary>Determines whether this instance and another specified <c>Maybe</c> object have the same value.</summary>
     public override bool Equals(object? other)
