@@ -315,11 +315,23 @@ public static class MaybeExtensions
 
         return maybe.MatchJust(out T value) switch {
             true => func(value),
-            _ => Unit.Default
+            _    => Unit.Default
         };
     }
 
-    /// <summary>If contans a value executes a <c>System.Func<c> delegate over it.</summary>
+    /// <summary>If contains a value executes an async <c>System.Func<c> delegate over it.</summary>
+    public static async Task<Unit> DoAsync<T>(this Maybe<T> maybe, Func<T, Task<Unit>> func)
+    {
+        Guard.DisallowNull(nameof(maybe), maybe);
+        Guard.DisallowNull(nameof(func), func);
+
+        return maybe.MatchJust(out T value) switch {
+            true => await func(value),
+            _    => Unit.Default
+        };
+    }    
+
+    /// <summary>If contains a tuple value executes a <c>System.Func<c> delegate over it.</summary>
     public static Unit Do<T1, T2>(this Maybe<(T1, T2)> maybe, Func<T1, T2, Unit> func)
     {
         Guard.DisallowNull(nameof(maybe), maybe);
@@ -327,6 +339,18 @@ public static class MaybeExtensions
 
         return maybe.MatchJust(out T1 value1, out T2 value2) switch {
             true => func(value1, value2),
+            _    => Unit.Default
+        };
+    }
+
+    /// <summary>If contans a tuple value executes an async <c>System.Func<c> delegate over it.</summary>
+    public static async Task<Unit> DoAsync<T1, T2>(this Maybe<(T1, T2)> maybe, Func<T1, T2, Task<Unit>> func)
+    {
+        Guard.DisallowNull(nameof(maybe), maybe);
+        Guard.DisallowNull(nameof(func), func);
+
+        return maybe.MatchJust(out T1 value1, out T2 value2) switch {
+            true => await func(value1, value2),
             _ => Unit.Default
         };
     }
