@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using FsCheck;
 using FsCheck.Xunit;
@@ -372,5 +373,77 @@ namespace Outcomes
             
             outcome.Should().BeTrue();
         }
+
+        [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+        public void Do_method_consumes_the_value_only_on_Just(string[] values)
+        {
+            values.ForEach(value =>
+                {
+                    var evidence = false;
+                    var sut = Maybe.Return(value);
+
+                    sut.Do(_ => {
+                        evidence = true;
+                        return Unit.Default;
+                    });
+
+                    if (sut.IsNothing()) evidence.Should().BeFalse();
+                    else evidence.Should().BeTrue();
+                });
+        }
+
+        [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+        public async Task DoAsync_method_consumes_the_value_only_on_Just(string[] values)
+        {
+            await values.ForEachAsync(async (value) =>
+                {
+                    var evidence = false;
+                    var sut = Maybe.Return(value);
+
+                    await sut.DoAsync(_ => {
+                        evidence = true;
+                        return Task.FromResult(Unit.Default);
+                    });
+
+                    if (sut.IsNothing()) evidence.Should().BeFalse();
+                    else evidence.Should().BeTrue();
+                });
+        }        
+
+        [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+        public void Do_method_consumes_the_tuple_value_only_on_Just(string[] values)
+        {
+            values.ForEach(value =>
+                {
+                    var evidence = false;
+                    var sut = Maybe.Return((value, value));
+
+                    sut.Do(_ => {
+                        evidence = true;
+                        return Unit.Default;
+                    });
+
+                    if (sut.IsNothing()) evidence.Should().BeFalse();
+                    else evidence.Should().BeTrue();
+                });
+        }      
+
+        [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+        public async Task DoAsync_method_consumes_the_tuple_value_only_on_Just(string[] values)
+        {
+            await values.ForEachAsync(async (value) =>
+                {
+                    var evidence = false;
+                    var sut = Maybe.Return((value, value));
+
+                    await sut.DoAsync(_ => {
+                        evidence = true;
+                        return Task.FromResult(Unit.Default);
+                    });
+
+                    if (sut.IsNothing()) evidence.Should().BeFalse();
+                    else evidence.Should().BeTrue();
+                });
+        }           
     }
 }
