@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
 using SharpX;
@@ -53,5 +54,16 @@ namespace Outcomes
             evidence.Should().Be(1);
             outcome.Should().Be(Unit.Default);
         }        
+
+        [Fact]
+        public void ToUnit_discards_any_value()
+        {
+            ((byte)1).ToUnit().Should().Be(Unit.Default);
+            2.ToUnit().Should().Be(Unit.Default);
+            3.3.ToUnit().Should().Be(Unit.Default);
+            "4".ToUnit().Should().Be(Unit.Default);
+            typeof(UnitSpecs).ToUnit().Should().Be(Unit.Default);
+            Assembly.GetCallingAssembly().ToUnit().Should().Be(Unit.Default);
+        }
     }
 }
