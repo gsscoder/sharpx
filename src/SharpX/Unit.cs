@@ -43,3 +43,9 @@ public struct Unit : IComparable
         return Task.FromResult(@default);
     }
 }
+
+public static class UnitExtensions
+{
+    /// <summary>Discards the value and returns a <c>Unit</c>.</summary>
+    public static Unit ToUnit<T>(this T value) => Unit.Default;
+}

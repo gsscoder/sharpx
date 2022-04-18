@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Set Maybe type as readonly struct.
 - Added `Maybe::DoAsync` extension overloads.
+- Added `UnitExtensions::ToUnit` extension method.
 
 ## [6.0.0-preview.1] - 2022-03-29
 
