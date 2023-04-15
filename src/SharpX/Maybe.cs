@@ -17,21 +17,22 @@ public enum MaybeType
 /// <summary>The <c>Maybe</c> type models an optional value. A value of type <c>Maybe</c> either
 /// contains a value (represented as <c>Just</c> a), or it is empty (represented as
 /// <c>Nothing</c>).</summary>
-public struct Maybe<T> : IEquatable<Maybe<T>>
+public readonly struct Maybe<T> : IEquatable<Maybe<T>>
 {
 #if DEBUG
     internal
 #endif
     readonly T? _value;
+    readonly MaybeType _tag;
 
     internal Maybe(T value)
     {
         _value = value;
-        Tag = MaybeType.Just;
+        _tag = MaybeType.Just;
     }
 
     /// <summary>Type discriminator.</summary>
-    public MaybeType Tag { get; private set; }
+    public readonly MaybeType Tag { get => _tag; }
 
     /// <summary>Determines whether this instance and another specified <c>Maybe</c> object have the same value.</summary>
     public override bool Equals(object? other)
@@ -314,11 +315,23 @@ public static class MaybeExtensions
 
         return maybe.MatchJust(out T value) switch {
             true => func(value),
-            _ => Unit.Default
+            _    => Unit.Default
         };
     }
 
-    /// <summary>If contans a value executes a <c>System.Func<c> delegate over it.</summary>
+    /// <summary>If contains a value executes an async <c>System.Func<c> delegate over it.</summary>
+    public static async Task<Unit> DoAsync<T>(this Maybe<T> maybe, Func<T, Task<Unit>> func)
+    {
+        Guard.DisallowNull(nameof(maybe), maybe);
+        Guard.DisallowNull(nameof(func), func);
+
+        return maybe.MatchJust(out T value) switch {
+            true => await func(value),
+            _    => Unit.Default
+        };
+    }    
+
+    /// <summary>If contains a tuple value executes a <c>System.Func<c> delegate over it.</summary>
     public static Unit Do<T1, T2>(this Maybe<(T1, T2)> maybe, Func<T1, T2, Unit> func)
     {
         Guard.DisallowNull(nameof(maybe), maybe);
@@ -326,6 +339,18 @@ public static class MaybeExtensions
 
         return maybe.MatchJust(out T1 value1, out T2 value2) switch {
             true => func(value1, value2),
+            _    => Unit.Default
+        };
+    }
+
+    /// <summary>If contans a tuple value executes an async <c>System.Func<c> delegate over it.</summary>
+    public static async Task<Unit> DoAsync<T1, T2>(this Maybe<(T1, T2)> maybe, Func<T1, T2, Task<Unit>> func)
+    {
+        Guard.DisallowNull(nameof(maybe), maybe);
+        Guard.DisallowNull(nameof(func), func);
+
+        return maybe.MatchJust(out T1 value1, out T2 value2) switch {
+            true => await func(value1, value2),
             _ => Unit.Default
         };
     }
