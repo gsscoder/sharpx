@@ -509,6 +509,9 @@ public static class EnumerableExtensions
     /// <summary>Converts a value to an enumerable.</summary>
     public static IEnumerable<T> ToEnumerable<T>(this T value) => Primitives.ToEnumerable(value);
 
+    /// <summary>Determines if a sequence is null or empty.</summary>
+    public static bool IsEmpty<T>(this IEnumerable<T>? value) => value == null || !value.Any();
+
     #region Internal
     static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source,
         int count, Func<int, int, Exception> errorSelector)

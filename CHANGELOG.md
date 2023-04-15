@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Implemented `StringExtensions::IsEmpty` extension method.
+- Implemented `EnumerableExtensions::IsEmpty` extension method.
 
 ## [6.0.1] - 2023-04-15
 
