@@ -16,7 +16,7 @@ The library contains functional types and other utilities, following _don't rein
 If you prefer, you can install it via NuGet:
 
 ```sh
-$ dotnet add package SharpX --version 6.0.2
+$ dotnet add package SharpX --version 6.0.3
   Determining projects to restore...
   ...
 ```
