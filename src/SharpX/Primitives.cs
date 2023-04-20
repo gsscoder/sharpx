@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text;
 
 namespace SharpX;
@@ -33,4 +34,11 @@ public static class Primitives
         }
         return builder.ToString();
     }        
+
+    public static bool ChanceOf(int thresold)
+    {
+        Guard.DisallowNegative(nameof(thresold), thresold);
+
+        return RandomNumberGenerator.GetInt32(0, 100) <= thresold;
+    }
 }
