@@ -2,6 +2,7 @@ using FluentAssertions;
 using FsCheck;
 using FsCheck.Xunit;
 using SharpX;
+using Xunit;
 
 namespace Outcomes;
 
@@ -15,5 +16,21 @@ public class PrimitivesSpecs
         outcome.Should().NotBeEmpty()
             .And.HaveCount(1)
             .And.Contain(value);
+    }
+
+    [Fact]
+    public void Should_return_false_when_chance_is_0_percent()
+    {
+        var outcome = Primitives.ChanceOf(0);
+
+        outcome.Should().BeFalse();
+    }
+
+    [Fact]
+    public void Should_return_true_when_chance_is_100_percent()
+    {
+        var outcome = Primitives.ChanceOf(100);
+
+        outcome.Should().BeTrue();
     }
 }
