@@ -9,7 +9,8 @@ The library contains functional types and other utilities, following _don't rein
 
 ## Targets
 
-- .NET 6.0
+- .NET Core 3.1 LTS
+- .NET 6.0 LTS
 
 ## Install via NuGet
 
