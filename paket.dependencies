@@ -1,6 +1,6 @@
 group main
     source https://www.nuget.org/api/v2
-    framework: net60
+    framework: netcoreapp3.1, net60
     nuget FSharp.Core 4.7.0
 
 group specs
