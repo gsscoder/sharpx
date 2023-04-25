@@ -2,11 +2,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
     <LangVersion>10.0</LangVersion>
     <Title>Functional programming and other utilities .NET</Title>
     <Description>Functional programming and other utilities .NET</Description>
-    <Version>6.0.3</Version>
+    <Version>6.1.0</Version>
     <Authors>gsscoder</Authors>
     <Copyright>Copyright (C) Giacomo Stelluti Scala, 2015-2022</Copyright>
     <PackageProjectUrl>https://github.com/gsscoder/sharpx</PackageProjectUrl>
@@ -18,6 +18,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+	  <DefineConstants>NETCOREAPP31</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
+	  <DefineConstants>NET60</DefineConstants>
+  </PropertyGroup>  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>../../artifacts/SharpX/Debug</OutputPath>
   </PropertyGroup>
