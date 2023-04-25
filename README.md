@@ -9,14 +9,15 @@ The library contains functional types and other utilities, following _don't rein
 
 ## Targets
 
-- .NET 6.0
+- .NET Core 3.1 LTS
+- .NET 6.0 LTS
 
 ## Install via NuGet
 
 If you prefer, you can install it via NuGet:
 
 ```sh
-$ dotnet add package SharpX --version 6.0.3
+$ dotnet add package SharpX --version 6.1.0
   Determining projects to restore...
   ...
 ```
