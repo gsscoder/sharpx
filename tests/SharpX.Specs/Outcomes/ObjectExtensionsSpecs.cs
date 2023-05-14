@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using FluentAssertions;
 using SharpX;
 using SharpX.Extensions;
@@ -17,12 +18,14 @@ namespace Outcomes
         static readonly Random _random = new CryptoRandom();
 
         [Fact]
-        public void Should_convert_anything_to_Unit()
+        public void Should_discards_anything_to_Unit()
         {
-            new object().ToUnit().Should().Be(Unit.Default);
-            _random.NextDouble().ToUnit().Should().Be(Unit.Default);
-            Strings.Generate(_random.Next(3, 9)).ToUnit().Should().Be(Unit.Default);
-            new FakeObject { StringValue = "foobarbaz", IntValue = 123 }.ToUnit().Should().Be(Unit.Default);
+            ((byte)1).ToUnit().Should().Be(Unit.Default);
+            2.ToUnit().Should().Be(Unit.Default);
+            3.3.ToUnit().Should().Be(Unit.Default);
+            "4".ToUnit().Should().Be(Unit.Default);
+            typeof(ObjectExtensionsSpecs).ToUnit().Should().Be(Unit.Default);
+            Assembly.GetCallingAssembly().ToUnit().Should().Be(Unit.Default);
         }
     }
 }
