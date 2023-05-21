@@ -164,4 +164,18 @@ public class StringExtensionsSpecs
         
         outcome.Should().BeEquivalentTo(expected);
     }
+
+    [Fact]
+    public void Should_create_guid_from_a_guid_string()
+    {
+        var value = new Guid().ToString();
+
+        var outcome = value.ToGuid(safe: false);
+        
+        outcome.Should().Be(new Guid(value));
+
+        outcome = value.ToGuid(safe: true);
+        
+        outcome.Should().Be(new Guid(value));
+    }
 }
