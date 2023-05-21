@@ -51,6 +51,15 @@ public static class StringExtensions
     public static string ToLowerFirst(this string value) =>
         Strings.ToLowerFirst(value);
 
+    /// <summary>Creates a Guid from a given string or default if safe is set.</summary>
+    public static Guid ToGuid(this string value, bool safe = false)
+    {
+        if (!safe) return new Guid(value);
+        return Guid.TryParse(value, out var result)
+            ? result
+            : default;
+    }
+
     /// <summary>Replicates a string for a given number of times using a seperator.</summary>
     public static string Replicate(this string value, int count, string separator = "") =>
         Strings.Replicate(value, count, separator);
