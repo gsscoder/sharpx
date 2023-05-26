@@ -10,6 +10,7 @@
     <Company>gsscoder</Company>
     <Authors>gsscoder</Authors>
     <Product>SharpX</Product>
+    <NoWarn>CS0618</NoWarn>
   </PropertyGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
