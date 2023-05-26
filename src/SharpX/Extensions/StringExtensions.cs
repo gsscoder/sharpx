@@ -100,8 +100,8 @@ public static class StringExtensions
 
     /// <summary>Retrieves a substring from this instance. The substring starts at a specified
     /// character position and has a specified length. No exception is raised if limit is exceeded.</summary>
-    public static string SafeSubstring(this string value, int startIndex, int length) =>
-        Strings.SafeSubstring(value, startIndex, length);
+    public static string Substring(this string value, int startIndex, int length, bool safe = false) =>
+        Strings.Substring(value, startIndex, length, safe);
 
     /// <summary>Reduces a sequence of strings to a sequence of parts, splitted by space,
     /// of each original string.</summary>
