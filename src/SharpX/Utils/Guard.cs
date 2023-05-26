@@ -66,6 +66,12 @@ public static class Guard
     {
         if (value.Length == 0) throw new ArgumentException($"{argumentName} cannot be empty.", argumentName);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void DisallowEmptyEnumerable<T>(string argumentName, IEnumerable<T> value)
+    {
+        if (value.Count() == 0) throw new ArgumentException($"{argumentName} cannot be empty.", argumentName);
+    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void DisallowMalformedGuid(string argumentName, string value)
