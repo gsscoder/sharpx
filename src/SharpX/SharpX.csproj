@@ -8,7 +8,7 @@
     <Description>Functional programming and other utilities .NET</Description>
     <Version>6.2.0</Version>
     <Authors>gsscoder</Authors>
-    <Copyright>Copyright (C) Giacomo Stelluti Scala, 2015-2022</Copyright>
+    <Copyright>Copyright (C) Giacomo Stelluti Scala, 2015-2023</Copyright>
     <PackageProjectUrl>https://github.com/gsscoder/sharpx</PackageProjectUrl>
     <RepositoryUrl>https://github.com/gsscoder/sharpx</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
