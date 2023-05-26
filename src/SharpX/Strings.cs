@@ -341,9 +341,12 @@ public static class Strings
     /// <summary>Retrieves a substring from this instance. The substring starts at a specified
     /// character position and has a specified length. No exception is raised if limit is exceeded.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string SafeSubstring(string value, int startIndex, int length)
+    public static string Substring(string value, int startIndex, int length, bool safe = false)
     {
         Guard.DisallowNull(nameof(value), value);
+
+        if (safe == false) return value.Substring(startIndex, length);
+
         Guard.DisallowNegative(nameof(startIndex), startIndex);
         Guard.DisallowNegative(nameof(length), length);
         

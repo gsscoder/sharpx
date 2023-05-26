@@ -170,7 +170,7 @@ public class StringsSpecs
     [Fact]
     public void Should_get_an_empty_string_when_start_index_and_length_are_zero()
     {
-        var outcome = Strings.SafeSubstring(string.Empty, 0, 0);
+        var outcome = Strings.Substring(string.Empty, 0, 0, safe: true);
 
         outcome.Should().Be(string.Empty);
     }
@@ -181,7 +181,7 @@ public class StringsSpecs
     [InlineData("foo bar baz")]
     public void Should_get_same_string_when_start_index_and_length_match_string_length(string value)
     {
-        var outcome = Strings.SafeSubstring(value, 0, value.Length);
+        var outcome = Strings.Substring(value, 0, value.Length, safe: true);
 
         outcome.Should().Be(value);
     }
@@ -195,7 +195,7 @@ public class StringsSpecs
         var input = Strings.Mangle(Strings.Replicate(value, _random.Next(1, 3), separator: "@"),
             times: 2, maxLength: 3);
         
-        var outcome = Strings.SafeSubstring(input, 0, input.Length * _random.Next(2, 3));
+        var outcome = Strings.Substring(input, 0, input.Length * _random.Next(2, 3), safe: true);
 
         outcome.Should().Be(input);
     }
