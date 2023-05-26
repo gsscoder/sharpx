@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed UnitExtensions class.
 - Implemented `StringExtensions::ToGuid` extension method.
+- Reimplemented `SafeSubstring` as `Substring` overload.
 
 ## [6.1.0]
 
