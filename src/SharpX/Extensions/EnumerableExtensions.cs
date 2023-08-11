@@ -433,13 +433,22 @@ public static class EnumerableExtensions
     }
 
     /// <summary>Takes an element and a sequence and `intersperses' that element between its
-    /// elements.</summary>
-    public static IEnumerable<T> Intersperse<T>(this IEnumerable<T> source, T element)
+    /// elements. The operation could be random.</summary>
+    public static IEnumerable<T> Intersperse<T>(this IEnumerable<T> source, T element, int? chance = null, int? count = null)
     {
         Guard.DisallowNull(nameof(source), source);
         Guard.DisallowNull(nameof(element), element);
+        if ((chance == null && count != null) ||
+            (chance != null && count == null)) throw new ArgumentException($"{nameof(chance)} and {count} are both null or both valued.");
+        var random = chance != null & count != null;
+        if (random) {
+            Guard.DisallowNegative(nameof(chance), chance.Value);
+            Guard.DisallowNegative(nameof(count), count.Value);
+        }
 
-        return _(); IEnumerable<T> _()
+        return !random ? _() : _rnd();
+        
+        IEnumerable<T> _()
         {
             var count = source.Count();
             var last = count - 1;
@@ -449,6 +458,24 @@ public static class EnumerableExtensions
                     yield return element;
                 }
             }
+        }
+
+        IEnumerable<T> _rnd()
+        {
+            foreach (var value in Generate()) yield return value;
+            foreach (var item in source) {
+                yield return item;
+                foreach (var value in Generate()) yield return value;
+            }
+        }
+
+        IEnumerable<T> Generate()
+        {
+            return Primitives.ChanceOf(chance.Value) switch
+            {
+                true => Enumerable.Repeat(element, RandomNumberGenerator.GetInt32(0, count.Value + 1)),
+                _ => Enumerable.Empty<T>(),
+            }; ;
         }
     }
 
