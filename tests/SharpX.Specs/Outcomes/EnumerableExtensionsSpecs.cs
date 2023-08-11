@@ -330,7 +330,7 @@ public class EnumerableExtensionsSpecs
         }
     }
 
-
+    #region Intersperse
     [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
     public void Should_Intersperse_a_value(string[] values)
     {
@@ -343,4 +343,37 @@ public class EnumerableExtensionsSpecs
         outcomeSubset.Should().NotBeNullOrEmpty()
             .And.AllBe(arbitraryString);
     }
+
+    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+    public void Intersperse_randomly_with_chance_zero_yields_original_sequence(string[] values)
+    {
+        var arbitraryString = Strings.Generate(9);
+
+        var outcome = values.Intersperse(arbitraryString, chance: 0, count: 1);
+
+        outcome.Should().BeEquivalentTo(values);
+    }
+
+    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+    public void Intersperse_randomly_with_count_zero_yields_original_sequence(string[] values)
+    {
+        var arbitraryString = Strings.Generate(9);
+
+        var outcome = values.Intersperse(arbitraryString, chance: 100, count: 0);
+
+        outcome.Should().BeEquivalentTo(values);
+    }
+
+    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+    public void Should_Intersperse_a_value_randomly(string[] values)
+    {
+        var arbitraryString = Strings.Generate(9);
+
+        var outcome = values.Intersperse(arbitraryString, chance: 50, count: 2);
+
+        outcome.Should().NotBeNullOrEmpty()
+            .And.Contain(arbitraryString)
+            .And.Contain(values);
+    }
+    #endregion
 }
