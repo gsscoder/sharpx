@@ -44,6 +44,8 @@ public static class Primitives
     {
         Guard.DisallowNegative(nameof(thresold), thresold);
 
-        return RandomNumberGenerator.GetInt32(0, 100) <= thresold;
+        return thresold > 0
+            ? RandomNumberGenerator.GetInt32(0, 100) <= thresold
+            : false;
     }
 }
