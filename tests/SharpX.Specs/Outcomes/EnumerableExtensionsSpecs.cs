@@ -329,4 +329,18 @@ public class EnumerableExtensionsSpecs
             outcome.ToArray().Should().Contain(value.ToArray());
         }
     }
+
+
+    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+    public void Should_Intersperse_a_value(string[] values)
+    {
+        var arbitraryString = Strings.Generate(9);
+
+        var outcome = values.Intersperse(arbitraryString);
+        
+        var outcomeSubset = outcome.Where((number, index) => index % 2 != 0); 
+
+        outcomeSubset.Should().NotBeNullOrEmpty()
+            .And.AllBe(arbitraryString);
+    }
 }
