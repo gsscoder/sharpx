@@ -437,7 +437,6 @@ public static class EnumerableExtensions
     public static IEnumerable<T> Intersperse<T>(this IEnumerable<T> source, T element, int? chance = null, int? count = null)
     {
         Guard.DisallowNull(nameof(source), source);
-        Guard.DisallowNull(nameof(element), element);
         if ((chance == null && count != null) ||
             (chance != null && count == null)) throw new ArgumentException($"{nameof(chance)} and {count} are both null or both valued.");
         var random = chance != null & count != null;

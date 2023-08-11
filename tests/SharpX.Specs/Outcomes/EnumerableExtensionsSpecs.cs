@@ -332,7 +332,7 @@ public class EnumerableExtensionsSpecs
 
     #region Intersperse
     [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
-    public void Should_Intersperse_a_value(string[] values)
+    public void Should_intersperse_a_value(string[] values)
     {
         var arbitraryString = Strings.Generate(9);
 
@@ -365,7 +365,7 @@ public class EnumerableExtensionsSpecs
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
-    public void Should_Intersperse_a_value_randomly(string[] values)
+    public void Should_intersperse_a_value_randomly(string[] values)
     {
         var arbitraryString = Strings.Generate(9);
 
@@ -374,6 +374,30 @@ public class EnumerableExtensionsSpecs
         outcome.Should().NotBeNullOrEmpty()
             .And.Contain(arbitraryString)
             .And.Contain(values);
+    }
+
+    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+    public void Should_intersperse_null_values(string[] values)
+    {
+        var input = values.Where(x => x != null);
+
+        var outcome = input.Intersperse(null);
+
+        outcome.Should().NotBeNullOrEmpty()
+            .And.Contain((string)null)
+            .And.Contain(input);
+    }
+
+    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+    public void Should_intersperse_null_values_randomly(string[] values)
+    {
+        var input = values.Where(x => x != null);
+
+        var outcome = input.Intersperse(null, chance: 50, count: 2);
+
+        outcome.Should().NotBeNullOrEmpty()
+            .And.Contain((string)null)
+            .And.Contain(input);
     }
     #endregion
 }
