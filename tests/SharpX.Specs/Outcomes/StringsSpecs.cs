@@ -26,7 +26,7 @@ public class StringsSpecs
         outcome.Should().Be(expected);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryNegativeIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersNegative) })]
     public void Trying_to_generate_a_random_string_with_less_than_one_char_raises_ArgumentException(int value)
     {
         Action action = () => Strings.Generate(value);
@@ -42,7 +42,7 @@ public class StringsSpecs
         outcome.Should().NotBeNull().And.BeEmpty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersPositive) })]
     public void Should_generate_a_random_string_of_given_length(int value)
     {
         var strings = new List<string>() { Strings.Generate(_random.Next(1, 60)) };
@@ -68,7 +68,7 @@ public class StringsSpecs
             .WithMessage("Cannot allow quote chars when special chars are disallowed. (Parameter 'options')");
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersPositive) })]
     public void Should_generate_a_random_string_of_given_length_with_special_chars(int value)
     {
         var outcome = Strings.Generate(value + 10,
@@ -78,7 +78,7 @@ public class StringsSpecs
         outcome.Any(Strings.IsSpecialChar).Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersPositive) })]
     public void Should_generate_a_random_string_of_given_length_with_special_chars_no_quotes(int value)
     {
         var outcome = Strings.Generate(value + 10,
@@ -88,7 +88,7 @@ public class StringsSpecs
         outcome.Any(c => c == '"' || c == '\'' || c == '`').Should().BeFalse();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersPositive) })]
     public void Should_generate_a_random_string_of_given_length_with_prefix(int value)
     {
         const string prefix = "prfx_";
