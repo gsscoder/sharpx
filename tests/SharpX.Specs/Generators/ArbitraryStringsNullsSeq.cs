@@ -1,6 +1,6 @@
 using FsCheck;
 
-static class ArbitraryListOfStrings
+static class ArbitraryStringsNullsSeq
 {
     public static Arbitrary<string[]> StringListGenerator() => Gen.Shuffle(new [] {
             string.Empty, "one", "1", "two", "2", "three", "3", null, "four", "4", string.Empty, "five",
