@@ -1,29 +1,24 @@
 #pragma warning disable 0618
 
+using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using FsCheck;
 using FsCheck.Xunit;
 using SharpX;
-using SharpX.Extensions;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace Outcomes;
 
 public class EitherSpecs
 {
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
-    public void Shoud_build_Left(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryStrings) })]
+    public void Shoud_build_Left(string value)
     {
-        values.ForEach(value => {
-            if (value == null) return; // Skip null values
+        var outcome = Either.Left<string, int>(value);
 
-            var outcome = Either.Left<string, int>(value);
-
-            outcome.IsLeft().Should().BeTrue();
-            outcome.FromLeft().Should().Be(value);
-        });
+        outcome.IsLeft().Should().BeTrue();
+        outcome.FromLeft().Should().Be(value);
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
