@@ -1,7 +1,7 @@
 using FsCheck;
 using SharpX;
 
-static class ArbitraryStringsWithNull
+static class ArbitraryStringsNulls
 {
     public static Arbitrary<string> StringGenerator() => Gen.OneOf(
         Gen.Constant<string>(null),

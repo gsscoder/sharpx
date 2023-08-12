@@ -60,7 +60,7 @@ public class MaybeSpecs
         }
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNulls) })]
     public void Shoud_return_proper_maybe_with_a_reference_type(string value)
     {
         var outcome = Maybe.Return(value);
@@ -77,7 +77,7 @@ public class MaybeSpecs
     }
 
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNulls) })]
     public void FromJust_should_unwrap_the_value_or_lazily_return_from_a_function(string value)
     {
         Func<string> func = () => "foo";
@@ -90,7 +90,7 @@ public class MaybeSpecs
         else outcome.Should().NotBeNull().And.Be(value);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNulls) })]
     public void Should_return_a_singleton_sequence_with_Just_and_an_empty_with_Nothing(string value)
     {
         var sut = Maybe.Return(value);
@@ -106,7 +106,7 @@ public class MaybeSpecs
         }
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
     public void Should_return_Just_values_from_a_sequence(string[] values)
     {
         var maybes = from value in values select Maybe.Return(value);
@@ -118,7 +118,7 @@ public class MaybeSpecs
             .And.ContainInOrder(from value in values where value != null select value);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
     public void Should_count_Nothing_values_of_a_sequence(string[] values)
     {
         var maybes = from value in values select Maybe.Return(values);
@@ -128,7 +128,7 @@ public class MaybeSpecs
         outcome.Should().BeLessOrEqualTo(values.Count());
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
     public void Should_throw_out_Just_values_from_a_sequence(string[] values)
     {
         Func<string, Maybe<int>> readInt = value => { 
@@ -146,7 +146,7 @@ public class MaybeSpecs
     }
 
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersSeq) })]
     public void Should_match_Just_of_anonymous_tuple_type_with_lambda_function(int value)
     {
         var sut = Maybe.Just((value, value / 2));
@@ -172,7 +172,7 @@ public class MaybeSpecs
         outcome2.Should().Be(value /2);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNulls) })]
     public void Should_throw_out_and_map_a_Just_value_or_lazily_build_one_in_case_of_Nothing(string value)
     {
         Func<string> func = () => "foo";
@@ -296,7 +296,7 @@ public class MaybeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersPositive) })]
     public void Just_with_identical_hash_codes(int value)
     {
         var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value);
@@ -319,7 +319,7 @@ public class MaybeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersPositive) })]
     public void Just_wrapping_the_same_value_have_identical_hash_codes(int value)
     {
         var suts = Enumerable.Repeat(Maybe.Just(1), value);
@@ -329,7 +329,7 @@ public class MaybeSpecs
         outcomes.Should().OnlyContain(x => x == outcomes.First());
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersPositive) })]
     public void Nothing_of_the_same_type_have_identical_hash_codes(int value)
     {
         var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value);
@@ -361,7 +361,7 @@ public class MaybeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNulls) })]
     public void Do_method_consumes_the_value_only_on_Just(string value)
     {
             var evidence = false;
@@ -376,7 +376,7 @@ public class MaybeSpecs
             else evidence.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNulls) })]
     public async Task DoAsync_method_consumes_the_value_only_on_Just(string value)
     {
         var evidence = false;
@@ -391,7 +391,7 @@ public class MaybeSpecs
         else evidence.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNulls) })]
     public void Do_method_consumes_the_tuple_value_only_on_Just(string value)
     {
         var evidence = false;
@@ -406,7 +406,7 @@ public class MaybeSpecs
         else evidence.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNulls) })]
     public async Task DoAsync_method_consumes_the_tuple_value_only_on_Just(string value)
     {
         var evidence = false;
