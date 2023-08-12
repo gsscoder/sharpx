@@ -60,59 +60,50 @@ public class MaybeSpecs
         }
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
-    public void Shoud_return_proper_maybe_with_a_reference_type(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    public void Shoud_return_proper_maybe_with_a_reference_type(string value)
     {
-        values.ForEach(value =>
-            {
-                var outcome = Maybe.Return(value);
+        var outcome = Maybe.Return(value);
 
-                outcome.Should().NotBeNull();
+        outcome.Should().NotBeNull();
 
-                if (value == null) {
-                    outcome.IsNothing().Should().BeTrue();
-                }
-                else {
-                    outcome.IsJust().Should().BeTrue();
-                    outcome.FromJust().Should().Be(value);
-                }
-            });
+        if (value == null) {
+            outcome.IsNothing().Should().BeTrue();
+        }
+        else {
+            outcome.IsJust().Should().BeTrue();
+            outcome.FromJust().Should().Be(value);
+        }
     }
 
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
-    public void FromJust_should_unwrap_the_value_or_lazily_return_from_a_function(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    public void FromJust_should_unwrap_the_value_or_lazily_return_from_a_function(string value)
     {
-        values.ForEach(value =>
-            {
-                Func<string> func = () => "foo";
+        Func<string> func = () => "foo";
 
-                var sut = Maybe.Return(value);
+        var sut = Maybe.Return(value);
 
-                var outcome = sut.FromJust(func);
+        var outcome = sut.FromJust(func);
 
-                if (value == null) outcome.Should().NotBeNull().And.Be(func());
-                else outcome.Should().NotBeNull().And.Be(value);
-            });
+        if (value == null) outcome.Should().NotBeNull().And.Be(func());
+        else outcome.Should().NotBeNull().And.Be(value);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
-    public void Should_return_a_singleton_sequence_with_Just_and_an_empty_with_Nothing(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    public void Should_return_a_singleton_sequence_with_Just_and_an_empty_with_Nothing(string value)
     {
-        values.ForEach(value =>
-            {
-                var sut = Maybe.Return(value);
+        var sut = Maybe.Return(value);
 
-                var outcome = sut.ToEnumerable();
+        var outcome = sut.ToEnumerable();
 
-                if (value == null) {
-                    outcome.Should().NotBeNull().And.BeEmpty();
-                }
-                else {
-                    outcome.Should().NotBeNullOrEmpty().And.HaveCount(1);
-                    outcome.ElementAt(0).Should().Be(value);
-                }
-            });
+        if (value == null) {
+            outcome.Should().NotBeNull().And.BeEmpty();
+        }
+        else {
+            outcome.Should().NotBeNullOrEmpty().And.HaveCount(1);
+            outcome.ElementAt(0).Should().Be(value);
+        }
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
@@ -181,20 +172,17 @@ public class MaybeSpecs
         outcome2.Should().Be(value /2);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
-    public void Should_throw_out_and_map_a_Just_value_or_lazily_build_one_in_case_of_Nothing(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    public void Should_throw_out_and_map_a_Just_value_or_lazily_build_one_in_case_of_Nothing(string value)
     {
-        values.ForEach(value =>
-            {
-                Func<string> func = () => "foo";
+        Func<string> func = () => "foo";
 
-                var sut = Maybe.Return(value);
+        var sut = Maybe.Return(value);
 
-                var outcome = sut.Map(v => v, func);
+        var outcome = sut.Map(v => v, func);
 
-                if (value == null) outcome.Should().NotBeNull().And.Be(func());
-                else outcome.Should().NotBeNull().And.Be(value);
-            });
+        if (value == null) outcome.Should().NotBeNull().And.Be(func());
+        else outcome.Should().NotBeNull().And.Be(value);
     }
 
     [Theory]
@@ -376,75 +364,63 @@ public class MaybeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
-    public void Do_method_consumes_the_value_only_on_Just(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    public void Do_method_consumes_the_value_only_on_Just(string value)
     {
-        values.ForEach(value =>
-            {
-                var evidence = false;
-                var sut = Maybe.Return(value);
+            var evidence = false;
+            var sut = Maybe.Return(value);
 
-                sut.Do(_ => {
-                    evidence = true;
-                    return Unit.Default;
-                });
-
-                if (sut.IsNothing()) evidence.Should().BeFalse();
-                else evidence.Should().BeTrue();
+            sut.Do(_ => {
+                evidence = true;
+                return Unit.Default;
             });
+
+            if (sut.IsNothing()) evidence.Should().BeFalse();
+            else evidence.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
-    public async Task DoAsync_method_consumes_the_value_only_on_Just(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    public async Task DoAsync_method_consumes_the_value_only_on_Just(string value)
     {
-        await values.ForEachAsync(async (value) =>
-            {
-                var evidence = false;
-                var sut = Maybe.Return(value);
+        var evidence = false;
+        var sut = Maybe.Return(value);
 
-                await sut.DoAsync(_ => {
-                    evidence = true;
-                    return Task.FromResult(Unit.Default);
-                });
+        await sut.DoAsync(_ => {
+            evidence = true;
+            return Task.FromResult(Unit.Default);
+        });
 
-                if (sut.IsNothing()) evidence.Should().BeFalse();
-                else evidence.Should().BeTrue();
-            });
-    }        
+        if (sut.IsNothing()) evidence.Should().BeFalse();
+        else evidence.Should().BeTrue();
+    }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
-    public void Do_method_consumes_the_tuple_value_only_on_Just(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    public void Do_method_consumes_the_tuple_value_only_on_Just(string value)
     {
-        values.ForEach(value =>
-            {
-                var evidence = false;
-                var sut = Maybe.Return((value, value));
+        var evidence = false;
+        var sut = Maybe.Return((value, value));
 
-                sut.Do(_ => {
-                    evidence = true;
-                    return Unit.Default;
-                });
+        sut.Do(_ => {
+            evidence = true;
+            return Unit.Default;
+        });
 
-                if (sut.IsNothing()) evidence.Should().BeFalse();
-                else evidence.Should().BeTrue();
-            });
-    }      
+        if (sut.IsNothing()) evidence.Should().BeFalse();
+        else evidence.Should().BeTrue();
+    }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
-    public async Task DoAsync_method_consumes_the_tuple_value_only_on_Just(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringsWithNull) })]
+    public async Task DoAsync_method_consumes_the_tuple_value_only_on_Just(string value)
     {
-        await values.ForEachAsync(async (value) =>
-            {
-                var evidence = false;
-                var sut = Maybe.Return((value, value));
+        var evidence = false;
+        var sut = Maybe.Return((value, value));
 
-                await sut.DoAsync(_ => {
-                    evidence = true;
-                    return Task.FromResult(Unit.Default);
-                });
+        await sut.DoAsync(_ => {
+            evidence = true;
+            return Task.FromResult(Unit.Default);
+        });
 
-                if (sut.IsNothing()) evidence.Should().BeFalse();
-                else evidence.Should().BeTrue();
-            });
+        if (sut.IsNothing()) evidence.Should().BeFalse();
+        else evidence.Should().BeTrue();
     }           
 }
