@@ -21,11 +21,9 @@ public class EitherSpecs
         outcome.FromLeft().Should().Be(value);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersPositive) })]
     public void Shoud_build_Right(int value)
     {
-        if (value == default) return; // Skip default values
-
         var outcome = Either.Right<string, int>(value);
 
         outcome.IsRight().Should().BeTrue();
