@@ -296,11 +296,10 @@ public class MaybeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Theory]
-    [InlineData(9)]
-    public void Just_with_identical_hash_codes(int samples)
+    [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+    public void Just_with_identical_hash_codes(int value)
     {
-        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), samples);
+        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value);
 
         var outcomes = from sut in suts select sut.GetHashCode();
 
@@ -320,22 +319,20 @@ public class MaybeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Theory]
-    [InlineData(9)]
-    public void Just_wrapping_the_same_value_have_identical_hash_codes(int samples)
+    [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+    public void Just_wrapping_the_same_value_have_identical_hash_codes(int value)
     {
-        var suts = Enumerable.Repeat(Maybe.Just(1), samples);
+        var suts = Enumerable.Repeat(Maybe.Just(1), value);
 
         var outcomes = from sut in suts select sut.GetHashCode();
 
         outcomes.Should().OnlyContain(x => x == outcomes.First());
     }
 
-    [Theory]
-    [InlineData(9)]
-    public void Nothing_of_the_same_type_have_identical_hash_codes(int samples)
+    [Property(Arbitrary = new[] { typeof(ArbitraryPositiveIntegers) })]
+    public void Nothing_of_the_same_type_have_identical_hash_codes(int value)
     {
-        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), samples);
+        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value);
 
         var outcomes = from sut in suts select sut.GetHashCode();
 
