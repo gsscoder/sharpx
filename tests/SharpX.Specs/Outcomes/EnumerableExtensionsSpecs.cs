@@ -7,6 +7,7 @@ using FsCheck.Xunit;
 using Microsoft.FSharp.Collections;
 using SharpX;
 using SharpX.Extensions;
+using SharpX.FsCheck;
 using Xunit;
 
 namespace Outcomes;
