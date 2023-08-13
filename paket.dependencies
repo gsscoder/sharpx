@@ -3,6 +3,7 @@ group main
     framework: netcoreapp3.1, net60
     nuget FSharp.Core 4.7.0
     nuget FsCheck 3.0.0-alpha4 prerelease
+    nuget Microsoft.NETCore.Platforms 7.0.4
 
 group specs
     source https://www.nuget.org/api/v2
@@ -17,3 +18,4 @@ group specs
     nuget Bogus 33.1.1
     nuget WaffleGenerator 4.2.1
     nuget WaffleGenerator.Bogus 4.2.1
+    nuget Microsoft.NETCore.Platforms 7.0.4
