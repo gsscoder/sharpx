@@ -16,7 +16,7 @@ public class OutcomeSpecs
 {
     static Random _random = new CryptoRandom();
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Error_with_same_string_and_exception_are_equal(string[] values)
     {
         values.ForEach(value =>
@@ -40,7 +40,7 @@ public class OutcomeSpecs
         outcome.Tag.Should().Be(OutcomeType.Success);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Shoud_build_Failure_with_string(string[] values)
     {
         values.ForEach(value =>
@@ -55,7 +55,7 @@ public class OutcomeSpecs
         });
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Shoud_build_Failure_with_string_and_exception(string[] values)
     {
         values.ForEach(value =>
@@ -93,7 +93,7 @@ public class OutcomeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Result_of_type_Failure_with_different_error_strings_are_not_equal(string[] values)
     {
         values.ForEach(value =>
@@ -112,7 +112,7 @@ public class OutcomeSpecs
         });
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Result_of_type_Failure_with_different_exceptions_are_not_equal(string[] values)
     {
         values.ForEach(value =>
@@ -130,7 +130,7 @@ public class OutcomeSpecs
         });
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Result_of_type_Failure_with_different_errors_are_not_equal(string[] values)
     {
         values.ForEach(value =>
@@ -159,7 +159,7 @@ public class OutcomeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Should_match_Failure(string[] values)
     {
         values.ForEach(value =>
@@ -176,7 +176,7 @@ public class OutcomeSpecs
         });
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Should_match_Failure_with_message_only(string[] values)
     {
         values.ForEach(value =>

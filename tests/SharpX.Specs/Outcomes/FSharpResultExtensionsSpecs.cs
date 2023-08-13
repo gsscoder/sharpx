@@ -12,7 +12,7 @@ namespace Outcomes;
 
 public class FSharpResultExtensionsSpecs
 {
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
     public void Should_match_a_result(int value)
     {
         int? expected = null;
@@ -26,7 +26,7 @@ public class FSharpResultExtensionsSpecs
         expected.Should().Be(value);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
     public void Should_match_an_error(int value)
     {
         string error = null;
@@ -40,7 +40,7 @@ public class FSharpResultExtensionsSpecs
         error.Should().Be("bad result");
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
     public void Should_map_a_value(int value)
     {
         var sut = FSharpResult<int, string>.NewOk(value);
@@ -52,7 +52,7 @@ public class FSharpResultExtensionsSpecs
         outcome.ResultValue.Should().Be(func(value));
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
     public void Should_keep_error_when_mapping_a_value_of_a_fail(int value)
     {
         var sut = FSharpResult<int, string>.NewError("bad result");
@@ -63,7 +63,7 @@ public class FSharpResultExtensionsSpecs
         outcome.ResultValue.Should().Be(default);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
     public void Should_bind_a_value(int value)
     {
         var sut = FSharpResult<int, string>.NewOk(value);
@@ -76,7 +76,7 @@ public class FSharpResultExtensionsSpecs
         outcome.ResultValue.Should().Be(func(value).ResultValue);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
     public void Should_keep_error_when_binding_a_value_of_fail(int value)
     {
         var sut = FSharpResult<int, string>.NewError("bad result");
@@ -87,7 +87,7 @@ public class FSharpResultExtensionsSpecs
         outcome.ResultValue.Should().Be(default);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
     public void Should_return_a_value(int value)
     {
         var sut = FSharpResult<int, string>.NewOk(value);
@@ -108,7 +108,7 @@ public class FSharpResultExtensionsSpecs
             .WithMessage("bad result");
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
     public void Should_return_and_map_a_value(int value)
     {
         var sut = FSharpResult<int, string>.NewOk(value);
@@ -119,7 +119,7 @@ public class FSharpResultExtensionsSpecs
         outcome.Should().Be(func(value));
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
     public void Should_return_alternate_value_on_a_file(int value)
     {
         var sut = FSharpResult<int, string>.NewError("bad result");
@@ -130,7 +130,7 @@ public class FSharpResultExtensionsSpecs
         outcome.Should().Be(0);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
     public void Should_build_a_Maybe_Just_from_a_success(int value)
     {
         var sut = FSharpResult<int, string>.NewOk(value);
