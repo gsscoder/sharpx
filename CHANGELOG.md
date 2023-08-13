@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved implementation of `Primitives::ChanceOf`.
 - Improved `EnumerableExtensions::Intersperse` to support randomness.
 - Improved `EnumerableExtensions::Intersperse` to support nulls.
+- Moved FsCheck generators to main project.
 
 ## [6.2.1] - 2023-05-26
 
