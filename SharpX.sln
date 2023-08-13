@@ -8,6 +8,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpX.Specs", "tests\SharpX.Specs\SharpX.Specs.csproj", "{BBDB5904-5A75-49E7-A57E-EB92E32A7527}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{434B6A60-0D64-4958-991F-17DBC9DC0F18}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F51FF1E6-EC52-4C95-B0FE-DD02F2B43D30}"
 EndProject
@@ -33,7 +36,7 @@ Global
 		{BBDB5904-5A75-49E7-A57E-EB92E32A7527} = {F51FF1E6-EC52-4C95-B0FE-DD02F2B43D30}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		                SolutionGuid = {A02DD375-4885-4373-B792-B2541B428719}
 		        SolutionGuid = {9EDE47D4-D8AA-406C-A4FC-DE8735C3B386}
+		                SolutionGuid = {A02DD375-4885-4373-B792-B2541B428719}
 	EndGlobalSection
 EndGlobal
