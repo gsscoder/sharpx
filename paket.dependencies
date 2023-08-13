@@ -2,6 +2,7 @@ group main
     source https://www.nuget.org/api/v2
     framework: netcoreapp3.1, net60
     nuget FSharp.Core 4.7.0
+    nuget FsCheck 3.0.0-alpha4 prerelease
 
 group specs
     source https://www.nuget.org/api/v2

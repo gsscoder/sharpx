@@ -5,6 +5,7 @@ using FsCheck.Xunit;
 using Microsoft.FSharp.Core;
 using SharpX;
 using SharpX.Extensions;
+using SharpX.FsCheck;
 using Xunit;
 
 namespace Outcomes;

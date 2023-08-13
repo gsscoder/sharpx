@@ -1,5 +1,7 @@
 using FsCheck;
 
+namespace SharpX.FsCheck;
+
 static class ArbitraryStringsNullsSeq
 {
     public static Arbitrary<string[]> StringListGenerator() => Gen.Shuffle(new [] {
