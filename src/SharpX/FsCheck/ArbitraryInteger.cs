@@ -2,7 +2,7 @@ using FsCheck;
 
 namespace SharpX.FsCheck;
 
-static class ArbitraryIntegers
+static class ArbitraryInteger
 {
     public static Arbitrary<int> IntegerGenerator() => Gen.Choose(-30, 30).ToArbitrary();
 }

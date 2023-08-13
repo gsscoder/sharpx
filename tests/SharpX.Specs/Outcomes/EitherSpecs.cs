@@ -13,7 +13,7 @@ namespace Outcomes;
 
 public class EitherSpecs
 {
-    [Property(Arbitrary = new[] { typeof(ArbitraryStrings) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
     public void Shoud_build_Left(string value)
     {
         var outcome = Either.Left<string, int>(value);
@@ -22,7 +22,7 @@ public class EitherSpecs
         outcome.FromLeft().Should().Be(value);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersPositive) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositive) })]
     public void Shoud_build_Right(int value)
     {
         var outcome = Either.Right<string, int>(value);
