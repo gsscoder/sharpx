@@ -15,7 +15,7 @@ namespace Outcomes;
 public class EnumerableExtensionsSpecs
 {
     #region TryHead
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerSeq) })]
     public void Trying_to_get_the_head_element_of_a_sequence_should_return_Just(
         FSharpList<int> values)
     {
@@ -35,7 +35,7 @@ public class EnumerableExtensionsSpecs
     #endregion
 
     #region TryLast
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerSeq) })]
     public void Trying_to_get_the_last_element_of_a_sequence_should_return_Just(
         FSharpList<int> values)
     {
@@ -63,7 +63,7 @@ public class EnumerableExtensionsSpecs
         outcome.Should().Match<Maybe<IEnumerable<int>>>(x => x.Tag == MaybeType.Nothing);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerSeq) })]
     public void An_not_empty_sequence_should_be_converted_to_Just(FSharpList<int> values)
     {
         var outcome = values.ToMaybe();
@@ -89,7 +89,7 @@ public class EnumerableExtensionsSpecs
     #endregion
 
     #region Intersperse
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
     public void Should_intersperse_a_value_in_a_sequence(int value)
     {
         var sequence = new int[] {0, 1, 2, 3, 4};
@@ -130,7 +130,7 @@ public class EnumerableExtensionsSpecs
     #endregion
 
     #region Tail
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerSeq) })]
     public void Should_return_the_tail_of_a_sequence(FSharpList<int> values)
     {
         var outcome = values.Tail();
@@ -139,7 +139,7 @@ public class EnumerableExtensionsSpecs
             .And.BeEquivalentTo(values.Skip(1));
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerSeq) })]
     public void Should_return_the_tail_of_a_sequence_using_TailOrEmpty(FSharpList<int> values)
     {
         var outcome = values.TailOrEmpty();
@@ -252,7 +252,7 @@ public class EnumerableExtensionsSpecs
             .WithMessage("The input must be positive.");
     }
     
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerSeq) })]
     public void Trying_to_partition_a_sequence_by_a_negative_number_of_chunks_throws_ArgumentException(
         FSharpList<int> values)
     {
@@ -294,7 +294,7 @@ public class EnumerableExtensionsSpecs
         outcome.Item2.Should().BeEmpty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerSeq) })]
     public void Trying_to_split_a_sequence_with_a_negative_index_throws_ArgumentException(
         FSharpList<int> values)
     {
@@ -304,7 +304,7 @@ public class EnumerableExtensionsSpecs
             .WithMessage("The input must be non-negative.");
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegersSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerSeq) })]
     public void Trying_to_split_a_sequence_with_an_index_greater_than_elements_count_throws_ArgumentException(
         FSharpList<int> values)
     {
@@ -332,7 +332,7 @@ public class EnumerableExtensionsSpecs
     }
 
     #region Intersperse
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Should_intersperse_a_value(string[] values)
     {
         var arbitraryString = Strings.Generate(9);
@@ -345,7 +345,7 @@ public class EnumerableExtensionsSpecs
             .And.AllBe(arbitraryString);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Intersperse_randomly_with_chance_zero_yields_original_sequence(string[] values)
     {
         var arbitraryString = Strings.Generate(9);
@@ -355,7 +355,7 @@ public class EnumerableExtensionsSpecs
         outcome.Should().BeEquivalentTo(values);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Intersperse_randomly_with_count_zero_yields_original_sequence(string[] values)
     {
         var arbitraryString = Strings.Generate(9);
@@ -365,7 +365,7 @@ public class EnumerableExtensionsSpecs
         outcome.Should().BeEquivalentTo(values);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Should_intersperse_a_value_randomly(string[] values)
     {
         var arbitraryString = Strings.Generate(9);
@@ -377,7 +377,7 @@ public class EnumerableExtensionsSpecs
             .And.Contain(values);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Should_intersperse_null_values(string[] values)
     {
         var input = values.Where(x => x != null);
@@ -389,7 +389,7 @@ public class EnumerableExtensionsSpecs
             .And.Contain(input);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringsNullsSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Should_intersperse_null_values_randomly(string[] values)
     {
         var input = values.Where(x => x != null);

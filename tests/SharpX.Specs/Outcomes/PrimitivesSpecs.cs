@@ -9,7 +9,7 @@ namespace Outcomes;
 
 public class PrimitivesSpecs
 {
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
     public void Should_convert_a_value_to_enumerable(int value)
     {
         var outcome = Primitives.ToEnumerable(value);

@@ -3,7 +3,7 @@ using SharpX;
 
 namespace SharpX.FsCheck;
 
-static class ArbitraryStringsNulls
+static class ArbitraryStringNull
 {
     public static Arbitrary<string> StringGenerator() => Gen.OneOf(
         Gen.Constant<string>(null),
