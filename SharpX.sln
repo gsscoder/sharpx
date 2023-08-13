@@ -14,6 +14,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{434B6A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F51FF1E6-EC52-4C95-B0FE-DD02F2B43D30}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{2FB8C816-AE08-40AE-A744-9FF6A78CB396}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,5 +45,6 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		        SolutionGuid = {9EDE47D4-D8AA-406C-A4FC-DE8735C3B386}
 		                SolutionGuid = {A02DD375-4885-4373-B792-B2541B428719}
+		SolutionGuid = {FD40382B-FB43-49AC-A527-50B4015C7E8E}
 	EndGlobalSection
 EndGlobal
