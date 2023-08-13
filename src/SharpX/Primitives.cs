@@ -5,7 +5,6 @@ using RandomNumberGenerator = SharpX._RandomNumberGeneratorCompatibility;
 using RandomNumberGenerator = System.Security.Cryptography.RandomNumberGenerator;
 #endif
 
-
 namespace SharpX;
 
 public static class Primitives
@@ -47,5 +46,16 @@ public static class Primitives
         return thresold > 0
             ? RandomNumberGenerator.GetInt32(0, 100) <= thresold
             : false;
+    }
+
+    public static IEnumerable<T> GenerateSeq<T>(Func<T> generator, int? count = null)
+    {
+        if (count != null) Guard.DisallowNegative(nameof(count), count.Value);
+
+        var count_ = count ?? 0;
+
+        while (count == null || count_-- > 0) {
+            yield return generator();
+        }
     }
 }
