@@ -1,2 +1,3 @@
 group main
     FSharp.Core
+    FsCheck

@@ -2,6 +2,7 @@ using FluentAssertions;
 using FsCheck;
 using FsCheck.Xunit;
 using SharpX;
+using SharpX.FsCheck;
 using Xunit;
 
 namespace Outcomes;

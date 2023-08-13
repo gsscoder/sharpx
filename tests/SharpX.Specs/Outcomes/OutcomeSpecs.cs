@@ -6,6 +6,7 @@ using FsCheck;
 using FsCheck.Xunit;
 using SharpX;
 using SharpX.Extensions;
+using SharpX.FsCheck;
 using Xunit;
 using Outcome = SharpX.Outcome;
 

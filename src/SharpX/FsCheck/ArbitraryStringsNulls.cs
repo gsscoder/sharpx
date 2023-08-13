@@ -1,6 +1,8 @@
 using FsCheck;
 using SharpX;
 
+namespace SharpX.FsCheck;
+
 static class ArbitraryStringsNulls
 {
     public static Arbitrary<string> StringGenerator() => Gen.OneOf(
