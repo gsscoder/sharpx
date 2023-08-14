@@ -29,10 +29,10 @@ public class StringsSpecs
     }
 
     #region Generate
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerNegative) })]
-    public void Trying_to_generate_a_random_string_with_less_than_one_char_raises_ArgumentException(int value)
+    [Property]
+    public void Trying_to_generate_a_random_string_with_less_than_one_char_raises_ArgumentException(NegativeInt value)
     {
-        Action action = () => Strings.Generate(value);
+        Action action = () => Strings.Generate(value.Get);
 
         action.Should().ThrowExactly<ArgumentException>();
     }
@@ -45,14 +45,14 @@ public class StringsSpecs
         outcome.Should().NotBeNull().And.BeEmpty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositive) })]
-    public void Should_generate_a_random_string_of_given_length(int value)
+    [Property]
+    public void Should_generate_a_random_string_of_given_length(PositiveInt value)
     {
         var strings = new List<string>() { Strings.Generate(_random.Next(1, 60)) };
 
-        var outcome = Strings.Generate(value);
+        var outcome = Strings.Generate(value.Get);
 
-        outcome.Should().NotBeNull().And.HaveLength(value);
+        outcome.Should().NotBeNull().And.HaveLength(value.Get);
         strings.Should().NotContain(outcome);
 
         strings.Add(outcome);
@@ -71,34 +71,34 @@ public class StringsSpecs
             .WithMessage("Cannot allow quote chars when special chars are disallowed. (Parameter 'options')");
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositive) })]
-    public void Should_generate_a_random_string_of_given_length_with_special_chars(int value)
+    [Property]
+    public void Should_generate_a_random_string_of_given_length_with_special_chars(PositiveInt value)
     {
-        var outcome = Strings.Generate(value + 10,
+        var outcome = Strings.Generate(value.Get + 10,
             new GenerateOptions { AllowSpecialChars = true, AllowQuoteChars = true });
 
-        outcome.Should().NotBeNull().And.HaveLength(value + 10);
+        outcome.Should().NotBeNull().And.HaveLength(value.Get + 10);
         outcome.Any(Strings.IsSpecialChar).Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositive) })]
-    public void Should_generate_a_random_string_of_given_length_with_special_chars_no_quotes(int value)
+    [Property]
+    public void Should_generate_a_random_string_of_given_length_with_special_chars_no_quotes(PositiveInt value)
     {
-        var outcome = Strings.Generate(value + 10,
+        var outcome = Strings.Generate(value.Get + 10,
             new GenerateOptions { AllowSpecialChars = true, AllowQuoteChars = false });
 
-        outcome.Should().NotBeNull().And.HaveLength(value + 10);
+        outcome.Should().NotBeNull().And.HaveLength(value.Get + 10);
         outcome.Any(c => c == '"' || c == '\'' || c == '`').Should().BeFalse();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositive) })]
-    public void Should_generate_a_random_string_of_given_length_with_prefix(int value)
+    [Property]
+    public void Should_generate_a_random_string_of_given_length_with_prefix(PositiveInt value)
     {
         const string prefix = "prfx_";
 
-        var outcome = Strings.Generate(value, null, prefix);
+        var outcome = Strings.Generate(value.Get, null, prefix);
 
-        outcome.Should().NotBeNull().And.HaveLength(value + prefix.Length);
+        outcome.Should().NotBeNull().And.HaveLength(value.Get + prefix.Length);
         outcome.Should().StartWith(prefix);
     }
 

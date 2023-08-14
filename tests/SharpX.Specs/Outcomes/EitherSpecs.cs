@@ -22,13 +22,13 @@ public class EitherSpecs
         outcome.FromLeft().Should().Be(value);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositive) })]
-    public void Shoud_build_Right(int value)
+    [Property]
+    public void Shoud_build_Right(PositiveInt value)
     {
-        var outcome = Either.Right<string, int>(value);
+        var outcome = Either.Right<string, int>(value.Get);
 
         outcome.IsRight().Should().BeTrue();
-        outcome.FromRight().Should().Be(value);
+        outcome.FromRight().Should().Be(value.Get);
     }
 
     [Fact]

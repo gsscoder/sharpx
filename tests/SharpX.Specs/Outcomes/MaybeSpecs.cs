@@ -17,15 +17,13 @@ public class MaybeSpecs
 {
     static Random _random = new CryptoRandom();
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
-    public void Shoud_build_Just(int value)
+    [Property]
+    public void Shoud_build_Just(NonZeroInt value)
     {
-        if (value == default) return; // Skip default values
-
-        var outcome = Maybe.Just(value);
+        var outcome = Maybe.Just(value.Get);
 
         outcome.IsJust().Should().BeTrue();
-        outcome.FromJust().Should().Be(value);
+        outcome.FromJust().Should().Be(value.Get);
     }
 
     [Fact]
@@ -45,19 +43,19 @@ public class MaybeSpecs
         action.Should().Throw<ArgumentException>();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
-    public void Shoud_return_proper_maybe_with_a_value_type(int value)
+    [Property]
+    public void Shoud_return_proper_maybe_with_a_value_type(IntWithMinMax value)
     {
-        var outcome = Maybe.Return(value);
+        var outcome = Maybe.Return(value.Get);
 
         outcome.Should().NotBeNull();
 
-        if (value == default) {
+        if (value.Get == default) {
             outcome.IsNothing().Should().BeTrue();
         }
         else {
             outcome.IsJust().Should().BeTrue();
-            outcome.FromJust().Should().Be(value);
+            outcome.FromJust().Should().Be(value.Get);
         }
     }
 
@@ -161,16 +159,16 @@ public class MaybeSpecs
         outcome2.Should().NotBeNull().And.Be(value / 2);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
-    public void Should_match_Just_of_anonymous_tuple_type(int value)
+    [Property]
+    public void Should_match_Just_of_anonymous_tuple_type(IntWithMinMax value)
     {
-        var sut = Maybe.Just((value, value / 2));
+        var sut = Maybe.Just((value.Get, value.Get / 2));
 
         var outcome = sut.MatchJust(out int outcome1, out int outcome2);
 
         outcome.Should().BeTrue();
-        outcome1.Should().Be(value);
-        outcome2.Should().Be(value /2);
+        outcome1.Should().Be(value.Get);
+        outcome2.Should().Be(value.Get / 2);
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
@@ -200,10 +198,10 @@ public class MaybeSpecs
             x._value == number);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
-    public void Should_return_false_when_a_Maybe_is_compared_to_null(int value)
+    [Fact]
+    public void Should_return_false_when_a_Maybe_is_compared_to_null()
     {
-        var sut = Maybe.Return(value);
+        var sut = Maybe.Return("foo");
 
         var outcome = sut.Equals(null);
 
@@ -244,24 +242,20 @@ public class MaybeSpecs
     }
 
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
-    public void Maybe_of_different_type_are_not_equals(int value)
+    [Property]
+    public void Maybe_of_different_type_are_not_equals(NonZeroInt value)
     {
-        if (value == default) return; // Skip default values
-
         var sut1 = Maybe.Nothing<int>();
-        var sut2 = Maybe.Return(value);
+        var sut2 = Maybe.Return(value.Get);
 
         var outcome = sut1.Equals(sut2);
 
         outcome.Should().BeFalse();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
-    public void Maybe_of_different_type_compared_as_object_are_not_equals(int value)
+    [Property]
+    public void Maybe_of_different_type_compared_as_object_are_not_equals(NonZeroInt value)
     {
-        if (value == default) return; // Skip default values
-
         var sut1 = Maybe.Nothing<int>();
         object sut2 = Maybe.Return(value);
 
@@ -270,47 +264,42 @@ public class MaybeSpecs
         outcome.Should().BeFalse();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
-    public void Maybe_with_different_values_are_not_equals(int value)
+    [Property]
+    public void Maybe_with_different_values_are_not_equals(NonZeroInt value)
     {
-        if (value == default) return; // Skip default values
-
         var sut1 = Maybe.Return(value);
         var otherValue = _random.Next();
-        var sut2 = Maybe.Return(otherValue == value ? otherValue / 2 : otherValue);
+        var sut2 = Maybe.Return(otherValue == value.Get ? otherValue / 2 : otherValue);
 
         var outcome = sut1.Equals(sut2);
 
         outcome.Should().BeFalse();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
-    public void Maybe_with_identical_values_are_equals(int value)
+    [Property]
+    public void Maybe_with_identical_values_are_equals(NonZeroInt value)
     {
-        if (value == default) return; // Skip default values
-
-        var sut1 = Maybe.Return(value);
-        var sut2 = Maybe.Return(value);
+        var sut1 = Maybe.Return(value.Get);
+        var sut2 = Maybe.Return(value.Get);
 
         var outcome = sut1.Equals(sut2);
 
         outcome.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositive) })]
-    public void Just_with_identical_hash_codes(int value)
+    [Property]
+    public void Just_with_identical_hash_codes(PositiveInt value)
     {
-        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value);
+        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value.Get);
 
-        var outcomes = from sut in suts select sut.GetHashCode();
+        var outcomes = (from sut in suts select sut.GetHashCode()).Distinct();
 
-        outcomes.Should().OnlyContain(x => x == outcomes.First());
+        outcomes.Should().OnlyContain(x => x == outcomes.First().GetHashCode());
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
-    public void Maybe_with_identical_values_compared_as_object_are_equals(int value)
+    [Property]
+    public void Maybe_with_identical_values_compared_as_object_are_equals(NonZeroInt value)
     {
-        if (value == default) return; // Skip default values
 
         var sut1 = Maybe.Return(value);
         object sut2 = Maybe.Return(value);
@@ -320,24 +309,24 @@ public class MaybeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositive) })]
-    public void Just_wrapping_the_same_value_have_identical_hash_codes(int value)
+    [Property]
+    public void Just_wrapping_the_same_value_have_identical_hash_codes(PositiveInt value)
     {
-        var suts = Enumerable.Repeat(Maybe.Just(1), value);
+        var suts = Enumerable.Repeat(Maybe.Just(1), value.Get);
 
-        var outcomes = from sut in suts select sut.GetHashCode();
+        var outcomes = (from sut in suts select sut.GetHashCode()).Distinct();
 
-        outcomes.Should().OnlyContain(x => x == outcomes.First());
+        outcomes.Should().OnlyContain(x => x == outcomes.First().GetHashCode());
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositive) })]
-    public void Nothing_of_the_same_type_have_identical_hash_codes(int value)
+    [Property]
+    public void Nothing_of_the_same_type_have_identical_hash_codes(PositiveInt value)
     {
-        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value);
+        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value.Get);
 
-        var outcomes = from sut in suts select sut.GetHashCode();
+        var outcomes = (from sut in suts select sut.GetHashCode()).Distinct();
 
-        outcomes.Should().OnlyContain(x => x == outcomes.First());
+        outcomes.Should().OnlyContain(x => x == outcomes.First().GetHashCode());
     }
 
     [Fact]
