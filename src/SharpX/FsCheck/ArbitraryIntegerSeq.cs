@@ -5,6 +5,6 @@ namespace SharpX.FsCheck;
 
 static class ArbitraryIntegerSeq
 {
-    public static Arbitrary<FSharpList<int>> IntegerSeqGenerator() => Gen.ListOf(30,
+    public static Arbitrary<FSharpList<int>> Generator() => Gen.ListOf(30,
         Gen.Choose(-30, 30)).ToArbitrary();
 }
