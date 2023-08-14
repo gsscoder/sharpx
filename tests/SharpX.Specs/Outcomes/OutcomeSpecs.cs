@@ -40,35 +40,24 @@ public class OutcomeSpecs
         outcome.Tag.Should().Be(OutcomeType.Success);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
-    public void Shoud_build_Failure_with_string(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
+    public void Shoud_build_Failure_with_string(string value)
     {
-        values.ForEach(value =>
-        {
-            if (value == null) return; // Skip null values
-            if (value.Trim().Length == 0) return; // Skip white spaces values
+        var outcome = Outcome.Failure(value);
 
-            var outcome = Outcome.Failure(value);
-
-            outcome.Tag.Should().Be(OutcomeType.Failure);
-            outcome._error.Should().Be(new Error(value, null));
-        });
+        outcome.Tag.Should().Be(OutcomeType.Failure);
+        outcome._error.Should().Be(new Error(value, null));
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
-    public void Shoud_build_Failure_with_string_and_exception(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
+    public void Shoud_build_Failure_with_string_and_exception(string value)
     {
-        values.ForEach(value =>
-        {
-            if (value == null) return;  // Skip null values
+        var outcome = Outcome.Failure($"custom message {value}",
+            new Exception($"exception message {value}"));
 
-            var outcome = Outcome.Failure($"custom message {value}",
-                new Exception($"exception message {value}"));
-
-            outcome.Tag.Should().Be(OutcomeType.Failure);
-            outcome._error.Should().Be(
-                new Error($"custom message {value}", new Exception($"exception message {value}")));
-        });
+        outcome.Tag.Should().Be(OutcomeType.Failure);
+        outcome._error.Should().Be(
+            new Error($"custom message {value}", new Exception($"exception message {value}")));
     }
 
     [Fact]
@@ -93,60 +82,43 @@ public class OutcomeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
-    public void Result_of_type_Failure_with_different_error_strings_are_not_equal(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
+    public void Result_of_type_Failure_with_different_error_strings_are_not_equal(string value)
     {
-        values.ForEach(value =>
-        {
-            if (value == null) return;  // Skip null values
-            if (value.Trim().Length == 0) return; // Skip white spaces values
-
-            var result1 = Outcome.Failure(
-                value, new Exception("here a trouble"));
-            var result2 = Outcome.Failure(
-                $"{value}{Strings.Generate(3)}", new Exception("here a trouble"));
+        var result1 = Outcome.Failure(
+            value, new Exception("here a trouble"));
+        var result2 = Outcome.Failure(
+            $"{value}{Strings.Generate(3)}", new Exception("here a trouble"));
         
-            var outcome = result1.Equals(result2);
+        var outcome = result1.Equals(result2);
 
-            outcome.Should().BeFalse();
-        });
+        outcome.Should().BeFalse();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
-    public void Result_of_type_Failure_with_different_exceptions_are_not_equal(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
+    public void Result_of_type_Failure_with_different_exceptions_are_not_equal(string value)
     {
-        values.ForEach(value =>
-        {
-            if (value == null) return;  // Skip null values
-
-            var result1 = Outcome.Failure(
-                "something gone wrong", new Exception(value));
-            var result2 = Outcome.Failure(
-                "something gone wrong", new Exception($"{value}{Strings.Generate(3)}"));
+        var result1 = Outcome.Failure(
+            "something gone wrong", new Exception(value));
+        var result2 = Outcome.Failure(
+            "something gone wrong", new Exception($"{value}{Strings.Generate(3)}"));
         
-            var outcome = result1.Equals(result2);
+        var outcome = result1.Equals(result2);
 
-            outcome.Should().BeFalse();
-        });
+        outcome.Should().BeFalse();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
-    public void Result_of_type_Failure_with_different_errors_are_not_equal(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
+    public void Result_of_type_Failure_with_different_errors_are_not_equal(string value)
     {
-        values.ForEach(value =>
-        {
-            if (value == null) return; // Skip null values
-            if (value.Trim().Length == 0) return; // Skip white spaces values
-
-            var result1 = Outcome.Failure(
-                value, new Exception(value));
-            var result2 = Outcome.Failure(
-                $"{value}{Strings.Generate(3)}", new Exception($"{value}{Strings.Generate(3)}"));
+        var result1 = Outcome.Failure(
+            value, new Exception(value));
+        var result2 = Outcome.Failure(
+            $"{value}{Strings.Generate(3)}", new Exception($"{value}{Strings.Generate(3)}"));
         
-            var outcome = result1.Equals(result2);
+        var outcome = result1.Equals(result2);
 
-            outcome.Should().BeFalse();
-        });
+        outcome.Should().BeFalse();
     }
 
     [Fact]
@@ -159,37 +131,25 @@ public class OutcomeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
-    public void Should_match_Failure(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
+    public void Should_match_Failure(string value)
     {
-        values.ForEach(value =>
-        {
-            if (value == null) return; // Skip null values
-            if (value.Trim().Length == 0) return; // Skip white spaces values
+        var result = Outcome.Failure(value, new Exception("here a trouble"));
 
-            var result = Outcome.Failure(value, new Exception("here a trouble"));
+        var outcome = result.MatchFailure(out Error outcome1);
 
-            var outcome = result.MatchFailure(out Error outcome1);
-
-            outcome.Should().BeTrue();
-            outcome1.Should().Be(new Error(value, new Exception("here a trouble")));
-        });
+        outcome.Should().BeTrue();
+        outcome1.Should().Be(new Error(value, new Exception("here a trouble")));
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
-    public void Should_match_Failure_with_message_only(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
+    public void Should_match_Failure_with_message_only(string value)
     {
-        values.ForEach(value =>
-        {
-            if (value == null) return; // Skip null values
-            if (value.Trim().Length == 0) return; // Skip white spaces values
+        var result = Outcome.Failure(value);
 
-            var result = Outcome.Failure(value);
+        var outcome = result.MatchFailure(out Error outcome1);
 
-            var outcome = result.MatchFailure(out Error outcome1);
-
-            outcome.Should().BeTrue();
-            outcome1.Should().Be(new Error(value, null));
-        });
+        outcome.Should().BeTrue();
+        outcome1.Should().Be(new Error(value, null));
     } 
 }
