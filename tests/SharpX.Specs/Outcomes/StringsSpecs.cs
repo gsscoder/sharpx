@@ -7,6 +7,7 @@ using FluentAssertions;
 using FsCheck;
 using FsCheck.Xunit;
 using SharpX;
+using SharpX.Extensions;
 using SharpX.FsCheck;
 using Xunit;
 
@@ -27,6 +28,7 @@ public class StringsSpecs
         outcome.Should().Be(expected);
     }
 
+    #region Generate
     [Property(Arbitrary = new[] { typeof(ArbitraryIntegerNegative) })]
     public void Trying_to_generate_a_random_string_with_less_than_one_char_raises_ArgumentException(int value)
     {
@@ -99,6 +101,15 @@ public class StringsSpecs
         outcome.Should().NotBeNull().And.HaveLength(value + prefix.Length);
         outcome.Should().StartWith(prefix);
     }
+
+    [Fact]
+    public void Random_strings_have_no_whitespace_characters()
+    {
+        var outcomes = Primitives.GenerateSeq(() => Strings.Generate(99), 99);
+
+        outcomes.Should().NotContain(x => x.ContainsWhitespace());
+    }
+    #endregion
 
     [Theory]
     [InlineData("")]
