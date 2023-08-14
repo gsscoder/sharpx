@@ -4,5 +4,5 @@ namespace SharpX.FsCheck;
 
 static class ArbitraryIntegerNegative
 {
-    public static Arbitrary<int> IntegerGenerator() => Gen.Choose(-60, -30).ToArbitrary();
+    public static Arbitrary<int> Generator() => Gen.Choose(-60, -30).ToArbitrary();
 }

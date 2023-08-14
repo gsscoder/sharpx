@@ -4,5 +4,5 @@ namespace SharpX.FsCheck;
 
 static class ArbitraryInteger
 {
-    public static Arbitrary<int> IntegerGenerator() => Gen.Choose(-30, 30).ToArbitrary();
+    public static Arbitrary<int> Generator() => Gen.Choose(-30, 30).ToArbitrary();
 }
