@@ -89,24 +89,24 @@ public class EnumerableExtensionsSpecs
     #endregion
 
     #region Intersperse
-    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
-    public void Should_intersperse_a_value_in_a_sequence(int value)
+    [Property]
+    public void Should_intersperse_a_value_in_a_sequence(IntWithMinMax value)
     {
         var sequence = new int[] {0, 1, 2, 3, 4};
 
-        var outcome = sequence.Intersperse(value);
+        var outcome = sequence.Intersperse(value.Get);
 
         outcome.Should().NotBeNullOrEmpty()
             .And.HaveCount(sequence.Count() * 2 - 1)
             .And.SatisfyRespectively(
                 item => item.Should().Be(0),
-                item => item.Should().Be(value),
+                item => item.Should().Be(value.Get),
                 item => item.Should().Be(1),
-                item => item.Should().Be(value),
+                item => item.Should().Be(value.Get),
                 item => item.Should().Be(2),
-                item => item.Should().Be(value),
+                item => item.Should().Be(value.Get),
                 item => item.Should().Be(3),
-                item => item.Should().Be(value),
+                item => item.Should().Be(value.Get),
                 item => item.Should().Be(4)
             );
     }

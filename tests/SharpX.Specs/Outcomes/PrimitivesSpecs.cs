@@ -11,14 +11,15 @@ namespace Outcomes;
 
 public class PrimitivesSpecs
 {
-    [Property(Arbitrary = new[] { typeof(ArbitraryInteger) })]
-    public void Should_convert_a_value_to_enumerable(int value)
+    [Property]
+    public void Should_convert_a_value_to_enumerable(IntWithMinMax value)
     {
-        var outcome = Primitives.ToEnumerable(value);
+
+        var outcome = Primitives.ToEnumerable(value.Get);
 
         outcome.Should().NotBeEmpty()
             .And.HaveCount(1)
-            .And.Contain(value);
+            .And.Contain(value.Get);
     }
 
     #region ChanceOf
@@ -49,13 +50,13 @@ public class PrimitivesSpecs
             .And.BeEmpty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositive) })]
-    public void Should_generate_a_sequence_of_n_items(int value)
+    [Property]
+    public void Should_generate_a_sequence_of_n_items(PositiveInt value)
     {
-        var outcome = Primitives.GenerateSeq<string>(() => Strings.Generate(9), count: value);
+        var outcome = Primitives.GenerateSeq<string>(() => Strings.Generate(9), count: value.Get);
 
         outcome.Should().NotBeNullOrEmpty()
-            .And.HaveCount(value)
+            .And.HaveCount(value.Get)
             .And.OnlyHaveUniqueItems();
     }
 
