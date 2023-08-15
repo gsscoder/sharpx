@@ -39,7 +39,7 @@ public class MaybeSpecs
     public void Should_throw_exception_when_building_a_Just_from_a_null_value()
     {
         Action action = () => Maybe.Just((object)null);
-        
+
         action.Should().Throw<ArgumentException>();
     }
 
@@ -130,12 +130,12 @@ public class MaybeSpecs
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
     public void Should_throw_out_Just_values_from_a_sequence(string[] values)
     {
-        Func<string, Maybe<int>> readInt = value => { 
+        Func<string, Maybe<int>> readInt = value => {
             if (int.TryParse(value, out int result)) return Maybe.Just(result);
             return Maybe.Nothing<int>(); };
 
         var expected = from value in values where int.TryParse(value, out int _)
-                    select int.Parse(value);
+                       select int.Parse(value);
 
         var outcome = values.Map(readInt);
 
@@ -287,10 +287,10 @@ public class MaybeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property]
-    public void Just_with_identical_hash_codes(PositiveInt value)
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositiveFromTwo) })]
+    public void Just_with_identical_hash_codes(int value)
     {
-        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value.Get);
+        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value);
 
         var outcomes = (from sut in suts select sut.GetHashCode()).Distinct();
 
@@ -309,20 +309,20 @@ public class MaybeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property]
-    public void Just_wrapping_the_same_value_have_identical_hash_codes(PositiveInt value)
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositiveFromTwo) })]
+    public void Just_wrapping_the_same_value_have_identical_hash_codes(int value)
     {
-        var suts = Enumerable.Repeat(Maybe.Just(1), value.Get);
+        var suts = Enumerable.Repeat(Maybe.Just(1), value);
 
         var outcomes = (from sut in suts select sut.GetHashCode()).Distinct();
 
         outcomes.Should().OnlyContain(x => x == outcomes.First().GetHashCode());
     }
 
-    [Property]
-    public void Nothing_of_the_same_type_have_identical_hash_codes(PositiveInt value)
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositiveFromTwo) })]
+    public void Nothing_of_the_same_type_have_identical_hash_codes(int value)
     {
-        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value.Get);
+        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value);
 
         var outcomes = (from sut in suts select sut.GetHashCode()).Distinct();
 
