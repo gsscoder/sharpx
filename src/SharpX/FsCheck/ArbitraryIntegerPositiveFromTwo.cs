@@ -1,4 +1,5 @@
 using FsCheck;
+using FsCheck.Fluent;
 
 namespace SharpX.FsCheck;
 
