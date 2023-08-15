@@ -2,6 +2,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using FluentAssertions;
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 using SharpX;
 using SharpX.FsCheck;
@@ -11,15 +12,10 @@ namespace Outcomes;
 
 public class PrimitivesSpecs
 {
-    [Property]
-    public void Should_convert_a_value_to_enumerable(IntWithMinMax value)
+    [Property(Arbitrary = new[] { typeof(ArbitraryValueSeq) })]
+    public Property Converting_a_value_to_enumerable_is_equivalent_to_a_single_element_array(object value)
     {
-
-        var outcome = Primitives.ToEnumerable(value.Get);
-
-        outcome.Should().NotBeEmpty()
-            .And.HaveCount(1)
-            .And.Contain(value.Get);
+        return (new[] { value }).SequenceEqual(Primitives.ToEnumerable(value)).ToProperty();
     }
 
     #region ChanceOf
