@@ -47,13 +47,12 @@ public class PrimitivesSpecs
     }
 
     [Property]
-    public void Should_generate_a_sequence_of_n_items(PositiveInt value)
+    public Property Generate_a_sequence_of_n_unique_items(PositiveInt value)
     {
         var outcome = Primitives.GenerateSeq<string>(() => Strings.Generate(9), count: value.Get);
 
-        outcome.Should().NotBeNullOrEmpty()
-            .And.HaveCount(value.Get)
-            .And.OnlyHaveUniqueItems();
+        return (outcome.Count() == value.Get &&
+                outcome.Distinct().Count() == value.Get).ToProperty();
     }
 
     [Fact]
