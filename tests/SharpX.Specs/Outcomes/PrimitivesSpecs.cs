@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using FluentAssertions;
@@ -37,22 +38,17 @@ public class PrimitivesSpecs
     #endregion
 
     #region GenerateSeq
-    [Fact]
-    public void Should_generate_an_empty_sequence_when_count_is_0()
-    {
-        var outcome = Primitives.GenerateSeq<string>(() => Strings.Generate(9), count: 0);
-
-        outcome.Should().NotBeNull()
-            .And.BeEmpty();
-    }
-
     [Property]
-    public Property Generate_a_sequence_of_n_unique_items(PositiveInt value)
+    public Property Generate_a_sequence_of_n_unique_items(int value)
     {
-        var outcome = Primitives.GenerateSeq<string>(() => Strings.Generate(9), count: value.Get);
+        Func<bool> property = () => {
+            var outcome = Primitives.GenerateSeq<string>(() => Strings.Generate(9), count: value);
+            
+            return outcome.Count() == value &&
+                   outcome.Distinct().Count() == value;
+        };
 
-        return (outcome.Count() == value.Get &&
-                outcome.Distinct().Count() == value.Get).ToProperty();
+        return property.When(value >= 0); 
     }
 
     [Fact]
