@@ -5,7 +5,7 @@ using SharpX.Extensions;
 
 namespace SharpX.FsCheck;
 
-static class ArbitraryValueSeq
+static class ArbitraryValue
 {
     public static Arbitrary<object> Generator()
     {

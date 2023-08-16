@@ -12,7 +12,7 @@ namespace Outcomes;
 
 public class PrimitivesSpecs
 {
-    [Property(Arbitrary = new[] { typeof(ArbitraryValueSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryValue) })]
     public Property Converting_a_value_to_enumerable_is_equivalent_to_a_single_element_array(object value)
     {
         return (new[] { value }).SequenceEqual(Primitives.ToEnumerable(value)).ToProperty();
