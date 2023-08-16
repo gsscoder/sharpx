@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Security.Cryptography;
 using FluentAssertions;
 using FsCheck;
 using FsCheck.Fluent;
@@ -39,29 +38,30 @@ public class PrimitivesSpecs
 
     #region GenerateSeq
     [Property]
-    public Property Generate_a_sequence_of_n_unique_items(int value)
+    public Property Generate_a_sequence_of_n_unique_items(int count)
     {
         Func<bool> property = () => {
-            var outcome = Primitives.GenerateSeq<string>(() => Strings.Generate(9), count: value);
+            var outcome = Primitives.GenerateSeq<string>(() => Strings.Generate(9), count: count);
             
-            return outcome.Count() == value &&
-                   outcome.Distinct().Count() == value;
+            return outcome.Count() == count &&
+                   outcome.Distinct().Count() == count;
         };
 
-        return property.When(value >= 0); 
+        return property.When(count >= 0); 
     }
 
-    [Fact]
-    public void Should_generate_an_infinite_sequence_when_count_is_null()
+    [Property]
+    public Property Generate_an_infinite_sequence_of_n_unique_items(int taken)
     {
-        var taken = RandomNumberGenerator.GetInt32(9, 100);
+        Func<bool> property = () => {
+            var outcome = Primitives.GenerateSeq<string>(() => Strings.Generate(9), count: null)
+                .Take(taken);
 
-        var outcome = Primitives.GenerateSeq<string>(() => Strings.Generate(9), count: null)
-            .Take(taken);
+            return outcome.Count() == taken &&
+                   outcome.Distinct().Count() == taken;
+        };
 
-        outcome.Should().NotBeNullOrEmpty()
-            .And.HaveCount(taken)
-            .And.OnlyHaveUniqueItems();
+        return property.When(taken >= 0);
     }
     #endregion
 }
