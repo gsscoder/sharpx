@@ -109,6 +109,15 @@ public class StringsSpecs
 
         outcomes.Should().NotContain(x => x.ContainsWhitespace());
     }
+
+    [Fact]
+    public void Should_generate_a_random_string_of_random_length_when_length_is_not_specified()
+    {
+        var outcome = Strings.Generate();
+
+        outcome.Should().NotBeNullOrWhiteSpace();
+        outcome.Length.Should().BeInRange(8, 32);
+    }
     #endregion
 
     [Theory]
