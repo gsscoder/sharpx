@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 using SharpX;
 using SharpX.FsCheck;
@@ -14,21 +15,15 @@ namespace Outcomes;
 public class EitherSpecs
 {
     [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
-    public void Shoud_build_Left(string value)
+    public Property Build_Left_from_a_string_value(string leftValue)
     {
-        var outcome = Either.Left<string, int>(value);
-
-        outcome.IsLeft().Should().BeTrue();
-        outcome.FromLeft().Should().Be(value);
+        return new Either<string, int>(leftValue).Equals(Either.Left<string, int>(leftValue)).ToProperty();
     }
 
-    [Property]
-    public void Shoud_build_Right(PositiveInt value)
+    [Property(Arbitrary = new[] { typeof(ArbitraryValue) })]
+    public Property Build_Right_from_any_value(object rightValue)
     {
-        var outcome = Either.Right<string, int>(value.Get);
-
-        outcome.IsRight().Should().BeTrue();
-        outcome.FromRight().Should().Be(value.Get);
+        return new Either<string, object>(rightValue).Equals(Either.Right<string, object>(rightValue)).ToProperty();
     }
 
     [Fact]
