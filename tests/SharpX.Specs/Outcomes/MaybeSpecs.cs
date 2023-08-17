@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 using SharpX;
 using SharpX.Extensions;
@@ -287,14 +288,23 @@ public class MaybeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositiveFromTwo) })]
-    public void Just_with_identical_hash_codes(int value)
+    [Property]
+    public Property Just_with_identical_value_has_same_hash_code(PositiveInt value, PositiveInt count)
     {
-        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value);
+        Func<bool> property = () => {
+            var outcome = from item in Enumerable.Repeat(Maybe.Just(value), count.Get)
+                          select item.GetHashCode();
 
-        var outcomes = (from sut in suts select sut.GetHashCode()).Distinct();
+            return Maybe.Just(value).GetHashCode() == outcome.Distinct().Single();
+        };
 
-        outcomes.Should().OnlyContain(x => x == outcomes.First().GetHashCode());
+        return property.When(count.Get > 1);
+    }
+
+    [Property]
+    public Property Nothing_of_identical_type_has_same_hash_code()
+    {
+        return (((string)null).ToMaybe().GetHashCode() == Maybe.Nothing<string>().GetHashCode()).ToProperty();
     }
 
     [Property]
@@ -309,25 +319,6 @@ public class MaybeSpecs
         outcome.Should().BeTrue();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositiveFromTwo) })]
-    public void Just_wrapping_the_same_value_have_identical_hash_codes(int value)
-    {
-        var suts = Enumerable.Repeat(Maybe.Just(1), value);
-
-        var outcomes = (from sut in suts select sut.GetHashCode()).Distinct();
-
-        outcomes.Should().OnlyContain(x => x == outcomes.First().GetHashCode());
-    }
-
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerPositiveFromTwo) })]
-    public void Nothing_of_the_same_type_have_identical_hash_codes(int value)
-    {
-        var suts = Enumerable.Repeat(Maybe.Nothing<int>(), value);
-
-        var outcomes = (from sut in suts select sut.GetHashCode()).Distinct();
-
-        outcomes.Should().OnlyContain(x => x == outcomes.First().GetHashCode());
-    }
 
     [Fact]
     public void Just_wrapping_different_values_have_different_hash_codes()
