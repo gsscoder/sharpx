@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
 using SharpX;
+using SharpX.Extensions;
 using SharpX.FsCheck;
 using Xunit;
 
@@ -62,6 +64,25 @@ public class PrimitivesSpecs
         };
 
         return property.When(taken >= 0);
+    }
+
+    [Property]
+    public Property Generate_a_sequence_of_n_unique_item_using_type(int count)
+    {
+        var funcs = new List<Func<IEnumerable<object>>>() {
+            () => Primitives.GenerateSeq<int>(count: count).Cast<object>(),
+            () => Primitives.GenerateSeq<double>(count: count).Cast<object>(),
+            () => Primitives.GenerateSeq<string>(count: count).Cast<object>(),
+        };
+
+        Func<bool> property = () => {
+            var outcome = funcs.Choice()();
+
+            return outcome.Count() == count &&
+                   outcome.Distinct().Count() == count;
+        };
+
+        return property.When(count >= 0);
     }
     #endregion
 }
