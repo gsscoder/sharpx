@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented `Primitives::GenerateSeq` method.
 - Refactored FsCheck generators for version 3.0.0-alpha4.
 - Updated `Strings::Generate` to function without length parameter.
+- Implemented `Primitives::GenerateSeq` overload for int, double and string.
 
 ## [6.2.1] - 2023-05-26
 
