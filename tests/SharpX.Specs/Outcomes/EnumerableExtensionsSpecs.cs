@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using FluentAssertions;
 using FsCheck;
@@ -166,6 +167,7 @@ public class EnumerableExtensionsSpecs
     }
     #endregion
 
+    #region Materialize
     [Fact]
     public void Should_materialize_a_sequence()
     {
@@ -180,6 +182,7 @@ public class EnumerableExtensionsSpecs
             yield return null;
         }
     }
+    #endregion
 
     #region ChunkBySize
     [Fact]
@@ -314,6 +317,22 @@ public class EnumerableExtensionsSpecs
     }
     #endregion
 
+    #region Choice
+    [Fact]
+    public void Should_choose_every_element_of_a_limited_seq_after_many_iterations()
+    {
+        var seq = Primitives.GenerateSeq<int>(count: 3).Materialize();
+        var occurred = seq.ToDictionary(x => x, _ => false);
+
+        for (var i = 0; i <= 999; i++) {
+            occurred[seq.Choice()] = true;
+        }
+
+        occurred.Values.Should().AllBeEquivalentTo(true);
+    }
+    #endregion
+
+    #region Shuffle
     // TODO: add a Guid arbitrary generator
     [Fact]
     public void Should_change_order_but_preserve_original_elements()
@@ -329,6 +348,7 @@ public class EnumerableExtensionsSpecs
             outcome.ToArray().Should().Contain(value.ToArray());
         }
     }
+    #endregion
 
     #region Intersperse
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
