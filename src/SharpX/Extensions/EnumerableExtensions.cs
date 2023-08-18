@@ -428,7 +428,8 @@ public static class EnumerableExtensions
     {
         Guard.DisallowNull(nameof(source), source);
 
-        var index = RandomNumberGenerator.GetInt32(source.Count() - 1);
+        var index = RandomNumberGenerator.GetInt32(fromInclusive: 0, 
+                                                   toExclusive: source.Count());
         return source.ElementAt(index);
     }
 
