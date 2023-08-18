@@ -37,8 +37,9 @@ public static class Primitives
             }
         }
         return builder.ToString();
-    }        
+    }
 
+    /// <summary>Returns true if the chance randomly occurred.</summary>
     public static bool ChanceOf(int thresold)
     {
         Guard.DisallowNegative(nameof(thresold), thresold);
@@ -48,6 +49,7 @@ public static class Primitives
             : false;
     }
 
+    /// <summary>Generates a random sequence from a generator function.</summary>
     public static IEnumerable<T> GenerateSeq<T>(Func<T> generator, int? count = null)
     {
         if (count != null) Guard.DisallowNegative(nameof(count), count.Value);
