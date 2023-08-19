@@ -14,16 +14,20 @@ namespace Outcomes;
 
 public class EitherSpecs
 {
-    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
-    public Property Build_Left_from_a_string_value(string leftValue)
+    [Property(Arbitrary = new[] { typeof(ArbitraryValue) })]
+    public Property A_non_default_value_is_wrapped_into_a_Left(object leftValue)
     {
-        return new Either<string, int>(leftValue).Equals(Either.Left<string, int>(leftValue)).ToProperty();
+        Func<bool> property = () => new Either<object, int>(leftValue).Equals(Either.Left<object, int>(leftValue));
+
+        return property.When(leftValue != default);
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryValue) })]
-    public Property Build_Right_from_any_value(object rightValue)
+    public Property A_non_default_value_is_wrapped_into_a_Right(object rightValue)
     {
-        return new Either<string, object>(rightValue).Equals(Either.Right<string, object>(rightValue)).ToProperty();
+        Func<bool> property = () => new Either<int, object>(rightValue).Equals(Either.Right<int, object>(rightValue));
+
+        return property.When(rightValue != default);
     }
 
     [Fact]
