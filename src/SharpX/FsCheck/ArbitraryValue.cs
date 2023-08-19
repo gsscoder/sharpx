@@ -10,10 +10,12 @@ static class ArbitraryValue
     public static Arbitrary<object> Generator()
     {
         var seq = (new object[] { false, true }
-          .Concat(Primitives.GenerateSeq<object>(() => RandomNumberGenerator.GetInt32(0, int.MaxValue), count: 19))
-          .Concat(Primitives.GenerateSeq<object>(() => RandomNumberGenerator.GetInt32(1, int.MaxValue) * .5, count: 19))
+          .Concat(Enumerable.Repeat<int>(default, 5).Cast<object>())
+          .Concat(Primitives.GenerateSeq<int>(count: 19).Cast<object>())
+          .Concat(Primitives.GenerateSeq<double>(count: 19).Cast<object>())
           .Concat(Enumerable.Range(0, 19).Select(x => (object)DateTime.Now.AddDays(x)))
-          .Concat(Primitives.GenerateSeq(() => (object)Strings.Generate(9), count: 20))
+          .Concat(Enumerable.Repeat<string?>(null, 5).Cast<object>())
+          .Concat(Primitives.GenerateSeq<string>(count: 10).Cast<object>())
           .Concat(Enumerable.Range(0, 19).Select(x => new { Foo = x }))
           ).Shuffle();
 
