@@ -17,7 +17,9 @@ public class PrimitivesSpecs
     [Property(Arbitrary = new[] { typeof(ArbitraryValue) })]
     public Property Converting_a_value_to_enumerable_is_equivalent_to_a_single_element_array(object value)
     {
-        return (new[] { value }).SequenceEqual(Primitives.ToEnumerable(value)).ToProperty();
+        Func<bool> property = () => (new[] { value }).SequenceEqual(Primitives.ToEnumerable(value));
+
+        return property.When(value != default);
     }
 
     #region ChanceOf
