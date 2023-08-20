@@ -96,7 +96,7 @@ public class MaybeSpecs
         }).ToProperty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringSeq) })]
     public Property Justs_method_extracts_Just_values_from_a_sequence(string[] values)
     {
         var maybes = from value in values select Maybe.Return(value);
@@ -104,7 +104,7 @@ public class MaybeSpecs
         return (from value in values where value != default select value).SequenceEqual(maybes.Justs()).ToProperty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringSeq) })]
     public Property Nothings_method_counts_Nothing_values_of_a_sequence(string[] values)
     {
         var maybes = from value in values select Maybe.Return(values);
@@ -112,7 +112,7 @@ public class MaybeSpecs
         return (values.Length == maybes.Nothings()).ToProperty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringSeq) })]
     public Property Map_throws_out_Just_values_from_a_sequence(string[] values)
     {
         Func<string, Maybe<int>> readInt = value => {
