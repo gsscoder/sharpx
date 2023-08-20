@@ -6,3 +6,4 @@ group specs
     xunit
     xunit.runner.visualstudio
     coverlet.collector
+    Microsoft.NETCore.Platforms
