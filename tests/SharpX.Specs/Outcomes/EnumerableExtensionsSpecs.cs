@@ -351,7 +351,7 @@ public class EnumerableExtensionsSpecs
     #endregion
 
     #region Intersperse
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringSeq) })]
     public void Should_intersperse_a_value(string[] values)
     {
         var arbitraryString = Strings.Generate(9);
@@ -364,7 +364,7 @@ public class EnumerableExtensionsSpecs
             .And.AllBe(arbitraryString);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringSeq) })]
     public void Intersperse_randomly_with_chance_zero_yields_original_sequence(string[] values)
     {
         var arbitraryString = Strings.Generate(9);
@@ -374,7 +374,7 @@ public class EnumerableExtensionsSpecs
         outcome.Should().BeEquivalentTo(values);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringSeq) })]
     public void Intersperse_randomly_with_count_zero_yields_original_sequence(string[] values)
     {
         var arbitraryString = Strings.Generate(9);
@@ -384,7 +384,7 @@ public class EnumerableExtensionsSpecs
         outcome.Should().BeEquivalentTo(values);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringSeq) })]
     public void Should_intersperse_a_value_randomly(string[] values)
     {
         var arbitraryString = Strings.Generate(9);
@@ -396,7 +396,7 @@ public class EnumerableExtensionsSpecs
             .And.Contain(values);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringSeq) })]
     public void Should_intersperse_null_values(string[] values)
     {
         var input = values.Where(x => x != null);
@@ -408,7 +408,7 @@ public class EnumerableExtensionsSpecs
             .And.Contain(input);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryStringSeq) })]
     public void Should_intersperse_null_values_randomly(string[] values)
     {
         var input = values.Where(x => x != null);
