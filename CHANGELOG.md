@@ -5,7 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [6.2.1]- 2023-05-26
+## [6.3.0] - 2023-08-20
+
+- Improved implementation of `Primitives::ChanceOf`.
+- Improved `EnumerableExtensions::Intersperse` to support randomness.
+- Improved `EnumerableExtensions::Intersperse` to support nulls.
+- Moved FsCheck generators to main project.
+- Implemented `Primitives::GenerateSeq` method.
+- Refactored FsCheck generators for version 3.0.0-alpha4.
+- Updated `Strings::Generate` to function without length parameter.
+- Implemented `Primitives::GenerateSeq` overload for int, double and string.
+- Fixed `EnumerableExtensions::Choice` extension method.
+- Refactored `ArbitraryValue` to generate default values.
+- Updated `ArbitraryString` generator to include null values.
+- Updated `ArbitraryStringSeq` generator to include null values.
+- Updated `ArbitraryIntegerSeq` generator implementation.
+
+## [6.2.1] - 2023-05-26
 
 - Implemented `DisallowEmptyEnumerable` guard method.
 
