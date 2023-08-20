@@ -1,2 +1,4 @@
 group main
     FSharp.Core
+    FsCheck
+    Microsoft.NETCore.Platforms

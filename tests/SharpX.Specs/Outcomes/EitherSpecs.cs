@@ -1,40 +1,33 @@
 #pragma warning disable 0618
 
-using FluentAssertions;
-using FsCheck;
-using FsCheck.Xunit;
-using SharpX;
-using SharpX.Extensions;
 using System;
 using System.Collections.Generic;
+using FluentAssertions;
+using FsCheck;
+using FsCheck.Fluent;
+using FsCheck.Xunit;
+using SharpX;
+using SharpX.FsCheck;
 using Xunit;
 
 namespace Outcomes;
 
 public class EitherSpecs
 {
-    [Property(Arbitrary = new[] { typeof(ArbitraryListOfStrings) })]
-    public void Shoud_build_Left(string[] values)
+    [Property(Arbitrary = new[] { typeof(ArbitraryValue) })]
+    public Property A_non_default_value_is_wrapped_into_a_Left(object leftValue)
     {
-        values.ForEach(value => {
-            if (value == null) return; // Skip null values
+        Func<bool> property = () => new Either<object, int>(leftValue).Equals(Either.Left<object, int>(leftValue));
 
-            var outcome = Either.Left<string, int>(value);
-
-            outcome.IsLeft().Should().BeTrue();
-            outcome.FromLeft().Should().Be(value);
-        });
+        return property.When(leftValue != default);
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegers) })]
-    public void Shoud_build_Right(int value)
+    [Property(Arbitrary = new[] { typeof(ArbitraryValue) })]
+    public Property A_non_default_value_is_wrapped_into_a_Right(object rightValue)
     {
-        if (value == default) return; // Skip default values
+        Func<bool> property = () => new Either<int, object>(rightValue).Equals(Either.Right<int, object>(rightValue));
 
-        var outcome = Either.Right<string, int>(value);
-
-        outcome.IsRight().Should().BeTrue();
-        outcome.FromRight().Should().Be(value);
+        return property.When(rightValue != default);
     }
 
     [Fact]

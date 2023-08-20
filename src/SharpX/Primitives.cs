@@ -5,7 +5,6 @@ using RandomNumberGenerator = SharpX._RandomNumberGeneratorCompatibility;
 using RandomNumberGenerator = System.Security.Cryptography.RandomNumberGenerator;
 #endif
 
-
 namespace SharpX;
 
 public static class Primitives
@@ -38,12 +37,46 @@ public static class Primitives
             }
         }
         return builder.ToString();
-    }        
+    }
 
+    /// <summary>Returns true if the chance randomly occurred.</summary>
     public static bool ChanceOf(int thresold)
     {
         Guard.DisallowNegative(nameof(thresold), thresold);
 
-        return RandomNumberGenerator.GetInt32(0, 100) <= thresold;
+        return thresold > 0
+            ? RandomNumberGenerator.GetInt32(0, 100) <= thresold
+            : false;
+    }
+
+    /// <summary>Generates a random sequence from a generator function.</summary>
+    public static IEnumerable<T> GenerateSeq<T>(Func<T> generator, int? count = null)
+    {
+        if (count != null) Guard.DisallowNegative(nameof(count), count.Value);
+
+        var count_ = count ?? 0;
+
+        while (count == null || count_-- > 0) {
+            yield return generator();
+        }
+    }
+
+    /// <summary>Generates a random sequence of int, double or string types.</summary>
+    public static IEnumerable<T> GenerateSeq<T>(int? count = null)
+    {
+        if (count != null) Guard.DisallowNegative(nameof(count), count.Value);
+
+        Func<object> generator = typeof(T) switch {
+            var t when t == typeof(int) => () => RandomNumberGenerator.GetInt32(int.MinValue, int.MaxValue),
+            var t when t == typeof(double) => () => BitConverter.ToDouble(RandomNumberGenerator.GetBytes(8), 0),
+            var t when t == typeof(string) => () => Strings.Generate(length: 16),
+            _ => throw new ArgumentException($"{typeof(T).Name} is not supported"),
+        };
+
+        var count_ = count ?? 0;
+
+        while (count == null || count_-- > 0) {
+            yield return (T)generator();
+        }
     }
 }

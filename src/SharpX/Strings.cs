@@ -46,17 +46,18 @@ public static class Strings
     public static bool IsSpecialChar(char value) =>
         !char.IsLetterOrDigit(value) && !char.IsWhiteSpace(value);
 
-    /// <summary>Generates a random string of given length.</summary>
+    /// <summary>Generates a random string of 8-32 chars or of given length.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string Generate(int length, GenerateOptions? options = null, string prefix = "")
+    public static string Generate(int? length = null, GenerateOptions? options = null, string prefix = "")
     {
-        Guard.DisallowNegative(nameof(length), length);
+        if (length != null) Guard.DisallowNegative(nameof(length), length.Value);
         Guard.DisallowNull(nameof(prefix), prefix);
         Guard.DisallowWhitespace(nameof(prefix), prefix);
         if (options != null && !options.AllowSpecialChars && options.AllowQuoteChars)
             throw new ArgumentException("Cannot allow quote chars when special chars are disallowed.", nameof(options));
 
-        if (length == 0) return string.Empty;
+        var length_ = length ?? RandomNumberGenerator.GetInt32(8, 33);
+        if (length_ == 0) return string.Empty;
 
         var prefs = options ?? new GenerateOptions();
         var chars = _alpahNumChars;
@@ -65,7 +66,7 @@ public static class Strings
         chars = new string(chars.Shuffle().ToArray());
 
         return string.Concat(prefix, 
-            new string((from c in Enumerable.Repeat(chars, length)
+            new string((from c in Enumerable.Repeat(chars, length_)
                             select c[RandomNumberGenerator.GetInt32(c.Length)]).ToArray()));
     }
 
