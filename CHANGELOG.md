@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed `EnumerableExtensions::Choice` extension method.
 - Refactored `ArbitraryValue` to generate default values.
 - Updated `ArbitraryString` generator to include null values. 
+- Updated `ArbitraryStringSeq` generator to include null values. 
 
 ## [6.2.1] - 2023-05-26
 
