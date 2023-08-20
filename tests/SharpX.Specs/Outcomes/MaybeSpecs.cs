@@ -11,6 +11,8 @@ using SharpX;
 using SharpX.Extensions;
 using SharpX.FsCheck;
 using Xunit;
+using Xunit.Abstractions;
+using static FsCheck.ResultContainer;
 
 namespace Outcomes;
 
@@ -18,67 +20,54 @@ public class MaybeSpecs
 {
     static Random _random = new CryptoRandom();
 
-    [Property]
-    public void Shoud_build_Just(NonZeroInt value)
+    [Property(Arbitrary = new[] { typeof(ArbitraryValue) })]
+    public Property A_non_default_value_is_wrapped_into_a_Just(object value)
     {
-        var outcome = Maybe.Just(value.Get);
+        Func<bool> property = () => value.ToMaybe() == Maybe.Just(value);
 
-        outcome.IsJust().Should().BeTrue();
-        outcome.FromJust().Should().Be(value.Get);
+        return property.When(value != default);
     }
 
-    [Fact]
-    public void Shoud_build_Nothing()
+    [Property(MaxTest=1)]
+    public Property A_default_value_is_converted_into_a_Nothing()
     {
-        var outcome = Maybe.Nothing<int>();
-
-        outcome.IsNothing().Should().BeTrue();
-        outcome.Tag.Should().Be(MaybeType.Nothing);
+        return (((string)null).ToMaybe() == Maybe.Nothing<string>()).ToProperty();
     }
 
-    [Fact]
-    public void Should_throw_exception_when_building_a_Just_from_a_null_value()
+    [Property(MaxTest=1)]
+    public Property Build_a_Just_from_a_null_value_throws_ArgumentException()
     {
-        Action action = () => Maybe.Just((object)null);
-
-        action.Should().Throw<ArgumentException>();
+        return FsCheck.FSharp.Prop.Throws<ArgumentException, Maybe<string>>(
+            new Lazy<Maybe<string>>(() => Maybe.Just((string)null)));
     }
 
     [Property]
-    public void Shoud_return_proper_maybe_with_a_value_type(IntWithMinMax value)
+    public Property Build_correct_maybe_with_a_value_type(IntWithMinMax value)
     {
         var outcome = Maybe.Return(value.Get);
 
-        outcome.Should().NotBeNull();
-
-        if (value.Get == default) {
-            outcome.IsNothing().Should().BeTrue();
-        }
-        else {
-            outcome.IsJust().Should().BeTrue();
-            outcome.FromJust().Should().Be(value.Get);
-        }
+        return (value switch
+        {
+            var v when v.Get == default => outcome.Tag == MaybeType.Nothing,
+            _ => outcome.Tag == MaybeType.Just && outcome.FromJust() == value.Get,
+        }).ToProperty();
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
-    public void Shoud_return_proper_maybe_with_a_reference_type(string value)
+    public Property Build_correct_maybe_with_a_reference_type(string value)
     {
         var outcome = Maybe.Return(value);
 
-        outcome.Should().NotBeNull();
-
-        if (value == null) {
-            outcome.IsNothing().Should().BeTrue();
-        }
-        else {
-            outcome.IsJust().Should().BeTrue();
-            outcome.FromJust().Should().Be(value);
-        }
+        return (value switch
+        {
+            var v when v == default => outcome.Tag == MaybeType.Nothing,
+            _ => outcome.Tag == MaybeType.Just && outcome.FromJust() == value,
+        }).ToProperty();
     }
 
 
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
-    public void FromJust_should_unwrap_the_value_or_lazily_return_from_a_function(string value)
+    public Property FromJust_unwraps_the_value_or_lazily_returns_from_a_function(string value)
     {
         Func<string> func = () => "foo";
 
@@ -86,50 +75,45 @@ public class MaybeSpecs
 
         var outcome = sut.FromJust(func);
 
-        if (value == null) outcome.Should().NotBeNull().And.Be(func());
-        else outcome.Should().NotBeNull().And.Be(value);
+        return (value switch
+        {
+            var v when v == default => outcome == func(),
+            _ => outcome == value,
+        }).ToProperty();
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
-    public void Should_return_a_singleton_sequence_with_Just_and_an_empty_with_Nothing(string value)
+    public Property ToEnumerable_returns_a_singleton_sequence_with_Just_and_an_empty_with_Nothing(string value)
     {
         var sut = Maybe.Return(value);
 
         var outcome = sut.ToEnumerable();
 
-        if (value == null) {
-            outcome.Should().NotBeNull().And.BeEmpty();
-        }
-        else {
-            outcome.Should().NotBeNullOrEmpty().And.HaveCount(1);
-            outcome.ElementAt(0).Should().Be(value);
-        }
+        return (value switch
+        {
+            var v when v == default => outcome.Count() == 0,
+            _ => outcome.ElementAt(0) == value,
+        }).ToProperty();
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
-    public void Should_return_Just_values_from_a_sequence(string[] values)
+    public Property Justs_method_extracts_Just_values_from_a_sequence(string[] values)
     {
         var maybes = from value in values select Maybe.Return(value);
 
-        var outcome = maybes.Justs();
-
-        outcome.Should().NotBeNullOrEmpty()
-            .And.HaveCountLessOrEqualTo(values.Count())
-            .And.ContainInOrder(from value in values where value != null select value);
+        return (from value in values where value != default select value).SequenceEqual(maybes.Justs()).ToProperty();
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
-    public void Should_count_Nothing_values_of_a_sequence(string[] values)
+    public Property Nothings_method_counts_Nothing_values_of_a_sequence(string[] values)
     {
         var maybes = from value in values select Maybe.Return(values);
 
-        var outcome = maybes.Nothings();
-
-        outcome.Should().BeLessOrEqualTo(values.Count());
+        return (values.Length == maybes.Nothings()).ToProperty();
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNullSeq) })]
-    public void Should_throw_out_Just_values_from_a_sequence(string[] values)
+    public Property Map_throws_out_Just_values_from_a_sequence(string[] values)
     {
         Func<string, Maybe<int>> readInt = value => {
             if (int.TryParse(value, out int result)) return Maybe.Just(result);
@@ -140,40 +124,36 @@ public class MaybeSpecs
 
         var outcome = values.Map(readInt);
 
-        outcome.Should().NotBeNullOrEmpty()
-            .And.HaveCount(expected.Count())
-            .And.ContainInOrder(expected);
+        return expected.SequenceEqual(outcome).ToProperty();    
     }
 
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerSeq) })]
-    public void Should_match_Just_of_anonymous_tuple_type_with_lambda_function(int value)
+    [Property]
+    public Property Match_Just_of_anonymous_tuple_type_with_lambda_function(IntWithMinMax value1, IntWithMinMax value2)
     {
-        var sut = Maybe.Just((value, value / 2));
+        var sut = Maybe.Just((value1.Get, value2.Get));
 
         int? outcome1 = null;
         int? outcome2 = null;
         sut.Match(
             (value1, value2) => Unit.Do(() => { outcome1 = value1; outcome2 = value2; }),
             () => Unit.Default);
-        outcome1.Should().NotBeNull().And.Be(value);
-        outcome2.Should().NotBeNull().And.Be(value / 2);
+        
+        return (value1.Get == outcome1.Value && value2.Get == outcome2.Value).ToProperty();
     }
 
     [Property]
-    public void Should_match_Just_of_anonymous_tuple_type(IntWithMinMax value)
+    public Property Match_Just_of_anonymous_tuple_type(IntWithMinMax value1, IntWithMinMax value2)
     {
-        var sut = Maybe.Just((value.Get, value.Get / 2));
+        var sut = Maybe.Just((value1.Get, value2.Get));
 
         var outcome = sut.MatchJust(out int outcome1, out int outcome2);
 
-        outcome.Should().BeTrue();
-        outcome1.Should().Be(value.Get);
-        outcome2.Should().Be(value.Get / 2);
+        return (outcome && value1.Get == outcome1 && value2.Get == outcome2).ToProperty();
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
-    public void Should_throw_out_and_map_a_Just_value_or_lazily_build_one_in_case_of_Nothing(string value)
+    public Property Map_throws_out_and_map_a_Just_value_or_lazily_build_one_in_case_of_Nothing(string value)
     {
         Func<string> func = () => "foo";
 
@@ -181,8 +161,11 @@ public class MaybeSpecs
 
         var outcome = sut.Map(v => v, func);
 
-        if (value == null) outcome.Should().NotBeNull().And.Be(func());
-        else outcome.Should().NotBeNull().And.Be(value);
+        return (value switch
+        {
+            var v when v == default => func() == outcome,
+            _ => value == outcome,
+        }).ToProperty();    
     }
 
     [Theory]
@@ -190,7 +173,7 @@ public class MaybeSpecs
     [InlineData(1)]
     public void Should_return_a_Just_when_Try_succeed_otherwise_Nothing(int value)
     {
-        var number = new CryptoRandom().Next();
+        var number = Primitives.GenerateSeq<int>(count: 1).Single();
         var outcome = Maybe.Try(() => number / value);
 
         if (value == 0) outcome.Tag.Should().Be(MaybeType.Nothing);
@@ -199,93 +182,77 @@ public class MaybeSpecs
             x._value == number);
     }
 
-    [Fact]
-    public void Should_return_false_when_a_Maybe_is_compared_to_null()
+    [Property(MaxTest=1)]
+    public Property Return_false_when_a_Maybe_is_compared_to_null()
     {
         var sut = Maybe.Return("foo");
 
-        var outcome = sut.Equals(null);
-
-        outcome.Should().BeFalse();
+        return (!sut.Equals(null)).ToProperty();
     }
 
-    [Fact]
-    public void Nothing_wrapping_same_type_are_equals()
+    [Property(MaxTest=1)]
+    public Property Nothing_values_wrapping_same_type_are_equals()
     {
         var sut1 = Maybe.Nothing<int>();
         var sut2 = Maybe.Nothing<int>();
 
-        var outcome = sut1.Equals(sut2);
-
-        outcome.Should().BeTrue();
+        return sut1.Equals(sut2).ToProperty();
     }
 
-    [Fact]
-    public void Nothing_wrapping_same_type_compared_as_object_are_equals()
+    [Property(MaxTest=1)]
+    public Property Nothing_values_wrapping_same_type_compared_as_object_are_equals()
     {
         var sut1 = Maybe.Nothing<int>();
         object sut2 = Maybe.Nothing<int>();
 
-        var outcome = sut1.Equals(sut2);
-
-        outcome.Should().BeTrue();
+        return sut1.Equals(sut2).ToProperty();
     }
 
-    [Fact]
-    public void Nothing_wrapping_different_type_are_different()
+    [Property(MaxTest=1)]
+    public Property Nothing_wrapping_different_type_are_different()
     {
         var sut1 = Maybe.Nothing<int>();
         var sut2 = Maybe.Nothing<string>();
 
-        var outcome = sut1.Equals(sut2);
-
-        outcome.Should().BeFalse();
+        return (sut1.Equals(sut2) == false).ToProperty();
     }
 
 
-    [Property]
-    public void Maybe_of_different_type_are_not_equals(NonZeroInt value)
+    [Property(MaxTest=1)]
+    public Property Maybe_of_different_type_are_not_equals(NonZeroInt value)
     {
         var sut1 = Maybe.Nothing<int>();
         var sut2 = Maybe.Return(value.Get);
 
-        var outcome = sut1.Equals(sut2);
-
-        outcome.Should().BeFalse();
+        return (sut1.Equals(sut2) == false).ToProperty();
     }
 
     [Property]
-    public void Maybe_of_different_type_compared_as_object_are_not_equals(NonZeroInt value)
+    public Property Maybe_of_different_type_compared_as_object_are_not_equals(NonZeroInt value)
     {
         var sut1 = Maybe.Nothing<int>();
         object sut2 = Maybe.Return(value);
 
-        var outcome = sut1.Equals(sut2);
-
-        outcome.Should().BeFalse();
+        return (sut1.Equals(sut2) == false).ToProperty();
     }
 
     [Property]
-    public void Maybe_with_different_values_are_not_equals(NonZeroInt value)
+    public Property Maybe_with_different_values_are_not_equals(NonZeroInt value)
     {
         var sut1 = Maybe.Return(value);
         var otherValue = _random.Next();
         var sut2 = Maybe.Return(otherValue == value.Get ? otherValue / 2 : otherValue);
 
-        var outcome = sut1.Equals(sut2);
-
-        outcome.Should().BeFalse();
+        return (sut1.Equals(sut2) == false).ToProperty();
     }
 
     [Property]
-    public void Maybe_with_identical_values_are_equals(NonZeroInt value)
+    public Property Maybe_with_identical_values_are_equals(NonZeroInt value)
     {
         var sut1 = Maybe.Return(value.Get);
         var sut2 = Maybe.Return(value.Get);
 
-        var outcome = sut1.Equals(sut2);
-
-        outcome.Should().BeTrue();
+        return sut1.Equals(sut2).ToProperty();
     }
 
     [Property]
@@ -320,45 +287,44 @@ public class MaybeSpecs
     }
 
 
-    [Fact]
-    public void Just_wrapping_different_values_have_different_hash_codes()
+    [Property(MaxTest=1)]
+    public Property Just_wrapping_different_values_have_different_hash_codes()
     {
         var sut1 = Maybe.Just(_random.Next(0, 9));
         var sut2 = Maybe.Just(Strings.Generate(10));
 
-        var outcome = sut1.GetHashCode() != sut2.GetHashCode();
-        
-        outcome.Should().BeTrue();
+        return (sut1.GetHashCode() != sut2.GetHashCode()).ToProperty();
     }
 
-    [Fact]
-    public void Nothing_of_different_type_have_different_hash_codes()
+    [Property(MaxTest=1)]
+    public Property Nothing_of_different_type_have_different_hash_codes()
     {
         var sut1 = Maybe.Nothing<int>();
         var sut2 = Maybe.Nothing<string>();
 
-        var outcome = sut1.GetHashCode() != sut2.GetHashCode();
-        
-        outcome.Should().BeTrue();
+        return (sut1.GetHashCode() != sut2.GetHashCode()).ToProperty();
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
-    public void Do_method_consumes_the_value_only_on_Just(string value)
+    public Property Do_method_consumes_the_value_only_on_Just(string value)
     {
-            var evidence = false;
-            var sut = Maybe.Return(value);
+        var evidence = false;
+        var sut = Maybe.Return(value);
 
-            sut.Do(_ => {
-                evidence = true;
-                return Unit.Default;
-            });
+        sut.Do(_ => {
+            evidence = true;
+            return Unit.Default;
+        });
 
-            if (sut.IsNothing()) evidence.Should().BeFalse();
-            else evidence.Should().BeTrue();
+        if (sut.IsNothing()) evidence.Should().BeFalse();
+        else evidence.Should().BeTrue();
+
+        return (sut.Tag == MaybeType.Nothing
+            ? evidence == false : evidence == true).ToProperty();
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
-    public async Task DoAsync_method_consumes_the_value_only_on_Just(string value)
+    public async Task<Property> DoAsync_method_consumes_the_value_only_on_Just(string value)
     {
         var evidence = false;
         var sut = Maybe.Return(value);
@@ -368,12 +334,12 @@ public class MaybeSpecs
             return Task.FromResult(Unit.Default);
         });
 
-        if (sut.IsNothing()) evidence.Should().BeFalse();
-        else evidence.Should().BeTrue();
+        return (sut.Tag == MaybeType.Nothing
+            ? evidence == false : evidence == true).ToProperty();
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
-    public void Do_method_consumes_the_tuple_value_only_on_Just(string value)
+    public Property Do_method_consumes_the_tuple_value_only_on_Just(string value)
     {
         var evidence = false;
         var sut = Maybe.Return((value, value));
@@ -383,12 +349,12 @@ public class MaybeSpecs
             return Unit.Default;
         });
 
-        if (sut.IsNothing()) evidence.Should().BeFalse();
-        else evidence.Should().BeTrue();
+        return (sut.Tag == MaybeType.Nothing
+            ? evidence == false : evidence == true).ToProperty();
     }
 
     [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
-    public async Task DoAsync_method_consumes_the_tuple_value_only_on_Just(string value)
+    public async Task<Property> DoAsync_method_consumes_the_tuple_value_only_on_Just(string value)
     {
         var evidence = false;
         var sut = Maybe.Return((value, value));
@@ -398,7 +364,7 @@ public class MaybeSpecs
             return Task.FromResult(Unit.Default);
         });
 
-        if (sut.IsNothing()) evidence.Should().BeFalse();
-        else evidence.Should().BeTrue();
+        return (sut.Tag == MaybeType.Nothing
+            ? evidence == false : evidence == true).ToProperty();
     }           
 }
