@@ -5,6 +5,10 @@ namespace SharpX.FsCheck;
 
 static class ArbitraryIntegerSeq
 {
-    public static Arbitrary<int[]> Generator() => Gen.ArrayOf<int>(
-        Gen.Choose(-30, 30), 100).ToArbitrary();
+    public static Arbitrary<int[]> Generator()
+    {
+        var seq = Primitives.GenerateSeq<int>(count: 100);
+
+        return Gen.Shuffle(seq).ToArbitrary();
+    }
 }
