@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented `Primitives::GenerateSeq` overload for int, double and string.
 - Fixed `EnumerableExtensions::Choice` extension method.
 - Refactored `ArbitraryValue` to generate default values.
+- Updated `ArbitraryString` generator to include null values. 
 
 ## [6.2.1] - 2023-05-26
 

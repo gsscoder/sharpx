@@ -53,7 +53,7 @@ public class MaybeSpecs
         }).ToProperty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
     public Property Build_correct_maybe_with_a_reference_type(string value)
     {
         var outcome = Maybe.Return(value);
@@ -66,7 +66,7 @@ public class MaybeSpecs
     }
 
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
     public Property FromJust_unwraps_the_value_or_lazily_returns_from_a_function(string value)
     {
         Func<string> func = () => "foo";
@@ -82,7 +82,7 @@ public class MaybeSpecs
         }).ToProperty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
     public Property ToEnumerable_returns_a_singleton_sequence_with_Just_and_an_empty_with_Nothing(string value)
     {
         var sut = Maybe.Return(value);
@@ -152,7 +152,7 @@ public class MaybeSpecs
         return (outcome && value1.Get == outcome1 && value2.Get == outcome2).ToProperty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
     public Property Map_throws_out_and_map_a_Just_value_or_lazily_build_one_in_case_of_Nothing(string value)
     {
         Func<string> func = () => "foo";
@@ -305,7 +305,7 @@ public class MaybeSpecs
         return (sut1.GetHashCode() != sut2.GetHashCode()).ToProperty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
     public Property Do_method_consumes_the_value_only_on_Just(string value)
     {
         var evidence = false;
@@ -323,7 +323,7 @@ public class MaybeSpecs
             ? evidence == false : evidence == true).ToProperty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
     public async Task<Property> DoAsync_method_consumes_the_value_only_on_Just(string value)
     {
         var evidence = false;
@@ -338,7 +338,7 @@ public class MaybeSpecs
             ? evidence == false : evidence == true).ToProperty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
     public Property Do_method_consumes_the_tuple_value_only_on_Just(string value)
     {
         var evidence = false;
@@ -353,7 +353,7 @@ public class MaybeSpecs
             ? evidence == false : evidence == true).ToProperty();
     }
 
-    [Property(Arbitrary = new[] { typeof(ArbitraryStringNull) })]
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
     public async Task<Property> DoAsync_method_consumes_the_tuple_value_only_on_Just(string value)
     {
         var evidence = false;
