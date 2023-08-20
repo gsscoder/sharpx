@@ -5,7 +5,7 @@
 
 SharpX is derived from [CSharpx](https://github.com/gsscoder/csharpx) 2.8.0-rc.2 (_which was practically a stable_) and [RailwaySharp](https://github.com/gsscoder/railwaysharp) 1.2.2. While both projects were meant mainly for source inclusion, SharpX is designed to be pulled from [NuGet](https://www.nuget.org/).
 
-The library contains functional types and other utilities, following _don't reinvent the wheel_ philosophy. This project was inspired by [Real-World Functional Programming](https://www.amazon.com/Real-World-Functional-Programming-Tomas-Petricek/dp/1933988924/ref=sr_1_1?keywords=Real-World+Functional+Programming&qid=1580118924&s=books&sr=1-1) and includes code from [MoreLINQ](https://github.com/morelinq/MoreLINQ).
+The library contains **functional types** and other utilities, including **test oriented tools**. It follows the _don't reinvent the wheel_ philosophy. This project was originally inspired by [Real-World Functional Programming](https://www.amazon.com/Real-World-Functional-Programming-Tomas-Petricek/dp/1933988924/ref=sr_1_1?keywords=Real-World+Functional+Programming&qid=1580118924&s=books&sr=1-1) and includes code from [MoreLINQ](https://github.com/morelinq/MoreLINQ).
 
 ## Targets
 
@@ -14,17 +14,18 @@ The library contains functional types and other utilities, following _don't rein
 
 ## Install via NuGet
 
-If you prefer, you can install it via NuGet:
+You can install it via NuGet:
 
 ```sh
-$ dotnet add package SharpX --version 6.2.1
+$ dotnet add package SharpX --version 6.3.0
   Determining projects to restore...
   ...
 ```
 
 ## Overview
 
-All types are available in root namespace, while extension methods (except ones very specific) are in `SharpX.Extensions`.
+All types are available in the root namespace. Extension methods (except the very specific ones) are in `SharpX.Extensions`.
+`SharpX.FsCheck` contains [FsCheck](https://github.com/fscheck/FsCheck) generators for property-based testing.
 
 ## [Maybe]
 
