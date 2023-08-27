@@ -90,6 +90,10 @@ public static class StringExtensions
     public static string NormalizeWhiteSpace(this string value) =>
         Strings.NormalizeWhiteSpace(value);
 
+    // <summary>Normalizes a null or white space string to empty.</summary>
+    public static string NormalizeToEmpty(string value) =>
+        Strings.NormalizeToEmpty(value);
+
     /// <summary>Removes tags from a string.</summary>
     public static string StripTag(this string value) =>
         _stripTagRegEx.Replace(value, "");
