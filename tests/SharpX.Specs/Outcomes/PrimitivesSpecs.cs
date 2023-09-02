@@ -87,4 +87,26 @@ public class PrimitivesSpecs
         return property.When(count >= 0);
     }
     #endregion
+
+    #region IsNumber
+    // NOTE: cannot use Theory for 'real' generic method test
+    [Fact]
+    public void Should_return_true_for_numeric_types_and_false_for_any_other_type_or_null()
+    {
+        Primitives.IsNumber((object)null).Should().BeTrue();
+        Primitives.IsNumber(default(byte)).Should().BeTrue();
+        Primitives.IsNumber(default(short)).Should().BeTrue();
+        Primitives.IsNumber(default(ushort)).Should().BeTrue();
+        Primitives.IsNumber(default(int)).Should().BeTrue();
+        Primitives.IsNumber(default(uint)).Should().BeTrue();
+        Primitives.IsNumber(default(long)).Should().BeTrue();
+        Primitives.IsNumber(default(ulong)).Should().BeTrue();
+        Primitives.IsNumber(default(float)).Should().BeTrue();
+        Primitives.IsNumber(default(double)).Should().BeTrue();
+        Primitives.IsNumber(default(decimal)).Should().BeTrue();
+        Primitives.IsNumber("1234567890").Should().BeFalse();
+        Primitives.IsNumber(new object()).Should().BeFalse();
+        Primitives.IsNumber(new { empty = "" }).Should().BeFalse();
+    }
+    #endregion
 }
