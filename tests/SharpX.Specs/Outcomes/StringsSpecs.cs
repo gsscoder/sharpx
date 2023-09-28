@@ -220,4 +220,25 @@ public class StringsSpecs
 
         outcome.Should().Be(input);
     }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void Should_normalize_a_null_or_white_space_string_to_an_empty_string(string value)
+    {
+        var outcome = Strings.NormalizeToEmpty(value);
+
+        outcome.Should().Be(string.Empty);
+    }
+
+    [Theory]
+    [InlineData("foo")]
+    [InlineData("bar baz")]
+    public void Should_not_normalize_a_string_that_is_not_null_or_white_space_to_an_empty_string(string value)
+    {
+        var outcome = Strings.NormalizeToEmpty(value);
+
+        outcome.Should().Be(value);
+    }
 }
