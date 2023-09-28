@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using FluentAssertions;
+using FsCheck.Experimental;
 using SharpX;
 using SharpX.Extensions;
 using Xunit;
@@ -17,6 +18,7 @@ namespace Outcomes
 
         static readonly Random _random = new CryptoRandom();
 
+        // NOTE: cannot use Theory for 'real' generic method test
         [Fact]
         public void Should_discards_anything_to_Unit()
         {

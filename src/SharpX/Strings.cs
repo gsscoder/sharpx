@@ -315,6 +315,11 @@ public static class Strings
         return builder.ToString();
     }
 
+    /// <summary>Normalizes a null or white space string to empty.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static string NormalizeToEmpty(string value) =>
+        string.IsNullOrWhiteSpace(value) ? string.Empty : value;
+
     /// <summary>Removes tags from a string.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string StripTag(string value)

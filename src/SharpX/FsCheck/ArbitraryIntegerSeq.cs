@@ -3,7 +3,7 @@ using FsCheck.Fluent;
 
 namespace SharpX.FsCheck;
 
-static class ArbitraryIntegerSeq
+public static class ArbitraryIntegerSeq
 {
     public static Arbitrary<int[]> Generator()
     {
