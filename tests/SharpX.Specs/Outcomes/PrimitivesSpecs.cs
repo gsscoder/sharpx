@@ -93,7 +93,7 @@ public class PrimitivesSpecs
     [Fact]
     public void Should_return_true_for_numeric_types_and_false_for_any_other_type_or_null()
     {
-        Primitives.IsNumber((object)null).Should().BeTrue();
+        Primitives.IsNumber((object)null).Should().BeFalse();
         Primitives.IsNumber(default(byte)).Should().BeTrue();
         Primitives.IsNumber(default(short)).Should().BeTrue();
         Primitives.IsNumber(default(ushort)).Should().BeTrue();
