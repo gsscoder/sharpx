@@ -4,7 +4,7 @@ using SharpX.Extensions;
 
 namespace SharpX.FsCheck;
 
-static class ArbitraryStringSeq
+public static class ArbitraryStringSeq
 {
     public static Arbitrary<string?[]> Generator()
     {

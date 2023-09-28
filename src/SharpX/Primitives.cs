@@ -79,4 +79,22 @@ public static class Primitives
             yield return (T)generator();
         }
     }
+
+    /// <summary>Returns true in case of a numeric type value, otherwise false.</summary>
+    public static bool IsNumber<T>(T? value)
+    {
+        if (value == null) return false;
+
+        return value is sbyte ||
+               value is byte ||
+               value is short ||
+               value is ushort ||
+               value is int ||
+               value is uint ||
+               value is long ||
+               value is ulong ||
+               value is float ||
+               value is double ||
+               value is decimal;
+    }
 }
