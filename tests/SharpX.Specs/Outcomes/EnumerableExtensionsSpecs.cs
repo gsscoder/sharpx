@@ -4,6 +4,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using FluentAssertions;
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 using SharpX;
 using SharpX.Extensions;
@@ -418,6 +419,14 @@ public class EnumerableExtensionsSpecs
         outcome.Should().NotBeNullOrEmpty()
             .And.Contain((string)null)
             .And.Contain(input);
+    }
+    #endregion
+
+    #region DistinctCount
+    [Property(Arbitrary = new[] { typeof(ArbitraryIntegerSeq) })]
+    public Property Count_squence_items_distinctly(int[] values)
+    {
+        return (values.DistinctCount() == values.Distinct().Count()).ToProperty();
     }
     #endregion
 }
