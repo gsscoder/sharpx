@@ -3,6 +3,8 @@
 using System.Collections;
 using System.Globalization;
 using System.Text;
+using FsCheck;
+
 #if NETCOREAPP31
 using RandomNumberGenerator = SharpX._RandomNumberGeneratorCompatibility;
 #else
@@ -246,6 +248,14 @@ public static class EnumerableExtensions
         }
     }
     #endregion
+
+    /// <summary>Returns count of a saquence distinct elements.</summary>
+    public static long DistinctCount<TSource>(this IEnumerable<TSource> source)
+    {
+        Guard.DisallowNull(nameof(source), source);
+
+        return source.Distinct().LongCount();
+    }
 
     #region Repeat
     /// <summary>Repeats the sequence the specified number of times.</summary>
