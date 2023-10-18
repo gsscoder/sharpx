@@ -6,5 +6,5 @@ public static class ObjectExtensions
     public static Unit ToUnit<T>(this T value) => Unit.Default;
 
     /// <summary>Returns true in case of a numeric type value, otherwise false.</summary>
-    public static bool IsNumber<T>(T? value) => Primitives.IsNumber(value);
+    public static bool IsNumber<T>(this T? value) => Primitives.IsNumber(value);
 }

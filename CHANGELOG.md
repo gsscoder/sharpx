@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Implemented `EnumerableExtensions::DistinctCount` method.
+- Fixed missing `this` operator in `ObjectExtensions::IsNumber` method.
 
 ## [6.3.2] - 2023-09-28
 
