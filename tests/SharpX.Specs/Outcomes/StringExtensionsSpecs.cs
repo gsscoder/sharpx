@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
+using FsCheck.Fluent;
+using FsCheck.Xunit;
 using SharpX;
 using SharpX.Extensions;
 using Xunit;
+using Property = FsCheck.Property;
 
 namespace Outcomes;
 
@@ -177,5 +180,25 @@ public class StringExtensionsSpecs
         outcome = value.ToGuid(safe: true);
         
         outcome.Should().Be(new Guid(value));
+    }
+
+    [Property(MaxTest=1)]
+    public Property Convert_an_URI_string_to_an_Uri_instance()
+    {
+        return ("https://github.com/gsscoder/sharpx/wiki".ToUri() == new Uri("https://github.com/gsscoder/sharpx/wiki"))
+            .ToProperty();
+    }
+
+    [Property(MaxTest=1)]
+    public Property An_invalid_URI_string_raises_an_exception_when_safe_is_false()
+    {
+        return ("not an Uri string".ToUri(safe: true) == default).ToProperty();
+    }
+
+    [Property(MaxTest=1)]
+    public Property An_invalid_URI_string_is_converted_to_default_when_safe_is_true()
+    {
+
+        return FsCheck.FSharp.Prop.Throws<FormatException, Uri>(new Lazy<Uri>(() =>"not an Uri string".ToUri(safe: false)));
     }
 }
