@@ -51,7 +51,7 @@ public static class StringExtensions
     /// <summary>Creates a Guid from a given string or default if safe is set.</summary>
     public static Guid ToGuid(this string value, bool safe = false)
     {
-        if (!safe) return new Guid(value);
+        if (!safe) return new(value);
         return Guid.TryParse(value, out var result)
             ? result
             : default;
