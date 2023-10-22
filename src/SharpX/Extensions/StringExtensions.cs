@@ -4,9 +4,6 @@ namespace SharpX.Extensions;
 
 public static class StringExtensions
 {
-    static string[] _mangleChars =
-        {"!", "\"", "£", "$", "%", "&", "/", "(", ")", "=", "?", "^", "[", "]", "*", "@", "°",
-            "#", "§", ",", ";", ".", ":", "-", "_"};
     static Regex _stripTagRegEx = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
 
     /// <summary>Determines whether the beginning of this string instance matches the specified string in a case insensitive way.</summary>
