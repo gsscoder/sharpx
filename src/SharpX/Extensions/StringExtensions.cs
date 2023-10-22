@@ -108,4 +108,16 @@ public static class StringExtensions
     /// of each original string.</summary>
     public static IEnumerable<string> FlattenOnce(this IEnumerable<string> source) =>
         Strings.FlattenOnce(source);
+
+    /// <summary>Convenience extension method to create a new Uri from a string.</summary>
+    public static Uri? ToUri(this string value, bool safe = false) 
+    {
+        if (!safe) return new(value);
+        try {
+            return new(value);
+        }
+        catch {
+            return default;
+        }
+    }
 }
