@@ -201,4 +201,22 @@ public class StringExtensionsSpecs
 
         return FsCheck.FSharp.Prop.Throws<FormatException, Uri>(new Lazy<Uri>(() =>"not an Uri string".ToUri(safe: false)));
     }
+
+    [Property(MaxTest=1)]
+    public Property EqualsIgnoreCase_cannot_compare_null_if_safe_is_false()
+    {
+        return FsCheck.FSharp.Prop.Throws<ArgumentNullException, bool>(new Lazy<bool>(() => ((string)null).EqualsIgnoreCase("foo", safe: false)));
+    }
+
+    [Fact]
+    public void EqualsIgnoreCase_can_compare_null_if_safe_is_true()
+    {
+        ((string)null).EqualsIgnoreCase("foo", safe: true).Should().BeFalse();
+    }
+
+    [Fact]
+    public void EqualsIgnoreCase_compares_null_to_null_as_true()
+    {
+        ((string)null).EqualsIgnoreCase(null, safe: true).Should().BeTrue();
+    }
 }
