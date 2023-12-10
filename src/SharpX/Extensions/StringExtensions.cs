@@ -38,7 +38,7 @@ public static class StringExtensions
     public static bool IsAlphanumeric(this string value) => Strings.IsAlphanumeric(value);
 
     /// <summary>Determines if a string is null, empty or composed only by white space.</summary>
-    public static bool IsEmpty(this string value) => String.IsNullOrWhiteSpace(value);
+    public static bool IsEmpty(this string? value) => String.IsNullOrWhiteSpace(value);
 
     /// <summary>Determines if a string is empty or composed only by white spaces.</summary>
     public static bool IsEmptyWhitespace(this string value) => Strings.IsEmptyWhitespace(value);
