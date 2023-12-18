@@ -44,7 +44,7 @@ public static class StringExtensions
     public static bool IsEmptyWhitespace(this string value) => Strings.IsEmptyWhitespace(value);
 
     /// <summary>Determines if a string is contains any kind of white spaces.</summary>
-    public static bool ContainsWhitespace(this string value) => Strings.ContainsWhitespace(value);
+    public static bool ContainsWhitespace(this string value) => Strings.ContainsWhitespace(value);
 
     /// <summary>Returns a copy of this string with first letter converted to uppercase.</summary>
     public static string ToUpperFirst(this string value) =>
@@ -88,7 +88,7 @@ public static class StringExtensions
     /// white spaces.</summary>
     public static string Sanitize(this string value, bool normalizeWhiteSpace = true) =>
         Strings.Sanitize(value, normalizeWhiteSpace);
-    
+
     /// <summary>Normalizes any white space character to a single white space.</summary>
     public static string NormalizeWhiteSpace(this string value) =>
         Strings.NormalizeWhiteSpace(value);
@@ -116,7 +116,7 @@ public static class StringExtensions
         Strings.FlattenOnce(source);
 
     /// <summary>Convenience extension method to create a new Uri from a string.</summary>
-    public static Uri? ToUri(this string value, bool safe = false) 
+    public static Uri? ToUri(this string value, bool safe = false)
     {
         if (!safe) return new(value);
         try {
@@ -126,4 +126,10 @@ public static class StringExtensions
             return default;
         }
     }
+
+    /// <summary>Reverses tha case of a character.</summary>
+    public static char ReverseCase(this char value) => Strings.ReverseCase(value);
+
+    /// <summary>Randomizes the case of a string characters.</summary>
+    public static string RandomizeCase(this string value) => Strings.RandomizeCase(value);
 }

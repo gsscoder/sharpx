@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -382,6 +383,45 @@ public static class Strings
                     yield return part;
                 }
             }
+        }
+    }
+
+    /// <summary>Reverses tha case of a character.</summary>
+    public static char ReverseCase(char value)
+    {
+        if (!Char.IsLetter(value)) return value;
+
+        return Char.IsLower(value) ? Char.ToUpper(value) : Char.ToLower(value);
+    }
+
+    /// <summary>Randomizes the case of a string characters.</summary>
+    public static string RandomizeCase(string value)
+    {
+        Guard.DisallowNull(nameof(value), value);
+
+        if (value.Length == 0) return value;
+        if (!value.Any(Char.IsLetter)) return value;
+
+        var randomized = _randomize();
+        return randomized != value ? randomized : _reverse();
+
+        string _randomize()
+        {
+            var result = value.ToCharArray();
+            for (var i = 0; i < value.Length; i++) {
+                result[i] = Primitives.ChanceOf(50)
+                    ? ReverseCase(value[i]) : value[i];
+            }
+            return new string(result);
+        }
+
+        string _reverse()
+        {
+            var result = value.ToCharArray();
+            for (var i = 0; i < value.Length; i++) {
+                result[i] = ReverseCase(value[i]);
+            }
+            return new string(result);
         }
     }
 }

@@ -3,8 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using FluentAssertions;
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 using SharpX;
 using SharpX.Extensions;
@@ -241,4 +243,31 @@ public class StringsSpecs
 
         outcome.Should().Be(value);
     }
+
+
+    #region RandomizeCase
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
+    public Property RandomizeCase__Characters_case_is_randomized_in_strings_with_letters(NonNull<string> value)
+    {
+        var randomized = Strings.RandomizeCase(value.Get);
+
+        return (randomized != value.Get && randomized.EqualsIgnoreCase(value.Get))
+            .When(value.Get.Any(Char.IsLetter));
+    }
+
+    [Property(Arbitrary = new[] { typeof(ArbitraryString) })]
+    public Property RandomizeCase__Strings_without_characters_are_returned_unchanged(NonNull<string> value)
+    {
+        var value_ = new string(value.Get.Where(c => !Char.IsLetter(c)).ToArray());
+        var unchanged = Strings.RandomizeCase(value_);
+
+        return (unchanged == value_).ToProperty();
+    }
+
+    [Fact]
+    public void RandomizeCase__Empty_string_is_returned_unchanged()
+    {
+        Strings.RandomizeCase(String.Empty).Should().Be(String.Empty);
+    }
+    #endregion
 }
