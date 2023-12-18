@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented `StringExtensions::ToUri` method.
 - Updated `EqualsIgnoreCase` to campare null values when safe mode is on.
 - Made parameter nullable in `StringExtensions::IsEmpty` method.
+- Implemented `Strings::ReverseCase` method and relative extension method.
+- Implemented `Strings::RandomizeCase` method and relative extension method.
 
 ## [6.3.2] - 2023-09-28
 
