@@ -11,7 +11,7 @@ public static class StringExtensions
         source.StartsWith(value, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>Determines whether two String objects have the same value in a case insensitive way.</summary>
-    public static bool EqualsIgnoreCase(this string source, string value, bool safe = false)
+    public static bool EqualsIgnoreCase(this string? source, string value, bool safe = false)
     {
         if (!safe) Guard.DisallowNull(nameof(source), source);
         else if (safe && source == null && value != null) return false;
