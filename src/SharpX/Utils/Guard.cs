@@ -77,6 +77,6 @@ public static class Guard
     public static void DisallowMalformedGuid(string argumentName, string value)
     {
         try { Guid.Parse(value); }
-        catch { throw new ArgumentException($"{argumentName} must be a correctly formatted GUID.", argumentName); }
+        catch { throw new ArgumentException($"{argumentName} must be a well formed GUID.", argumentName); }
     }
 }
