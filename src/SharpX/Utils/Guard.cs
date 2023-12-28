@@ -39,19 +39,19 @@ public static class Guard
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void DisallowNegative(string argumentName, int value)
     {
-        if (value < 0) throw new ArgumentException(argumentName, $"{argumentName} cannot be lesser than zero.");
+        if (value < 0) throw new ArgumentOutOfRangeException(argumentName, $"{argumentName} cannot be lesser than zero.");
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void DisallowNegativeZero(string argumentName, int value)
     {
-        if (value < 1) throw new ArgumentException(argumentName, $"{argumentName} cannot be lesser than one.");
+        if (value < 1) throw new ArgumentOutOfRangeException(argumentName, $"{argumentName} cannot be lesser than one.");
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void DisallowOdd(string argumentName, int value)
     {
-        if (value % 2 != 0) throw new ArgumentException(argumentName, $"{argumentName} cannot be odd.");
+        if (value % 2 != 0) throw new ArgumentOutOfRangeException(argumentName, $"{argumentName} cannot be odd.");
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
