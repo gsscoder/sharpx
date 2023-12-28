@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Renamed method `DisallowAnyEmptyWhitespace` as `DisallowEmptyWhitespace`.
 - Used `ArgumentOutOfRangeException` in `Guard` when appropriate.
+- Updated `Guard::DisallowMalformedGuid` exception message.
 
 ## [6.3.6] - 2023-12-18
 
