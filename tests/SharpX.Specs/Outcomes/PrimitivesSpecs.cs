@@ -69,19 +69,25 @@ public class PrimitivesSpecs
     }
 
     [Property]
-    public Property Generate_a_sequence_of_n_unique_item_using_type(int count)
+    public Property Generate_a_sequence_of_n_unique_item_using_of_type_int(int count) =>
+        Generate_a_sequence_of_n_unique_item_using_of_type<int>(count);
+
+    [Property]
+    public Property Generate_a_sequence_of_n_unique_item_using_of_type_double(int count) =>
+        Generate_a_sequence_of_n_unique_item_using_of_type<double>(count);
+
+    [Property]
+    public Property Generate_a_sequence_of_n_unique_item_using_of_type_string(int count) =>
+        Generate_a_sequence_of_n_unique_item_using_of_type<string>(count);
+
+    Property Generate_a_sequence_of_n_unique_item_using_of_type<T>(int count)
     {
-        var funcs = new List<Func<IEnumerable<object>>>() {
-            () => Primitives.GenerateSeq<int>(count: count).Cast<object>(),
-            () => Primitives.GenerateSeq<double>(count: count).Cast<object>(),
-            () => Primitives.GenerateSeq<string>(count: count).Cast<object>(),
-        };
 
         Func<bool> property = () => {
-            var outcome = funcs.Choice()();
+            var outcome = Primitives.GenerateSeq<T>(count: count);
 
-            return outcome.Count() == count &&
-                   outcome.Distinct().Count() == count;
+            var correct = outcome.Count() == count && outcome.Distinct().Count() == count;
+            return correct;
         };
 
         return property.When(count >= 0);
