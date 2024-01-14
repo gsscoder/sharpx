@@ -132,4 +132,10 @@ public static class StringExtensions
 
     /// <summary>Randomizes the case of a string characters.</summary>
     public static string RandomizeCase(this string value) => Strings.RandomizeCase(value);
+
+    /// <summary>Normalize a diacritics with an ordinary character.</summary>
+    public static char RemoveDiacritics(this char value) => Strings.RemoveDiacritics(value);
+
+    /// <summary>Normalize a string with diacritics with ordinary characters.</summary>
+    public static string RemoveDiacritics(this string value) => Strings.RemoveDiacritics(value);
 }
