@@ -19,7 +19,7 @@ public static class Strings
     const string _alpahNumChars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const string _specialChars = "!#$%&()*+,-./:;<=>?@[\\]^_{|}~¡¢£¤¥¦§¨©«¬®¯°±²³¶·¹»¼½¾¿÷";
     const string _quotesChars = "\"'`";
-    static Regex _stripTagRegEx = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
+    static Regex _matchTagRegEx = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
 
     /// <summary>Replicates a character for a given number of times using a seperator.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -323,7 +323,7 @@ public static class Strings
     {
         Guard.DisallowNull(nameof(value), value);
 
-        return _stripTagRegEx.Replace(value, string.Empty);
+        return _matchTagRegEx.Replace(value, string.Empty);
     }
 
     /// <summary>Removes words of given length.</summary>
