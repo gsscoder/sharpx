@@ -7,9 +7,7 @@ using System.Security.Cryptography;
 namespace SharpX;
 
 /// <summary>A thread safe random number generator based on the RNGCryptoServiceProvider.</summary>
-#if NET60
 [Obsolete("CryptoRandom is obsolete. To generate a random number, use one of the RandomNumberGenerator static methods instead.")]
-#endif
 public class CryptoRandom : Random
 {
     readonly RNGCryptoServiceProvider _rng = new RNGCryptoServiceProvider();
@@ -139,10 +137,11 @@ public class CryptoRandom : Random
     }
 }
 
-#if NETCOREAPP31
 static class _RandomNumberGeneratorCompatibility
 {
+#pragma warning disable CS0618 // Type or member is obsolete
     public static CryptoRandom _cryptoRandom = new CryptoRandom();
+#pragma warning restore CS0618 // Type or member is obsolete
 
     public static void GetBytes(byte[] data) => _cryptoRandom.NextBytes(data);
 
@@ -157,4 +156,3 @@ static class _RandomNumberGeneratorCompatibility
     
     public static int GetInt32(int fromInclusive, int toExclusive) => _cryptoRandom.Next(fromInclusive, toExclusive);
 }
-#endif
