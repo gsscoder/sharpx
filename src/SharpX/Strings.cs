@@ -1,8 +1,12 @@
 using System;
+using System.Data;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using SharpX.Extensions;
+using static System.Net.Mime.MediaTypeNames;
+using static FsCheck.ResultContainer;
 using RandomNumberGenerator = SharpX._RandomNumberGeneratorCompatibility;
 
 namespace SharpX;
@@ -20,6 +24,100 @@ public static class Strings
     const string _specialChars = "!#$%&()*+,-./:;<=>?@[\\]^_{|}~¡¢£¤¥¦§¨©«¬®¯°±²³¶·¹»¼½¾¿÷";
     const string _quotesChars = "\"'`";
     static Regex _matchTagRegEx = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
+    #region Diatritics map
+    static Dictionary<string, string> _diatritics = new Dictionary<string, string>
+    {
+        { "äæǽ", "ae" },
+        { "öœ", "oe" },
+        { "ü", "ue" },
+        { "Ä", "Ae" },
+        { "Ü", "Ue" },
+        { "Ö", "Oe" },
+        { "ÀÁÂÃÄÅǺĀĂĄǍΑΆẢẠẦẪẨẬẰẮẴẲẶА", "A" },
+        { "àáâãåǻāăąǎªαάảạầấẫẩậằắẵẳặа", "a" },
+        { "Б", "B" },
+        { "б", "b" },
+        { "ÇĆĈĊČ", "C" },
+        { "çćĉċč", "c" },
+        { "Д", "D" },
+        { "д", "d" },
+        { "ÐĎĐΔ", "Dj" },
+        { "ðďđδ", "dj" },
+        { "ÈÉÊËĒĔĖĘĚΕΈẼẺẸỀẾỄỂỆЕЭ", "E" },
+        { "èéêëēĕėęěέεẽẻẹềếễểệеэ", "e" },
+        { "Ф", "F" },
+        { "ф", "f" },
+        { "ĜĞĠĢΓГҐ", "G" },
+        { "ĝğġģγгґ", "g" },
+        { "ĤĦ", "H" },
+        { "ĥħ", "h" },
+        { "ÌÍÎÏĨĪĬǏĮİΗΉΊΙΪỈỊИЫ", "I" },
+        { "ìíîïĩīĭǐįıηήίιϊỉịиыї", "i" },
+        { "Ĵ", "J" },
+        { "ĵ", "j" },
+        { "ĶΚК", "K" },
+        { "ķκк", "k" },
+        { "ĹĻĽĿŁΛЛ", "L" },
+        { "ĺļľŀłλл", "l" },
+        { "М", "M" },
+        { "м", "m" },
+        { "ÑŃŅŇΝН", "N" },
+        { "ñńņňŉνн", "n" },
+        { "ÒÓÔÕŌŎǑŐƠØǾΟΌΩΏỎỌỒỐỖỔỘỜỚỠỞỢО", "O" },
+        { "òóôõōŏǒőơøǿºοόωώỏọồốỗổộờớỡởợо", "o" },
+        { "П", "P" },
+        { "п", "p" },
+        { "ŔŖŘΡР", "R" },
+        { "ŕŗřρр", "r" },
+        { "ŚŜŞȘŠΣС", "S" },
+        { "śŝşșšſσςс", "s" },
+        { "ȚŢŤŦτТ", "T" },
+        { "țţťŧт", "t" },
+        { "ÙÚÛŨŪŬŮŰŲƯǓǕǗǙǛŨỦỤỪỨỮỬỰУ", "U" },
+        { "ùúûũūŭůűųưǔǖǘǚǜυύϋủụừứữửựу", "u" },
+        { "ÝŸŶΥΎΫỲỸỶỴЙ", "Y" },
+        { "ýÿŷỳỹỷỵй", "y" },
+        { "В", "V" },
+        { "в", "v" },
+        { "Ŵ", "W" },
+        { "ŵ", "w" },
+        { "ŹŻŽΖЗ", "Z" },
+        { "źżžζз", "z" },
+        { "ÆǼ", "AE" },
+        { "ß", "ss" },
+        { "Ĳ", "IJ" },
+        { "ĳ", "ij" },
+        { "Œ", "OE" },
+        { "ƒ", "f" },
+        { "ξ", "ks" },
+        { "π", "p" },
+        { "β", "v" },
+        { "μ", "m" },
+        { "ψ", "ps" },
+        { "Ё", "Yo" },
+        { "ё", "yo" },
+        { "Є", "Ye" },
+        { "є", "ye" },
+        { "Ї", "Yi" },
+        { "Ж", "Zh" },
+        { "ж", "zh" },
+        { "Х", "Kh" },
+        { "х", "kh" },
+        { "Ц", "Ts" },
+        { "ц", "ts" },
+        { "Ч", "Ch" },
+        { "ч", "ch" },
+        { "Ш", "Sh" },
+        { "ш", "sh" },
+        { "Щ", "Shch" },
+        { "щ", "shch" },
+        { "ЪъЬь", "" },
+        { "Ю", "Yu" },
+        { "ю", "yu" },
+        { "Я", "Ya" },
+        { "я", "ya" },
+    };
+    #endregion
 
     /// <summary>Replicates a character for a given number of times using a seperator.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -419,5 +517,42 @@ public static class Strings
             }
             return new string(result);
         }
+    }
+
+    /// <summary>Normalize a diacritics with an ordinary character.</summary>
+    public static char RemoveDiacritics(char value)
+    {
+        foreach (var entry in _diatritics) {
+            if (entry.Key.IndexOf(value) != -1) {
+                return entry.Value[0];
+            }
+        }
+
+        return value;
+    }
+
+    /// <summary>Normalize a string with diacritics with ordinary characters.</summary>
+    public static string RemoveDiacritics(string value)
+    {
+        Guard.DisallowNull(nameof(value), value);
+
+        var builder = new StringBuilder(capacity: value.Length);
+
+        foreach (char c in value) {
+            int len = builder.Length;
+
+            foreach (var entry in _diatritics) {
+                if (entry.Key.IndexOf(c) != -1) {
+                    builder.Append(entry.Value);
+                    break;
+                }
+            }
+
+            if (len == builder.Length) {
+                builder.Append(c);
+            }
+        }
+
+        return builder.ToString();
     }
 }

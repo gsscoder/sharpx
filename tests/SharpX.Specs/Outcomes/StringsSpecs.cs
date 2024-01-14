@@ -269,5 +269,25 @@ public class StringsSpecs
     {
         Strings.RandomizeCase(String.Empty).Should().Be(String.Empty);
     }
+
+    [Theory]
+    [InlineData("any kind of")]
+    [InlineData("string")]
+    [InlineData("without diacritics")]
+    [InlineData("is changed 0 times")]
+    public void RemoveDiacritics__Strings_without_diacritics_remain_unchanged(string value)
+    {
+        Strings.RemoveDiacritics(value).Should().Be(value);
+    }
+
+    [Theory]
+    [InlineData("âny kỉnd ōf", "any kind of")]
+    [InlineData("strỉng", "string")]
+    [InlineData("wïthōut diâcritics", "without diacritics")]
+    [InlineData("ïs chânged 0 timếs", "is changed 0 times")]
+    public void RemoveDiacritics__Strings_with_diacritics_are_normalized(string input, string output)
+    {
+        Strings.RemoveDiacritics(input).Should().Be(output);
+    }
     #endregion
 }
