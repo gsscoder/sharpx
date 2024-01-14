@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>12.0</LangVersion>
     <Title>Functional programming and other utilities .NET</Title>
     <Description>Functional programming and other utilities .NET</Description>
     <Version>6.3.6</Version>
