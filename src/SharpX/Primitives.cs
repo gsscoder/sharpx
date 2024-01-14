@@ -63,7 +63,7 @@ public static class Primitives
         if (count != null) Guard.DisallowNegative(nameof(count), count.Value);
 
         Func<object> generator = typeof(T) switch {
-            var t when t == typeof(int) => () => RandomNumberGenerator.GetInt32(int.MinValue, int.MaxValue),
+            var t when t == typeof(int) => () => RandomNumberGenerator.GetInt32((int)(int.MinValue / 1.3), (int)(int.MaxValue / 1.3)),
             var t when t == typeof(double) => () => BitConverter.ToDouble(RandomNumberGenerator.GetBytes(8), 0),
             var t when t == typeof(string) => () => Strings.Generate(length: 16),
             _ => throw new ArgumentException($"{typeof(T).Name} is not supported"),
