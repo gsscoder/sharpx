@@ -7,10 +7,9 @@ SharpX is derived from [CSharpx](https://github.com/gsscoder/csharpx) 2.8.0-rc.2
 
 The library contains **functional types** and other utilities, including **test oriented tools**. It follows the _don't reinvent the wheel_ philosophy. This project was originally inspired by [Real-World Functional Programming](https://www.amazon.com/Real-World-Functional-Programming-Tomas-Petricek/dp/1933988924/ref=sr_1_1?keywords=Real-World+Functional+Programming&qid=1580118924&s=books&sr=1-1) and includes code from [MoreLINQ](https://github.com/morelinq/MoreLINQ).
 
-## Targets
+## Target
 
-- .NET Core 3.1 LTS
-- .NET 6.0 LTS
+- .NET Standard 2.0
 
 ## Install via NuGet
 
