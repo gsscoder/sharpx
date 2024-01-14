@@ -16,7 +16,7 @@ The library contains **functional types** and other utilities, including **test 
 You can install it via NuGet:
 
 ```sh
-$ dotnet add package SharpX --version 6.4.0
+$ dotnet add package SharpX --version 6.4.2
   Determining projects to restore...
   ...
 ```
