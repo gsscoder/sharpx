@@ -1,9 +1,5 @@
 using System.Text;
-#if NETCOREAPP31
 using RandomNumberGenerator = SharpX._RandomNumberGeneratorCompatibility;
-#else
-using RandomNumberGenerator = System.Security.Cryptography.RandomNumberGenerator;
-#endif
 
 namespace SharpX;
 

@@ -3,11 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using SharpX.Extensions;
-#if NETCOREAPP31
 using RandomNumberGenerator = SharpX._RandomNumberGeneratorCompatibility;
-#else
-using RandomNumberGenerator = System.Security.Cryptography.RandomNumberGenerator;
-#endif
 
 namespace SharpX;
 

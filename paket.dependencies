@@ -1,6 +1,6 @@
 group main
     source https://www.nuget.org/api/v2
-    framework: netcoreapp3.1, net60
+    framework: netstandard2.0
     nuget FSharp.Core 5.0.2
     nuget FsCheck 3.0.0-rc1 prerelease
     nuget Microsoft.NETCore.Platforms 7.0.4
