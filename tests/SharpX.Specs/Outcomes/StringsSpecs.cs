@@ -36,7 +36,7 @@ public class StringsSpecs
     {
         Action action = () => Strings.Generate(value.Get);
 
-        action.Should().ThrowExactly<ArgumentException>();
+        action.Should().ThrowExactly<ArgumentOutOfRangeException>();
     }
 
     [Fact]
