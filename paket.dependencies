@@ -4,6 +4,7 @@ group main
     nuget FSharp.Core 5.0.2
     nuget FsCheck 3.0.0-rc1 prerelease
     nuget Microsoft.NETCore.Platforms 7.0.4
+    nuget Microsoft.Extensions.Logging.Abstractions 8.0.1
 
 group specs
     source https://www.nuget.org/api/v2

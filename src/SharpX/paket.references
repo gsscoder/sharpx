@@ -2,3 +2,4 @@ group main
     FSharp.Core
     FsCheck
     Microsoft.NETCore.Platforms
+    Microsoft.Extensions.Logging.Abstractions
