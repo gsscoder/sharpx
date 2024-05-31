@@ -541,6 +541,90 @@ public static class EnumerableExtensions
         return list;
     }
 
+    #region Batch
+    /// <summary>Batches the source sequence into sized buckets.</summary>
+    public static IEnumerable<TSource[]> Batch<TSource>(this IEnumerable<TSource> source, int size)
+    {
+        return Batch(source, size, x => x);
+    }
+
+    /// <summary>Batches the source sequence into sized buckets and applies a projection to each
+    /// bucket.</summary>
+    public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
+        Func<TSource[], TResult> resultSelector)
+    {
+        if (source == null) throw new ArgumentNullException(nameof(source));
+        if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
+        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+        return _(source, size, resultSelector);
+
+        static IEnumerable<TResult> _(IEnumerable<TSource> source, int size, Func<TSource[], TResult> resultSelector)
+        {
+            switch (source)
+            {
+                case ICollection<TSource> { Count: 0 }:
+                {
+                    break;
+                }
+                case ICollection<TSource> collection when collection.Count <= size:
+                {
+                    var bucket = new TSource[collection.Count];
+                    collection.CopyTo(bucket, 0);
+                    yield return resultSelector(bucket);
+                    break;
+                }
+                case IReadOnlyCollection<TSource> { Count: 0 }:
+                {
+                    break;
+                }
+                case IReadOnlyList<TSource> list when list.Count <= size:
+                {
+                    var bucket = new TSource[list.Count];
+                    for (var i = 0; i < list.Count; i++)
+                        bucket[i] = list[i];
+                    yield return resultSelector(bucket);
+                    break;
+                }
+                case IReadOnlyCollection<TSource> collection when collection.Count <= size:
+                {
+                    size = collection.Count;
+                    goto default;
+                }
+                default:
+                {
+                    TSource[]? bucket = null;
+                    var count = 0;
+
+                    foreach (var item in source)
+                    {
+                        bucket ??= new TSource[size];
+                        bucket[count++] = item;
+
+                        // The bucket is fully buffered before it's yielded
+                        if (count != size)
+                            continue;
+
+                        yield return resultSelector(bucket);
+
+                        bucket = null;
+                        count = 0;
+                    }
+
+                    // Return the last bucket with all remaining elements
+                    if (count > 0)
+                    {
+                        Array.Resize(ref bucket, count);
+                        yield return resultSelector(bucket);
+                    }
+
+                    break;
+                }
+            }
+        }
+    }
+    #endregion
+
     /// <summary>Converts a value to an enumerable.</summary>
     public static IEnumerable<T> ToEnumerable<T>(this T value) => Primitives.ToEnumerable(value);
 
