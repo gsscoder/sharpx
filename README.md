@@ -16,7 +16,7 @@ The library contains **functional types** and other utilities, including **test 
 You can install it via NuGet:
 
 ```sh
-$ dotnet add package SharpX --version 6.4.2
+$ dotnet add package SharpX --version 6.4.6
   Determining projects to restore...
   ...
 ```
@@ -26,7 +26,7 @@ $ dotnet add package SharpX --version 6.4.2
 All types are available in the root namespace. Extension methods (except the very specific ones) are in `SharpX.Extensions`.
 `SharpX.FsCheck` contains [FsCheck](https://github.com/fscheck/FsCheck) generators for property-based testing.
 
-## [Maybe]
+## Maybe
 
 - Encapsulates an optional value that can contain a value or being empty.
 - Similar to F# `'T option` / Haskell `data Maybe a = Just a | Nothing` type.
