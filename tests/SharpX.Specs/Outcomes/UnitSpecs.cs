@@ -3,7 +3,12 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
+using FluentAssertions.Equivalency;
+using FsCheck;
+using FsCheck.Fluent;
+using FsCheck.Xunit;
 using SharpX;
+using SharpX.Extensions;
 using Xunit;
 
 namespace Outcomes;
@@ -56,4 +61,15 @@ public class UnitSpecs
         evidence.Should().Be(1);
         outcome.Should().Be(Unit.Default);
     }        
+
+    [Property(MaxTest=1)]
+    public FsCheck.Property Chain_Unit_values_with_And_extension()
+    {
+        return FsCheck.Fluent.Prop.ToProperty(
+                Unit.Do(() => VoidMethod())
+                .And(DoSomething().ToUnit()).Equals(Unit.Default));
+
+        void VoidMethod() {}
+        int DoSomething() => 3 * 2;
+    }
 }
