@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Updated .NET targets and dependencies
+
+## [6.4.6] - 2024-06-01
+
 - Added `LoggerExtensions` class.
 - Added `EnumerableExtensions::Batch` method from MoreLINQ.
 - Implemented `UnitExtensions::And` method.
