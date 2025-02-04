@@ -1,22 +1,22 @@
 group main
     source https://www.nuget.org/api/v2
-    framework: netstandard2.0
-    nuget FSharp.Core 5.0.2
-    nuget FsCheck 3.0.0-rc1 prerelease
+    framework: netstandard2.1, net8.0
+    nuget FSharp.Core 9.0.101
+    nuget FsCheck 3.1.0
     nuget Microsoft.NETCore.Platforms 7.0.4
-    nuget Microsoft.Extensions.Logging.Abstractions 8.0.1
+    nuget Microsoft.Extensions.Logging.Abstractions 9.0.1
 
 group specs
     source https://www.nuget.org/api/v2
-    framework: net60
-    nuget Microsoft.NET.Test.Sdk 16.9.4
-    nuget coverlet.collector 1.0.1
-    nuget xunit 2.4.1
-    nuget xunit.runner.visualstudio 2.4.3
-    nuget FsCheck 3.0.0-rc1 prerelease
-    nuget FsCheck.Xunit 3.0.0-rc1 prerelease
-    nuget FluentAssertions 6.2.0
-    nuget Bogus 33.1.1
-    nuget WaffleGenerator 4.2.1
-    nuget WaffleGenerator.Bogus 4.2.1
+    framework: net8.0
+    nuget Microsoft.NET.Test.Sdk 17.12.0
+    nuget coverlet.collector 6.0.4
+    nuget xunit 2.9.3
+    nuget xunit.runner.visualstudio 3.0.1
+    nuget FsCheck 3.1.0
+    nuget FsCheck.Xunit 3.1.0
+    nuget FluentAssertions 8.0.1
+    nuget Bogus 35.6.1
+    nuget WaffleGenerator 4.2.2
+    nuget WaffleGenerator.Bogus 4.2.2
     nuget Microsoft.NETCore.Platforms 7.0.4
