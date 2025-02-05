@@ -7,15 +7,17 @@ using System.Security.Cryptography;
 namespace SharpX;
 
 /// <summary>A thread safe random number generator based on the RNGCryptoServiceProvider.</summary>
+/// <remarks>Initializes a new instance of the <c>CryptoRandom</c> class with optional random
+/// buffer.</remarks>
 [Obsolete("CryptoRandom is obsolete. To generate a random number, use one of the RandomNumberGenerator static methods instead.")]
-public class CryptoRandom : Random
+public class CryptoRandom(bool enableRandomPool) : Random
 {
-    readonly RNGCryptoServiceProvider _rng = new RNGCryptoServiceProvider();
-    byte[] _buffer;
-    int _bufferPosition;
+    private readonly RNGCryptoServiceProvider _rng = new();
+    private byte[] _buffer;
+    private int _bufferPosition;
 
     /// <summary>Gets a value indicating whether this instance has random pool enabled.</summary>
-    public bool IsRandomPoolEnabled { get; private set; }
+    public bool IsRandomPoolEnabled { get; private set; } = enableRandomPool;
 
     /// <summary>Initializes a new instance of the <c>CryptoRandom</c> class with. Using this
     /// overload will enable the random buffer pool.</summary>
@@ -28,13 +30,6 @@ public class CryptoRandom : Random
     [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "ignoredSeed",
         Justification = "Cannot remove this parameter as we implement the full API of System.Random")]
     public CryptoRandom(int seed) : this(true) { }
-
-    /// <summary>Initializes a new instance of the <c>CryptoRandom</c> class with optional random
-    /// buffer.</summary>
-    public CryptoRandom(bool enableRandomPool)
-    {
-        IsRandomPoolEnabled = enableRandomPool;
-    }
 
     void InitBuffer()
     {
@@ -141,7 +136,7 @@ static class _RandomNumberGeneratorCompatibility
 {
 #pragma warning disable CS0618 // Type or member is obsolete
     public static CryptoRandom _cryptoRandom = new CryptoRandom();
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0618
 
     public static void GetBytes(byte[] data) => _cryptoRandom.NextBytes(data);
 
