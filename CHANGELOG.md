@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Updated .NET targets and dependencies
+- Updated .NET targets and dependencies.
+- Implemented `Guard::DisallowNothing` method.
 
 ## [6.4.6] - 2024-06-01
 

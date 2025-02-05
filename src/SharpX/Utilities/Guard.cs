@@ -79,4 +79,10 @@ public static class Guard
         try { Guid.Parse(value); }
         catch { throw new ArgumentException($"{argumentName} must be a well formed GUID.", argumentName); }
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void DisallowNothing<T>(string argumentName, Maybe<T> value)
+    {
+        if (value.Tag == MaybeType.Nothing) throw new ArgumentException($"{argumentName} cannot be nothing.", argumentName);
+    }
 }
