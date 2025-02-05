@@ -1,22 +1,28 @@
-
 # SharpX
 
-![alt text](/assets/icon.png "SharpX Logo")
+![SharpX Logo](/assets/icon.png)
 
-SharpX is derived from [CSharpx](https://github.com/gsscoder/csharpx) 2.8.0-rc.2 (_which was practically a stable_) and [RailwaySharp](https://github.com/gsscoder/railwaysharp) 1.2.2. While both projects were meant mainly for source inclusion, SharpX is designed to be pulled from [NuGet](https://www.nuget.org/).
+SharpX is derived from [CSharpx](https://github.com/gsscoder/csharpx) 2.8.0-rc.2 (_which was practically a stable_) and [RailwaySharp](https://github.com/gsscoder/railwaysharp) 1.2.2.
+
+![CSharpX Downloads](https://img.shields.io/nuget/dt/CSharpX.svg)
+
+While both projects were meant mainly for source inclusion, SharpX is designed to be pulled from [NuGet](https://www.nuget.org/).
 
 The library contains **functional types** and other utilities, including **test oriented tools**. It follows the _don't reinvent the wheel_ philosophy. This project was originally inspired by [Real-World Functional Programming](https://www.amazon.com/Real-World-Functional-Programming-Tomas-Petricek/dp/1933988924/ref=sr_1_1?keywords=Real-World+Functional+Programming&qid=1580118924&s=books&sr=1-1) and includes code from [MoreLINQ](https://github.com/morelinq/MoreLINQ).
 
-## Target
+![SharpX Downloads](https://img.shields.io/nuget/dt/SharpX.svg)
 
-- .NET Standard 2.0
+## Targets
+
+- .NET Standard 2.1
+- .NET 8.0
 
 ## Install via NuGet
 
 You can install it via NuGet:
 
 ```sh
-$ dotnet add package SharpX --version 6.4.6
+$ dotnet add package SharpX --version 8.0.0
   Determining projects to restore...
   ...
 ```
