@@ -4,6 +4,17 @@ namespace SharpX.Extensions;
 
 public static class LoggerExtensions
 {
+    public static T? WarnWith<T>(
+        this ILogger logger, string message, T? returnValue = default, params object[] args)
+    {
+        Guard.DisallowNull(nameof(logger), logger);
+        Guard.DisallowNull(nameof(message), message);
+
+        logger.LogWarning(message, args);
+
+        return returnValue;
+    }
+
     public static T? FailWith<T>(
         this ILogger logger, string message, T? returnValue = default, params object[] args)
     {
