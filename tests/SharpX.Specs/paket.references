@@ -7,3 +7,4 @@ group specs
     xunit.runner.visualstudio
     coverlet.collector
     Microsoft.NETCore.Platforms
+    Moq

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improved `LoggerExtensions` methods.
 - Implemented `LoggerExtensions::WarnWith` method.
+- Updated `LoggerExtensions` methods signature and parameters validation.
 
 ## [8.0.0] - 2025-02-05
 
