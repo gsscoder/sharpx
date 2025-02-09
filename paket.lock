@@ -27,6 +27,8 @@ RESTRICTION: == net8.0
 NUGET
   remote: https://www.nuget.org/api/v2
     Bogus (35.6.1)
+    Castle.Core (5.1.1)
+      System.Diagnostics.EventLog (>= 6.0)
     coverlet.collector (6.0.4)
     FluentAssertions (8.0.1)
     FsCheck (3.1)
@@ -46,8 +48,11 @@ NUGET
     Microsoft.TestPlatform.TestHost (17.12)
       Microsoft.TestPlatform.ObjectModel (>= 17.12)
       Newtonsoft.Json (>= 13.0.1)
+    Moq (4.20.72)
+      Castle.Core (>= 5.1.1)
     Newtonsoft.Json (13.0.3)
     System.Collections.Immutable (9.0.1)
+    System.Diagnostics.EventLog (9.0.1)
     System.Reflection.Metadata (9.0.1)
       System.Collections.Immutable (>= 9.0.1)
     WaffleGenerator (4.2.2)
