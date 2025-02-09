@@ -20,3 +20,4 @@ group specs
     nuget WaffleGenerator 4.2.2
     nuget WaffleGenerator.Bogus 4.2.2
     nuget Microsoft.NETCore.Platforms 7.0.4
+    nuget Moq 4.20.72
