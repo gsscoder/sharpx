@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -65,7 +66,8 @@ public class LoggerExtensionsSpecs
 
     private static object InvokeOnSut<T>(string methodName, params object[] args)
     {
-        var method = typeof(Sut).GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
+        var method = typeof(Sut).GetMethods(BindingFlags.Public | BindingFlags.Static)
+            .Single(x => x.Name == methodName && x.IsGenericMethod);
         var generic = method.MakeGenericMethod(typeof(T));
 
         return generic.Invoke(null, args);
