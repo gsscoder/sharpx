@@ -1,12 +1,8 @@
-using System;
 using System.Data;
-using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using SharpX.Extensions;
-using static System.Net.Mime.MediaTypeNames;
-using static FsCheck.ResultContainer;
 using RandomNumberGenerator = SharpX._RandomNumberGeneratorCompatibility;
 
 namespace SharpX;
@@ -20,12 +16,12 @@ public sealed class GenerateOptions
 
 public static class Strings
 {
-    const string _alpahNumChars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const string _specialChars = "!#$%&()*+,-./:;<=>?@[\\]^_{|}~¡¢£¤¥¦§¨©«¬®¯°±²³¶·¹»¼½¾¿÷";
-    const string _quotesChars = "\"'`";
-    static Regex _matchTagRegEx = new Regex(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
+    private const string _alpahNumChars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private const string _specialChars = "!#$%&()*+,-./:;<=>?@[\\]^_{|}~¡¢£¤¥¦§¨©«¬®¯°±²³¶·¹»¼½¾¿÷";
+    private const string _quotesChars = "\"'`";
+    private static Regex _matchTagRegEx = new(@"<[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline);
     #region Diatritics map
-    static Dictionary<string, string> _diatritics = new Dictionary<string, string>
+    private static Dictionary<string, string> _diatritics = new()
     {
         { "äæǽ", "ae" },
         { "öœ", "oe" },
