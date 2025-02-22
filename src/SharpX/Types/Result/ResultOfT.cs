@@ -4,9 +4,14 @@ namespace SharpX;
 /// <summary>Represents the result of a computation.</summary>
 public abstract class Result<TSuccess, TMessage>
 {
-    readonly ResultType _tag;
-    protected Result(ResultType tag) => _tag = tag;
-    public ResultType Tag => _tag;
+    private readonly ResultType _tag;
+    
+    protected Result(ResultType tag)
+    {
+        _tag = tag;
+    }
+
+    public ResultType Tag { get => _tag; }
 
     /// <summary>Creates a Failure result with the given messages.</summary>
     public static Result<TSuccess, TMessage> FailWith(IEnumerable<TMessage> messages)

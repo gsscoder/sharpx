@@ -9,8 +9,8 @@ namespace SharpX;
 /// used to hold a correct value (mnemonic: "right" also means "correct").</summary>
 public struct Either<TLeft, TRight>
 {
-    readonly TLeft _leftValue;
-    readonly TRight _rightValue;
+    private readonly TLeft _leftValue;
+    private readonly TRight _rightValue;
 
     internal Either(TLeft value)
     {
