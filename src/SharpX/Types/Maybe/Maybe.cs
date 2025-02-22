@@ -1,12 +1,11 @@
-﻿#pragma warning disable 8601, 8602, 8603, 8619
-namespace SharpX;
+﻿namespace SharpX;
 
 /// <summary>Provides static methods for manipulating <c>Maybe</c>.</summary>
 public static class Maybe
 {
     #region Value case constructors
     /// <summary>Builds the empty case of <c>Maybe</c>.</summary>
-    public static Maybe<T> Nothing<T>() => new Maybe<T>();
+    public static Maybe<T> Nothing<T>() => new();
 
     /// <summary>Builds the case when <c>Maybe</c> contains a value.</summary>
     public static Maybe<T> Just<T>(T value)
@@ -23,12 +22,12 @@ public static class Maybe
 
     /// <summary>Sequentially compose two actions, passing any value produced by the first as
     /// an argument to the second.</summary>
-    public static Maybe<T2> Bind<T1, T2>(Maybe<T1> maybe, Func<T1, Maybe<T2>> onJust)
+    public static Maybe<T2> Bind<T1, T2>(Maybe<T1> maybe, Func<T1?, Maybe<T2>> onJust)
     {
         Guard.DisallowNull(nameof(maybe), maybe);
         Guard.DisallowNull(nameof(onJust), onJust);
 
-        return maybe.MatchJust(out T1 value) ? onJust(value) : Nothing<T2>();
+        return maybe.MatchJust(out T1? value) ? onJust(value) : Nothing<T2>();
     }
     #endregion
 
@@ -39,7 +38,7 @@ public static class Maybe
         Guard.DisallowNull(nameof(maybe), maybe);
         Guard.DisallowNull(nameof(onJust), onJust);
 
-        return maybe.MatchJust(out T1 value) ? Just(onJust(value)) : Nothing<T2>();
+        return maybe.MatchJust(out T1? value) ? Just(onJust(value!)) : Nothing<T2>();
     }
     #endregion
 
@@ -51,9 +50,9 @@ public static class Maybe
         Guard.DisallowNull(nameof(second), second);
 
         T2? value2 = default;
-        return (first.MatchJust(out T1 value1) &&
+        return (first.MatchJust(out T1? value1) &&
                 second.MatchJust(out value2)) switch {
-            true => Just((value1, value2)),
+            true => Just((value1!, value2!)),
             _ => Nothing<(T1, T2)>()
         };
     }
@@ -79,7 +78,7 @@ public static class Maybe
 
         return (either.Tag == EitherType.Right) switch
         {
-            true => Just(either.FromRight()),
+            true => Just(either.FromRight()!),
             _ => Nothing<TRight>()
         };
     }

@@ -28,8 +28,8 @@ public static class MaybeExtensions
         Guard.DisallowNull(nameof(onJust), onJust);
         Guard.DisallowNull(nameof(onNothing), onNothing);
 
-        return maybe.MatchJust(out T value) switch {
-            true => onJust(value),
+        return maybe.MatchJust(out T? value) switch {
+            true => onJust(value!),
             _    => onNothing()
         };
     }
@@ -61,8 +61,8 @@ public static class MaybeExtensions
             value2 = value.Item2;
             return true;
         }
-        value1 = default;
-        value2 = default;
+        value1 = default!;
+        value2 = default!;
         return false;
     }
     #endregion
@@ -74,7 +74,7 @@ public static class MaybeExtensions
     public static Maybe<T> ToMaybe<T>(this T value) => Maybe.Return(value);
 
     /// <summary>Invokes a function on this maybe value that itself yields a maybe.</summary>
-    public static Maybe<T2> Bind<T1, T2>(this Maybe<T1> maybe, Func<T1, Maybe<T2>> onJust) =>
+    public static Maybe<T2> Bind<T1, T2>(this Maybe<T1> maybe, Func<T1?, Maybe<T2>> onJust) =>
         Maybe.Bind(maybe, onJust);
 
     /// <summary>Transforms a maybe value by using a specified mapping function.</summary>
@@ -83,7 +83,7 @@ public static class MaybeExtensions
 
     /// <summary>Unwraps a value applying a function o returns another value on fail.</summary>
     public static T2 Return<T1, T2>(this Maybe<T1> maybe, Func<T1, T2> onJust, T2 @default) =>
-        maybe.MatchJust(out T1 value) ? onJust(value) : @default;
+        maybe.MatchJust(out T1? value) ? onJust(value!) : @default;
     #endregion
 
     /// <summary>This is a version of map which can throw out the value. If contains a <c>Just</c>
@@ -93,7 +93,7 @@ public static class MaybeExtensions
         Guard.DisallowNull(nameof(maybe), maybe);
         Guard.DisallowNull(nameof(onJust), onJust);
 
-        return maybe.MatchJust(out T1 value) ? onJust(value) : @default;
+        return maybe.MatchJust(out T1? value) ? onJust(value!) : @default;
     }
 
     /// <summary>Lazy version of <c>Map</c>. If contains a <c>Just</c> executes a mapping function
@@ -103,7 +103,7 @@ public static class MaybeExtensions
         Guard.DisallowNull(nameof(maybe), maybe);
         Guard.DisallowNull(nameof(onJust), onJust);
 
-        return maybe.MatchJust(out T1 value) ? onJust(value) : @default();
+        return maybe.MatchJust(out T1? value) ? onJust(value!) : @default();
     }
 
     #region LINQ operators
@@ -116,8 +116,8 @@ public static class MaybeExtensions
         Func<TSource, Maybe<TValue>> valueSelector, Func<TSource, TValue, TResult> resultSelector) =>
         maybe
             .Bind(sourceValue =>
-                    valueSelector(sourceValue)
-                        .Map(resultValue => resultSelector(sourceValue, resultValue)));
+                    valueSelector(sourceValue!)
+                        .Map(resultValue => resultSelector(sourceValue!, resultValue)));
 
     /// <summary>Returns the same Maybe value if the predicate is true, otherwise
     /// <c>Nothing</c>.</summary>
@@ -127,8 +127,8 @@ public static class MaybeExtensions
         Guard.DisallowNull(nameof(maybe), maybe);
         Guard.DisallowNull(nameof(predicate), predicate);
 
-        if (maybe.MatchJust(out TSource value)) {
-            if (predicate(value)) return maybe;
+        if (maybe.MatchJust(out TSource? value)) {
+            if (predicate(value!)) return maybe;
         }
         return Maybe.Nothing<TSource>();
     }
@@ -141,8 +141,8 @@ public static class MaybeExtensions
         Guard.DisallowNull(nameof(maybe), maybe);
         Guard.DisallowNull(nameof(func), func);
 
-        return maybe.MatchJust(out T value) switch {
-            true => func(value),
+        return maybe.MatchJust(out T? value) switch {
+            true => func(value!),
             _    => Unit.Default
         };
     }
@@ -153,8 +153,8 @@ public static class MaybeExtensions
         Guard.DisallowNull(nameof(maybe), maybe);
         Guard.DisallowNull(nameof(func), func);
 
-        return maybe.MatchJust(out T value) switch {
-            true => await func(value),
+        return maybe.MatchJust(out T? value) switch {
+            true => await func(value!),
             _    => Unit.Default
         };
     }    
@@ -187,13 +187,14 @@ public static class MaybeExtensions
     /// <summary>Returns a <c>Just</c> of the given value.</summary>
     public static Maybe<T> ToJust<T>(this T value) => Maybe.Just(value);
 
+
     /// <summary>Extracts the element out of <c>Just</c> and returns a default value (or <c>@default</c>
     /// when given) if it is in form of <c>Nothing</c>.</summary>
     public static T? FromJust<T>(this Maybe<T> maybe, T? @default = default)
     {
         Guard.DisallowNull(nameof(maybe), maybe);
 
-        return maybe.MatchJust(out T value) ? value : @default;
+        return maybe.MatchJust(out T? value) ? value : @default;
     }
 
     /// <summary>Lazy version of <c>FromJust</c>. Extracts the element out of <c>Just</c> and returns
@@ -202,7 +203,7 @@ public static class MaybeExtensions
     {
         Guard.DisallowNull(nameof(maybe), maybe);
 
-        return maybe.MatchJust(out T value) ? value : @default();
+        return maybe.MatchJust(out T? value) ? value : @default();
     }
 
     /// <summary>Extracts the element out of <c>Just</c> or throws an exception if it is form of
@@ -211,7 +212,7 @@ public static class MaybeExtensions
     {
         Guard.DisallowNull(nameof(maybe), maybe);
 
-        return maybe.MatchJust(out T value) switch
+        return maybe.MatchJust(out T? value) switch
         {
             true => value,
             _ => throw exceptionToThrow ?? new Exception("The value is empty.")
@@ -227,7 +228,7 @@ public static class MaybeExtensions
 
         return _(); IEnumerable<T> _()
         {
-            if (maybe.MatchJust(out T value)) yield return value;
+            if (maybe.MatchJust(out T? value)) yield return value!;
         }
     }
 
@@ -263,7 +264,7 @@ public static class MaybeExtensions
         return _(); IEnumerable<T> _()
         {
             foreach (var maybe in source) {
-                if (maybe.Tag == MaybeType.Just) yield return maybe.FromJust();
+                if (maybe.Tag == MaybeType.Just) yield return maybe.FromJust()!;
             }
         }
     }
@@ -280,7 +281,7 @@ public static class MaybeExtensions
         return _(); IEnumerable<T2> _()
         {
             foreach (var element in source) {
-                if (onElement(element).MatchJust(out T2 value)) yield return value;
+                if (onElement(element).MatchJust(out T2? value)) yield return value!;
             }
         }
     }

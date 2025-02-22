@@ -1,5 +1,4 @@
 
-#pragma warning disable 8601, 8602, 8603, 8619
 using System.Text;
 
 namespace SharpX;
@@ -38,7 +37,7 @@ public readonly struct Maybe<T> : IEquatable<Maybe<T>>
 
     /// <summary>Determines whether this instance and another specified <c>Maybe</c> object have the same value.</summary>
     public bool Equals(Maybe<T> other) =>
-        other.Tag != MaybeType.Just || _value.Equals(other._value);
+        other.Tag != MaybeType.Just || _value!.Equals(other._value);
 
     public static bool operator ==(Maybe<T> left, Maybe<T> right) => left.Equals(right);
 
@@ -51,7 +50,7 @@ public readonly struct Maybe<T> : IEquatable<Maybe<T>>
             var hashCode = 2;
             hashCode = hashCode * 3 * typeof(Maybe<T>).GetHashCode();
             if (Tag == MaybeType.Just)
-                hashCode = hashCode * 3 + _value.GetHashCode();
+                hashCode = hashCode * 3 + _value!.GetHashCode();
             return hashCode;
         }
     }
@@ -68,7 +67,7 @@ public readonly struct Maybe<T> : IEquatable<Maybe<T>>
     #region Basic match methods
     /// <summary>Matches a value returning <c>true</c> and value itself via an output
     /// parameter.</summary>
-    public bool MatchJust(out T value)
+    public bool MatchJust(out T? value)
     {
         value = Tag == MaybeType.Just ? _value : default;
         return Tag == MaybeType.Just;
