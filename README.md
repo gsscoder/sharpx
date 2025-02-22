@@ -100,33 +100,6 @@ result.Match(
     msgs => { Logic.HandleFailure(msgs) });
 ```
 
-## Outcome
-
-- Represents a value that can be a success or a failure in form of a type that can contains a custom error message and optionally an exception.
-
-```csharp
-Outcome ValidateArtifact(Artifact artifact)
-{
-    try {
-        artifact = ArtifactManager.Load(artifact.Path);
-    }
-    catch (IOException e) {
-        return Result.Failure($"Unable to load artifcat {path}:\n{e.Message}", exception: e);
-    }
-    return artifact.CheckIntegrity() switch {
-        Integrity.Healthy => Outcome.Success(),
-        _                 => Outcome.Failure("Artifact integrity is compromised")
-    };
-}
-
-if (ValidateArtifact(artifact).MatchFailure(out Error error)) {
-    //Error::ToString creates a string with message and exception details
-    _logger.LogError(error.Exception.FromJust(), error.ToString());
-    Environment.Exit(1);
-}
-// do something useful with artifact
-```
-
 ## Unit
 
 - `Unit` is similar to `void` but, since it's a **real** type. `void` is not, in fact you can't declare a variable of that type. `Unit` allows the use functions without a result in a computation (**functional style**). It's essentially **F#** `unit` and **Haskell** `Unit`.
