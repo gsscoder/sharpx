@@ -10,7 +10,7 @@ public static class Primitives
     {
         Guard.DisallowNull(nameof(value), value);
 
-        return new T[] { value };
+        return [value];
     }
 
     /// <summary>Formats an exception to human readable text.</summary>

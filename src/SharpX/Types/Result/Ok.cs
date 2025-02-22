@@ -3,8 +3,8 @@
 /// <summary>Represents the result of a successful computation.</summary>
 public sealed class Ok<TSuccess, TMessage> : Result<TSuccess, TMessage>
 {
-    readonly TSuccess _success;
-    readonly IEnumerable<TMessage> _messages;
+    private readonly TSuccess _success;
+    private readonly IEnumerable<TMessage> _messages;
 
     public Ok(TSuccess success, IEnumerable<TMessage> messages)
         : base(ResultType.Ok)

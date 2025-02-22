@@ -98,5 +98,5 @@ public static class Either
         return Either.Left<TLeft, TRight>(left);
     }
 
-    static TLeft? GetLeft<TLeft, TRight>(this Either<TLeft, TRight> either) => either.FromLeft();
+    private static TLeft? GetLeft<TLeft, TRight>(this Either<TLeft, TRight> either) => either.FromLeft();
 }
