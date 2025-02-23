@@ -1,5 +1,4 @@
-﻿#pragma warning disable 8602
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace SharpX;
 
@@ -121,7 +120,7 @@ public static class ResultExtensions
             throw new Exception(
                 string.Format("Result was a success: {0} - {1}",
                 ok.Success,
-                string.Join(Environment.NewLine, ok.Messages.Select(m => m.ToString()))));
+                string.Join(Environment.NewLine, ok.Messages.Select(m => m!.ToString()))));
         }
         var bad = (Bad<TSuccess, TMessage>)result;
         return bad.Messages;
@@ -140,7 +139,7 @@ public static class ResultExtensions
         var bad = (Bad<TSuccess, TMessage>)result;
         throw new Exception(
             string.Format("Result was an error: {0}",
-            string.Join(Environment.NewLine, bad.Messages.Select(m => m.ToString()))));
+            string.Join(Environment.NewLine, bad.Messages.Select(m => m!.ToString()))));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
