@@ -1,5 +1,4 @@
 
-#pragma warning disable 8600, 8601, 8603, 8604, 8616, 8618
 namespace SharpX;
 
 public static class EitherExtensions
@@ -23,8 +22,8 @@ public static class EitherExtensions
         Guard.DisallowNull(nameof(onLeft), onLeft);
         Guard.DisallowNull(nameof(onRight), onRight);
 
-        return either.MatchRight(out TRight right) switch {
-            true => onRight(right),
+        return either.MatchRight(out TRight? right) switch {
+            true => onRight(right!),
             _ =>    onLeft(either.FromLeft())
         };
     }
@@ -61,7 +60,7 @@ public static class EitherExtensions
     /// <summary>Extracts the element out of <c>Left</c> and returns a default value (or <c>noneValue</c>
     /// when given) if it is in form of <c>Right</c>.</summary>
     public static TLeft FromLeft<TLeft, TRight>(this Either<TLeft, TRight> either,
-        TLeft? noneValue = default) => either.MatchLeft(out TLeft value) ? value : noneValue;
+        TLeft? noneValue = default) => either.MatchLeft(out TLeft? value) ? value! : noneValue!;
 
     /// <summary>Extracts the element out of <c>Left</c> and throws an exception if it is form of
     /// <c>Right</c>.</summary>
@@ -70,8 +69,8 @@ public static class EitherExtensions
     {
         Guard.DisallowNull(nameof(either), either);
 
-        if (either.MatchLeft(out TLeft value)) {
-            return value;
+        if (either.MatchLeft(out TLeft? value)) {
+            return value!;
         }
         throw exceptionToThrow ?? new Exception("The value is empty.");
     }
@@ -79,7 +78,7 @@ public static class EitherExtensions
     /// <summary>Extracts the element out of <c>Left</c> and returns a default (or <c>noneValue</c>
     /// when given) value if it is in form of<c>Right</c>.</summary>
     public static TRight? FromRight<TLeft, TRight>(this Either<TLeft, TRight> either,
-        TRight? noneValue = default) => either.MatchRight(out TRight value) ? value : noneValue;
+        TRight? noneValue = default) => either.MatchRight(out TRight? value) ? value : noneValue;
 
     /// <summary>Extracts the element out of <c>Left</c> and throws an exception if it is form of
     /// <c>Right</c>.</summary>
@@ -88,7 +87,7 @@ public static class EitherExtensions
     {
         Guard.DisallowNull(nameof(either), either);
 
-        if (either.MatchRight(out TRight value)) {
+        if (either.MatchRight(out TRight? value)) {
             return value;
         }
         throw exceptionToThrow ?? new Exception("The value is empty.");
@@ -118,7 +117,7 @@ public static class EitherExtensions
         return _(); IEnumerable<TRight> _()
         {
             foreach (var either in source) {
-                if (either.Tag == EitherType.Right) yield return either.FromRight();
+                if (either.Tag == EitherType.Right) yield return either.FromRight()!;
             }
         }
     }       
@@ -136,7 +135,7 @@ public static class EitherExtensions
 
         foreach (var either in source) {
             if (either.Tag == EitherType.Left) lefts.Add(either.FromLeft());
-            else rights.Add(either.FromRight());
+            else rights.Add(either.FromRight()!);
         }
         return (lefts, rights);
     }
