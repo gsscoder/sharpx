@@ -6,7 +6,7 @@
     <LangVersion>13.0</LangVersion>
     <Title>.NET functional programming and other utilities</Title>
     <Description>.NET functional programming and other utilities</Description>
-    <Version>8.1.0</Version>
+    <Version>8.3.0</Version>
     <Authors>gsscoder</Authors>
     <Copyright>Copyright (C) Giacomo Stelluti Scala, 2015-2025</Copyright>
     <PackageProjectUrl>https://github.com/gsscoder/sharpx</PackageProjectUrl>
