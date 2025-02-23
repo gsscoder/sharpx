@@ -1,9 +1,9 @@
 namespace SharpX;
 
-/// <summary>The <c>Unit</c> type is a type that indicates the absence of a specific value; the
-/// <c>Unit</c> type has only a single value, which acts as a placeholder when no other value
+/// <summary>The <c>Unit</c> type is a type that indicates the absence of a specific value.
+/// THE type has only a single value, which acts as a placeholder when no other value
 /// exists or is needed.</summary>
-public struct Unit : IComparable
+public readonly struct Unit : IComparable
 {
     private static readonly Unit @default = new Unit();
 
