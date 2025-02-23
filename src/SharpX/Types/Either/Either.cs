@@ -1,5 +1,4 @@
 
-#pragma warning disable 8600, 8601, 8603, 8604, 8616, 8618
 namespace SharpX;
 
 public static class Either
@@ -26,10 +25,10 @@ public static class Either
         Guard.DisallowNull(nameof(either), either);
         Guard.DisallowNull(nameof(func), func);
 
-        if (either.MatchRight(out TRight right)) {
-            return func(right);
+        if (either.MatchRight(out TRight? right)) {
+            return func(right!);
         }
-        return Either.Left<TLeft, TResult>(either.GetLeft());
+        return Either.Left<TLeft, TResult>(either.GetLeft()!);
     }
     #endregion
 
@@ -41,10 +40,10 @@ public static class Either
         Guard.DisallowNull(nameof(either), either);
         Guard.DisallowNull(nameof(func), func);
 
-        if (either.MatchRight(out TRight right)) {
-            return Either.Right<TLeft, TResult>(func(right));
+        if (either.MatchRight(out TRight? right)) {
+            return Either.Right<TLeft, TResult>(func(right!));
         }
-        return Either.Left<TLeft, TResult>(either.GetLeft());
+        return Either.Left<TLeft, TResult>(either.GetLeft()!);
     }
     #endregion
 
@@ -58,10 +57,10 @@ public static class Either
         Guard.DisallowNull(nameof(mapLeft), mapLeft);
         Guard.DisallowNull(nameof(mapRight), mapRight);
 
-        if (either.MatchRight(out TRight right)) {
-            return Either.Right<TLeft1, TRight1>(mapRight(right));
+        if (either.MatchRight(out TRight? right)) {
+            return Either.Right<TLeft1, TRight1>(mapRight(right!));
         }
-        return Either.Left<TLeft1, TRight1>(mapLeft(either.GetLeft()));
+        return Either.Left<TLeft1, TRight1>(mapLeft(either.GetLeft()!));
     }
     #endregion
 
@@ -93,7 +92,7 @@ public static class Either
         Guard.DisallowNull(nameof(left), left);
 
         if (maybe.Tag == MaybeType.Just) {
-            return Either.Right<TLeft, TRight>(maybe.FromJust());
+            return Either.Right<TLeft, TRight>(maybe.FromJust()!);
         }
         return Either.Left<TLeft, TRight>(left);
     }

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed `Outcome` type from class library.
 - Reorganized result types source files.
 - Fixed compiler warnings in Maybe implementation.
+- Fixed compiler warnings in Either implementation.
 
 ## [8.1.0] - 2025-02-09
 
