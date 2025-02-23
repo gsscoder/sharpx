@@ -1,5 +1,4 @@
 
-#pragma warning disable 8600, 8601, 8603, 8604, 8616, 8618
 namespace SharpX;
 
 /// <summary>The <c>Either</c> type represents values with two possibilities: a value of type
@@ -9,8 +8,8 @@ namespace SharpX;
 /// used to hold a correct value (mnemonic: "right" also means "correct").</summary>
 public struct Either<TLeft, TRight>
 {
-    private readonly TLeft _leftValue;
-    private readonly TRight _rightValue;
+    private readonly TLeft? _leftValue;
+    private readonly TRight? _rightValue;
 
     internal Either(TLeft value)
     {
@@ -46,4 +45,3 @@ public struct Either<TLeft, TRight>
     }
     #endregion
 }
-
