@@ -1,5 +1,4 @@
-﻿#pragma warning disable 8602
-namespace SharpX;
+﻿namespace SharpX;
 
 /// <summary>Represents the result of a computation.</summary>
 public abstract class Result<TSuccess, TMessage>
@@ -78,12 +77,12 @@ public abstract class Result<TSuccess, TMessage>
                 return string.Format(
                     "OK: {0} - {1}",
                     ok.Success,
-                    string.Join(Environment.NewLine, ok.Messages.Select(v => v.ToString())));
+                    string.Join(Environment.NewLine, ok.Messages.Select(v => v!.ToString())));
             case ResultType.Bad:
                 var bad = (Bad<TSuccess, TMessage>)this;
                 return string.Format(
                     "Error: {0}",
-                    string.Join(Environment.NewLine, bad.Messages.Select(v => v.ToString())));
+                    string.Join(Environment.NewLine, bad.Messages.Select(v => v!.ToString())));
         }
     }
 }

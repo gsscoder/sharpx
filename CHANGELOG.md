@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed compiler warnings in Maybe implementation.
 - Fixed compiler warnings in Either implementation.
 - Set Unit type as readonly struct.
+- Fixed compiler warnings in Result implementation.
 
 ## [8.1.0] - 2025-02-09
 
