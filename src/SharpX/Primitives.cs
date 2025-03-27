@@ -93,4 +93,16 @@ public static class Primitives
                value is double ||
                value is decimal;
     }
+
+    /// <summary>Executes code and forgets the eventual exception.</summary>
+    public static Unit SafeInvoke(Action action)
+    {
+        try {
+            action();
+        }
+        catch {
+        }
+
+        return Unit.Default;
+    }
 }
