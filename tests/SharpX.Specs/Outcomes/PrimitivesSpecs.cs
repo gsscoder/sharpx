@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
 using SharpX;
-using SharpX.Extensions;
 using SharpX.FsCheck;
 using Xunit;
 
@@ -113,6 +111,22 @@ public class PrimitivesSpecs
         Primitives.IsNumber("1234567890").Should().BeFalse();
         Primitives.IsNumber(new object()).Should().BeFalse();
         Primitives.IsNumber(new { empty = "" }).Should().BeFalse();
+    }
+    #endregion
+
+    #region SafeInvoke
+    [Fact]
+    public void SafeInvoke_swallows_an_exception()
+    {
+        Exception raised = null;
+        try {
+            Primitives.SafeInvoke(() => throw new Exception());
+        }
+        catch (Exception ex) {
+            raised = ex;
+        }
+
+        raised.Should().BeNull();
     }
     #endregion
 }
