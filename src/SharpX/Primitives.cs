@@ -105,4 +105,16 @@ public static class Primitives
 
         return Unit.Default;
     }
+
+    /// <summary>Executes code and forgets the eventual exception.</summary>
+    public static Unit SafeInvoke(Func<Unit> func)
+    {
+        try {
+            return func();
+        }
+        catch {
+        }
+
+        return Unit.Default;
+    }
 }
