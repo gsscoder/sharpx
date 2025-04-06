@@ -1,4 +1,4 @@
-group specs
+group tests
     FluentAssertions
     FsCheck
     FsCheck.Xunit
