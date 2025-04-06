@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Added agressive inlining for `Maybe` primitives.
+- Set `ToMaybe` parameter as nullable.
 
 ## [8.3.4] - 2025-03-29
 
