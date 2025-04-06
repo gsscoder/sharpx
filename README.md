@@ -22,7 +22,7 @@ The library contains **functional types** and other utilities, including **test 
 You can install it via NuGet:
 
 ```sh
-$ dotnet add package SharpX --version 8.3.4
+$ dotnet add package SharpX --version 8.3.6
   Determining projects to restore...
   ...
 ```
