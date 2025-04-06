@@ -71,7 +71,7 @@ public static class MaybeExtensions
     /// <summary>Equivalent to monadic <c>Return</c> operation. Builds a <c>Just</c> value in case
     /// <c>value</c> is different from its default.
     /// </summary>
-    public static Maybe<T> ToMaybe<T>(this T value) => Maybe.Return(value);
+    public static Maybe<T> ToMaybe<T>(this T? value) => Maybe.Return(value);
 
     /// <summary>Invokes a function on this maybe value that itself yields a maybe.</summary>
     public static Maybe<T2> Bind<T1, T2>(this Maybe<T1> maybe, Func<T1?, Maybe<T2>> onJust) =>

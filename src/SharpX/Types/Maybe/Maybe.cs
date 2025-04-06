@@ -23,7 +23,7 @@ public static class Maybe
     #region Monad
     /// <summary>Injects a value into the monadic <c>Maybe</c> type.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Maybe<T> Return<T>(T value) => Equals(value, default(T)) ? Nothing<T>() : Just(value);
+    public static Maybe<T> Return<T>(T? value) => Equals(value, default(T)) ? Nothing<T>() : Just(value!);
 
     /// <summary>Sequentially compose two actions, passing any value produced by the first as
     /// an argument to the second.</summary>
