@@ -6,7 +6,7 @@ group main
     nuget Microsoft.NETCore.Platforms 7.0.4
     nuget Microsoft.Extensions.Logging.Abstractions 9.0.1
 
-group specs
+group tests
     source https://www.nuget.org/api/v2
     framework: net8.0
     nuget Microsoft.NET.Test.Sdk 17.12.0
