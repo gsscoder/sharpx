@@ -1,13 +1,17 @@
-﻿namespace SharpX;
+﻿using System.Runtime.CompilerServices;
+
+namespace SharpX;
 
 /// <summary>Provides static methods for manipulating <c>Maybe</c>.</summary>
 public static class Maybe
 {
     #region Value case constructors
     /// <summary>Builds the empty case of <c>Maybe</c>.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Maybe<T> Nothing<T>() => new();
 
     /// <summary>Builds the case when <c>Maybe</c> contains a value.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Maybe<T> Just<T>(T value)
     {
         Guard.DisallowNull(nameof(value), value);
@@ -18,10 +22,12 @@ public static class Maybe
 
     #region Monad
     /// <summary>Injects a value into the monadic <c>Maybe</c> type.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Maybe<T> Return<T>(T value) => Equals(value, default(T)) ? Nothing<T>() : Just(value);
 
     /// <summary>Sequentially compose two actions, passing any value produced by the first as
     /// an argument to the second.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Maybe<T2> Bind<T1, T2>(Maybe<T1> maybe, Func<T1?, Maybe<T2>> onJust)
     {
         Guard.DisallowNull(nameof(maybe), maybe);
@@ -33,6 +39,7 @@ public static class Maybe
 
     #region Functor
     /// <summary>Transforms a <c>Maybe</c> value by using a specified mapping function.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Maybe<T2> Map<T1, T2>(Maybe<T1> maybe, Func<T1, T2> onJust)
     {
         Guard.DisallowNull(nameof(maybe), maybe);
@@ -58,6 +65,7 @@ public static class Maybe
     }
 
     /// <summary>Executes the given function on a <c>Just</c> success or returns a <c>Nothing</c>.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Maybe<T> Try<T>(Func<T> func)
     {
         Guard.DisallowNull(nameof(func), func);
